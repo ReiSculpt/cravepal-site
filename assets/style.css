@@ -9,7 +9,9 @@
   --bg:var(--cream);--fg:var(--ink);--surface:var(--paper);--muted:#4A3A44;--label:#6B5A63;--hair:#E3D3BA;--edge:var(--ink);
   --deep:var(--ink);
   --btn-bg:var(--ink);--btn-fg:var(--cream);--btn-lip:var(--tomato);
-  --dots:radial-gradient(rgba(30,20,32,.16) 1.6px,transparent 1.8px);
+  /* sparse kitchen doodles (pal, steam, a coin, sparkle, noodles | fork, spoon, basil, heart), ink at 14% on tomato,
+     on two tile sizes (360 and 520) so the repeat never lines up into a grid */
+  --doodles:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' fill='none' stroke='%231E1420' stroke-opacity='.14' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='rotate(-8 60 74)'%3E%3Cpath d='M38 94c-6-1-8-8-4-15 5-13 15-22 26-26 11 4 22 13 26 26 3 7 1 14-5 15-14 2-29 2-43 0z'/%3E%3Cpath d='M53 58c3 5 2 10 0 14M60 54c1 5 1 10 0 14M67 58c-2 5-3 10-1 14M51 82h.1M69 82h.1'/%3E%3C/g%3E%3Cpath d='M290 156c-9-9-1-17 1-24s-7-13 0-21M304 158c-8-10 0-17 1-24s-6-14 1-22M318 154c-8-8-1-15 0-21'/%3E%3Cg transform='rotate(-12 122 206)'%3E%3Ccircle cx='122' cy='206' r='17'/%3E%3Cpath d='M128 198c-2-4-10-3-10 3v11c0 3-2 5-5 6h15M112 205h10'/%3E%3C/g%3E%3Cpath d='M250 212c2 11 6 15 17 17-11 2-15 6-17 17-2-11-6-15-17-17 11-2 15-6 17-17z'/%3E%3Cpath d='M282 302c-1-15 22-17 24-3 2 11-15 13-17 3-1-6 8-8 10-3M306 299c4 9 2 20-6 26'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520' fill='none' stroke='%231E1420' stroke-opacity='.14' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='translate(95 50)'%3E%3Cg transform='rotate(22 206 70)'%3E%3Cpath d='M197 36v26M205 35v27M213 36v26M196 62c2 9 15 10 18 0M205 70l1 40'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(48 118)'%3E%3Cg transform='rotate(-32 42 262)'%3E%3Cpath d='M42 230c-7 0-10 7-9 13 1 7 5 10 9 10s8-3 9-10c1-6-2-13-9-13zM42 253l1 38'/%3E%3C/g%3E%3C/g%3E%3Cg transform='translate(256 122)'%3E%3Cpath d='M158 316c4-16 21-22 32-15-4 15-21 22-32 15zM160 314l24-15'/%3E%3C/g%3E%3Cg transform='translate(222 83)'%3E%3Cpath d='M198 168c-6-9-19-3-13 7 3 5 13 11 13 11s10-6 13-11c6-10-7-16-13-7z'/%3E%3C/g%3E%3C/svg%3E");
   --display:'Bagel Fat One','Arial Rounded MT Bold',sans-serif;
   --body:Figtree,system-ui,-apple-system,'Segoe UI',sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
@@ -23,7 +25,7 @@
 }
 /* Colour fields keep ink type in both themes, as the extension's Pause stays tomato. */
 .on-tomato,.on-sun{--fg:var(--ink);--edge:var(--ink);--surface:var(--paper);--muted:var(--ink);--label:var(--ink);--btn-bg:var(--ink);--btn-fg:var(--cream);color:var(--ink)}
-.on-tomato{--btn-lip:var(--sun);background-color:var(--tomato);background-image:var(--dots);background-size:22px 22px}
+.on-tomato{--btn-lip:var(--sun);background-color:var(--tomato);background-image:var(--doodles);background-size:360px 360px,520px 520px}
 .on-sun{--btn-lip:var(--tomato);background-color:var(--sun)}
 .on-deep{--fg:var(--cream);--muted:#E3D5DB;--surface:#2D2230;--edge:var(--cream);--btn-bg:var(--cream);--btn-fg:var(--ink);--btn-lip:var(--tomato);background:var(--deep);color:var(--cream)}
 
@@ -119,7 +121,7 @@ a{color:inherit;text-decoration-color:var(--tomato);text-decoration-thickness:2p
 
 /* ================= HOME ================= */
 /* Outer SVGs that move: transform them like any box (the default is the SVG's own drawing units, which skews moves and pivots) */
-.food,.nx-scooter,.n-hand,.nx-fridge__door,.coin,.badge svg,.kx-steam svg,.ing,.bit,.kx-pop,.kx-carrot{transform-box:border-box}
+.food,.nx-scooter,.n-hand,.nx-fridge__door,.coin,.badge svg,.kx-steam svg,.ing,.bit,.kx-pop,.kx-carrot,.kx-spark{transform-box:border-box}
 .food,.coin,.badge svg{transform-origin:50% 50%}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 .home{background:var(--tomato)}
@@ -260,7 +262,7 @@ span.pal{cursor:default}
 .app__basket{position:absolute;left:6cqi;right:6cqi;bottom:30cqi;display:flex;align-items:center;gap:3cqi;padding:3cqi 4cqi;border-radius:6cqi;background:var(--ink);color:var(--cream);font-weight:800;font-size:6.2cqi}
 .app__count{display:grid;place-items:center;min-width:9cqi;height:9cqi;border-radius:9cqi;background:var(--sun);color:var(--ink)}
 .app__total{margin-left:auto;font-family:var(--display);font-weight:400;font-size:9cqi}
-.n-pause{position:absolute;z-index:3;inset:0;display:flex;flex-direction:column;align-items:center;gap:6cqi;padding:22cqi 8cqi 0;text-align:center;background:var(--tomato) var(--dots);background-size:9cqi 9cqi;opacity:1}
+.n-pause{position:absolute;z-index:3;inset:0;display:flex;flex-direction:column;align-items:center;gap:6cqi;padding:22cqi 8cqi 0;text-align:center;background-color:var(--tomato);background-image:var(--doodles);background-size:120cqi 120cqi,173cqi 173cqi;opacity:1}
 .n-pause__t{font-family:var(--display);font-size:13cqi;line-height:.98;color:var(--ink)}
 .n-pause__s{font-weight:700;font-size:6.6cqi;line-height:1.25;color:var(--ink);max-width:18em}
 .n-act{position:absolute;z-index:2;left:0;right:0;bottom:7cqi;display:flex;justify-content:center;font-size:16cqi}
@@ -286,11 +288,11 @@ span.pal{cursor:default}
 
 .nx-flicker{z-index:10;inset:0;background:#000;opacity:0;pointer-events:none}
 /* the hand-off: a Pause-tomato circle with an ink edge bursts out of the phone's screen and becomes the next section.
-   JS places it; the inner layer is counter-scaled, so its dots stay 22px and line up with the try section's. */
+   JS places it; the inner layer is counter-scaled, so its doodles stay full size and line up with the try section's. */
 .n-wipe,.n-wipe__ring{position:absolute;z-index:6;left:0;top:0;width:200vmax;height:200vmax;border-radius:50%;transform:scale(0);opacity:0;pointer-events:none}
 .n-wipe{overflow:hidden}
 .n-wipe__ring{background:#0C080D}
-.n-wipe__in{position:absolute;left:0;top:0;background:var(--tomato) var(--dots);background-size:22px 22px;background-position:6px calc(100% - 6px)}
+.n-wipe__in{position:absolute;left:0;top:0;background-color:var(--tomato);background-image:var(--doodles);background-size:360px 360px,520px 520px;background-position:6px calc(100% - 6px)}
 /* chapter 3's explanation, right of the phone */
 /* on the wall beside the phone, just under the window, so the thrown food has the counter to itself */
 .n-cap{z-index:9;left:calc(50% + max(100svh,600px) * .2038 + 28px);right:var(--gut);top:calc(9% + min(30vw,60vh) * .75 + 24px);max-width:36em}
@@ -325,10 +327,15 @@ span.pal{cursor:default}
 .ings,.slices,.bits{position:absolute;z-index:6;inset:0;pointer-events:none}
 .ing{position:absolute;left:0;top:0;width:clamp(44px,4.6vw,84px);height:auto;opacity:0}
 .slices i{position:absolute;left:0;top:0;width:clamp(14px,1.5vw,26px);aspect-ratio:1;border-radius:50%;background:#F08A3A;border:3px solid #0C080D;opacity:0}
-.bit{position:absolute;left:0;top:0;width:clamp(22px,2.4vw,42px);height:auto;opacity:0}
-.kx-plate{z-index:8;left:calc(37vw - min(11vw,20vh));bottom:4%;width:min(22vw,40vh);aspect-ratio:260/110}
-.kx-plate svg{position:absolute;inset:0;width:100%;height:100%}
-.kx-meal{transform-box:fill-box;transform-origin:50% 60%}
+.bit{position:absolute;left:0;top:0;width:clamp(24px,2.6vw,46px);height:auto;opacity:0}
+.kx-plate{z-index:8;left:79.5vw;bottom:calc(22% - 6px);width:min(16vw,30vh);aspect-ratio:240/150;transform-origin:50% 100%}   /* on the counter, in the spot pal leaves when he walks to the hob */
+.kx-dish{position:absolute;inset:0;width:100%;height:100%}
+.kx-plate .kx-steam{left:30%;width:40%;bottom:66%;height:100%;opacity:0}
+.kx-spark{position:absolute;width:15%;height:auto;opacity:0}
+.kx-spark--1{left:-8%;top:18%}
+.kx-spark--2{right:-6%;top:-4%}
+.kx-spark--3{left:60%;top:-34%}
+.kx-meal{transform-box:fill-box;transform-origin:50% 90%}
 .k-pal{position:absolute;z-index:7;left:79vw;bottom:calc(22% - 10px);width:min(15vw,28vh)}
 .pal--chef{aspect-ratio:626/600;--lid-t:44.6%;--lid-b:62.7%;cursor:default}
 .k-pal .pal{width:100%}
@@ -374,15 +381,15 @@ span.pal{cursor:default}
   .n-cap__title{font-size:20px}
   .n-cap p{font-size:13px;margin-top:6px}
   .k-caps{top:4%}
-  .cook .nx-counter{height:36%}
+  .cook .nx-counter{height:28%}
   .cook .nx-win{bottom:auto;top:19%}
   .cook .nx-clock{bottom:auto;top:21%;left:auto;right:56vw}
-  .cook .nx-fridge{left:-30vw;bottom:36%}
-  .kx-hob{left:-2vw;width:33vw;bottom:calc(36% - 4px)}
-  .kx-board{left:31vw;width:32vw;bottom:calc(36% - 4px)}
-  .k-pal{left:66vw;width:34vw;bottom:calc(36% - 8px)}
+  .cook .nx-fridge{left:-30vw;bottom:28%}
+  .kx-hob{left:-2vw;width:33vw;bottom:calc(28% - 4px)}
+  .kx-board{left:31vw;width:32vw;bottom:calc(28% - 4px)}
+  .k-pal{left:66vw;width:34vw;bottom:calc(28% - 8px)}
   .k-say{font-size:15px}
-  .kx-plate{left:16vw;width:64vw;bottom:9%}
+  .kx-plate{left:65vw;width:33vw;bottom:calc(28% - 6px)}
 }
 @media (min-width:761px) and (max-width:1100px) and (max-aspect-ratio:4/5){   /* portrait tablets: the phone layout, with the vw-sized props capped by height */
   .n-grr{font-size:6.8vh}
@@ -396,7 +403,7 @@ span.pal{cursor:default}
   .kx-hob{left:4vw;width:36vw;bottom:calc(25% - 4px)}
   .kx-board{left:42vw;width:22vw;bottom:calc(25% - 4px)}
   .k-pal{left:68vw;width:24vw;bottom:calc(25% - 8px)}
-  .kx-plate{left:22vw;width:56vw;bottom:5%}
+  .kx-plate{left:69vw;width:23vw;bottom:calc(25% - 6px)}
   .k-say{font-size:19px}
 }
 
@@ -524,7 +531,7 @@ span.pal{cursor:default}
 .foot__pal{position:absolute;width:calc(var(--word) * .66);left:calc(var(--word) * (3.2 - .345));bottom:calc(var(--word) * (1 - .405));transform-origin:50% 100%}
 .bubble--foot{left:calc(var(--word) * 2.1);bottom:calc(var(--word) * 1.2);transform-origin:80% 100%}
 .bubble--foot::after{left:auto;right:16%;transform:skewX(-28deg) rotate(45deg) scale(.7,1)}
-.foot__base{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:14px 24px;font-weight:600;font-size:14px}
+.foot__base{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 24px;padding-block:14px 24px;font-weight:600;font-size:14px}
 .psst{min-height:44px;padding:0 4px;border:0;background:none;color:inherit;font:inherit;font-family:var(--mono);font-weight:600;font-size:14px;text-decoration:underline dotted;text-underline-offset:4px;cursor:pointer}
 
 

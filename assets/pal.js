@@ -326,7 +326,7 @@
         block(x - 30, x + b.w + 30);              // the next piece lands clear of this one (room for its spin)
         return { x: x - b.l, y: top - b.t };
       });
-      // the wipe grows from the centre of the phone's screen; its inner layer is counter-scaled so the dots stay full size
+      // the wipe grows from the centre of the phone's screen; its inner layer is counter-scaled so the doodles stay full size
       const cx = W / 2, cy = H * v('--zoom-t') + zH / 2, Rr = R.wipe.offsetWidth / 2;
       R.wipeEnd = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy)) / Rr + .02; R.wipeR = Rr;
       R.wipe0 = Math.max(.004, (R.pw / 2 - 10) / Rr);   // starts as big as the phone, hidden behind it, so it never reads as a small ring
@@ -428,7 +428,7 @@
       cone: q('.nx-lamp__cone'), fridge: q('.nx-fridge'), door: q('.nx-fridge__door'), light: q('.nx-fridge__light'), spill: q('.nx-fridge__spill'),
       fCarrot: q('.nx-fridge__body .nx-carrot'), flames: q('.kx-flames'), hob: q('.kx-hob'), pan: q('.kx-pan'), pop: q('.kx-pop'),
       steam: q('.kx-pan .kx-steam'), sauce: q('.kx-sauce'), board: q('.kx-board'), carrot: q('.kx-carrot'), knifeDown: q('.kx-knife-down'),
-      ings: qa('.ing'), slices: qa('.slices i'), bits: qa('.bit'), plate: q('.kx-plate'), meal: q('.kx-meal'),
+      ings: qa('.ing'), slices: qa('.slices i'), bits: qa('.bit'), plate: q('.kx-plate'), meal: q('.kx-meal'), dSteam: q('.kx-plate .kx-steam'), sparks: qa('.kx-spark'),
       palWrap: q('.k-pal'), face: q('.k-pal .pal__face'), happy: q('.k-happy'), arm: q('.k-arm'), knife: q('.k-knife'), spoon: q('.k-spoon'),
       shafts: qa('.k-spoon__shaft, .k-spoon__wood'), sBowl: q('.k-spoon__bowl'), says: qa('.k-say')
     };
@@ -438,7 +438,7 @@
     R.flips = [.5, .56];
     R.landings = [...R.flights.filter(f => f[3] === 'pan').map(f => f[2]), ...R.chops.map(c => c + .06)];
     R.all = [...R.caps, R.warm, R.win, R.clock, R.hh, R.mm, R.cone, R.fridge, R.door, R.light, R.spill, R.fCarrot, R.flames, R.pan, R.pop, R.steam,
-      R.carrot, R.knifeDown, ...R.ings, ...R.slices, ...R.bits, R.plate, R.meal, R.palWrap, R.face, R.happy, ...R.says];
+      R.carrot, R.knifeDown, ...R.ings, ...R.slices, ...R.bits, R.plate, R.meal, R.dSteam, ...R.sparks, R.palWrap, R.face, R.happy, ...R.says];
     R.measure = () => {
       R.W = st.offsetWidth; R.H = st.offsetHeight;
       const f = boxIn(R.fridge, st), pan = boxIn(R.pan, st), b = boxIn(R.board, st), pl = boxIn(R.plate, st), k = boxIn(R.palWrap, st), hob = boxIn(R.hob, st);
@@ -449,6 +449,7 @@
       R.boardAt = { x: b.l + b.w * .4, y: b.t + b.h * .45 };
       R.cutAt = x => ({ x: b.l + b.w * (.08 + .62 * x), y: b.t + b.h * .5 });   // the carrot's cut end, x = how much is left
       R.plateAt = { x: pl.l + pl.w * .5, y: pl.t + pl.h * .52 };
+      R.plateOff = R.W - pl.l + 30;                 // the plate slides in along the counter from off the right edge
       // pal walks left until he stands just past the hob; his raised hand holds a spoon long enough to reach the pan
       R.walk = (hob.l + hob.w + 6) - (k.l + k.w * .02);
       const u = k.w / 626, hand = { x: k.l + R.walk + 70 * u, y: k.t + 400 * u };
@@ -456,6 +457,8 @@
       const len = Math.hypot(R.bowl.x - hand.x, R.bowl.y - hand.y) / u - 40;
       R.shafts.forEach(el => el.setAttribute('d', `M40 474H${(-len).toFixed(0)}`));
       R.sBowl.setAttribute('cx', (-len - 30).toFixed(0));
+      // dinner is tossed from the pan over pal's hat onto the plate behind him: the arc clears his hat with room to spare
+      R.arc = Math.max(R.H * .14, ((R.bowl.y + R.plateAt.y) / 2 - (k.t - k.h * .3) + 30) / .8);
       R.stirA = aim(R.bowl); R.serveA = aim({ x: Math.min(R.plateAt.x + pl.w * .3, R.bowl.x), y: pan.t + pan.h * .1 });   // never swing past the pan (on phones the plate is under pal, so that would cross his face)
       R.sz = el => (el.getBoundingClientRect().width || 40);
       R.ingW = R.ings.map(el => svgBox(el, st).w); R.bitW = R.bits.map(el => svgBox(el, st).w); R.sliceW = R.slices[0] ? R.slices[0].offsetWidth : 20;
@@ -529,13 +532,20 @@
         const go = seg(p, .69 + i * .016, .74 + i * .016);
         if (go > 0) {
           const to = { x: R.plateAt.x + (i - 1.5) * .08 * R.panW, y: R.plateAt.y - .1 * R.panH };
-          x = lerp(home.x, to.x, eInOut(go)); y = lerp(home.y, to.y, eInOut(go)) - Math.sin(go * Math.PI) * 14 * vh; rot += go * 260;
+          x = lerp(home.x, to.x, eInOut(go)); y = lerp(home.y, to.y, eInOut(go)) - Math.sin(go * Math.PI) * R.arc; rot += go * 260;
         }
         set(el, `translate3d(${(x - w / 2).toFixed(1)}px,${(y - w / 2).toFixed(1)}px,0) rotate(${rot.toFixed(1)}deg)`, seg(p, .45, .5) * (1 - seg(go, .85, 1)));
       });
-      set(R.plate, `translateY(${((1 - plateIn) * 140).toFixed(1)}%)`, plateIn);
-      const meal = seg(p, .71, .79);
-      set(R.meal, `scale(${Math.max(.05, eBack(meal)).toFixed(4)})`, seg(p, .71, .72));
+      // 5. ta-da: the plate squashes as dinner lands, the pile pops up, sparkles, then it steams
+      const land = Math.sin(seg(p, .76, .8) * Math.PI);
+      set(R.plate, `translateX(${((1 - plateIn) * R.plateOff).toFixed(1)}px) scale(${(1 + .05 * land).toFixed(4)},${(1 - .07 * land).toFixed(4)})`, plateIn);
+      const meal = seg(p, .74, .8);
+      set(R.meal, `scale(${Math.max(.05, eBack(meal)).toFixed(4)})`, seg(p, .735, .745));
+      R.sparks.forEach((el, i) => {
+        const t = seg(p, .79 + i * .012, .84 + i * .012), sp = Math.sin(t * Math.PI);
+        set(el, `scale(${(.3 + sp).toFixed(3)}) rotate(${(t * 90).toFixed(1)}deg)`, sp);
+      });
+      set(R.dSteam, 'none', seg(p, .8, .86));
       // pal: looks at what he is doing, walks, leans into the tosses, and cheers up at the end
       const happy = eOut(seg(p, .8, .85));
       const lookX = p < .43 ? -4.6 : p < .66 ? -5 : -3.5, lookY = p < .43 ? 4.2 : p < .66 ? 2.6 : 5;
