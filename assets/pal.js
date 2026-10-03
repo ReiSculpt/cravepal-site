@@ -326,7 +326,7 @@
         block(x - 30, x + b.w + 30);              // the next piece lands clear of this one (room for its spin)
         return { x: x - b.l, y: top - b.t };
       });
-      // the wipe grows from the centre of the phone's screen; its inner layer is counter-scaled so the doodles stay full size
+      // the wipe grows from the centre of the phone's screen; its inner layer is counter-scaled so the print stays full size
       const cx = W / 2, cy = H * v('--zoom-t') + zH / 2, Rr = R.wipe.offsetWidth / 2;
       R.wipeEnd = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy)) / Rr + .02; R.wipeR = Rr;
       R.wipe0 = Math.max(.004, (R.pw / 2 - 10) / Rr);   // starts as big as the phone, hidden behind it, so it never reads as a small ring
