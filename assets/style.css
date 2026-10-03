@@ -150,6 +150,9 @@ span.pal{cursor:default}
 .pal.is-asleep .pal__dream{opacity:1}
 .pal:focus-visible{outline:3px solid var(--fg);outline-offset:6px;border-radius:40%}
 
+/* Decorative CSS loops pause outside the viewport and while the tab is hidden. */
+.motion-paused,.motion-paused *,.motion-hidden *{animation-play-state:paused!important}
+
 /* ---------- 1. Hero: the stare-down ---------- */
 .hero{position:relative;overflow:clip;padding:clamp(76px,8vw,104px) 0 clamp(18px,2.4vw,30px);min-height:100svh}
 .hero__in{position:relative;display:grid;grid-template-rows:1fr auto;min-height:calc(100svh - clamp(94px,10.4vw,134px));font-size:clamp(68px,15.2vw,250px)}
@@ -162,7 +165,7 @@ span.pal{cursor:default}
 .hero__pal{position:absolute;z-index:2;left:3.42em;bottom:-.02em;width:2em}
 .hero__pal .pal{width:100%}
 .js .hero__pal .pal{animation:pal-land 900ms var(--ease-out) 760ms both}
-@keyframes pal-land{0%{opacity:0;transform:translateY(-120%) scale(.9,1.15)}45%{opacity:1;transform:translateY(0) scale(.92,1.1);animation-timing-function:var(--ease-out)}60%{transform:scale(1.18,.82)}78%{transform:translateY(-4%) scale(.97,1.04)}100%{transform:none}}
+@keyframes pal-land{0%{opacity:0;transform:translateY(-120%) scale(.92,1.1);animation-timing-function:cubic-bezier(.42,0,.9,.62)}48%{opacity:1;transform:translateY(0) scale(.88,1.16);animation-timing-function:var(--ease-out)}58%{transform:scale(1.2,.8);animation-timing-function:var(--ease-out)}76%{transform:translateY(-5%) scale(.95,1.06);animation-timing-function:cubic-bezier(.42,0,.9,.62)}88%{transform:scale(1.04,.96);animation-timing-function:var(--ease-out)}100%{transform:none}}
 .bubble--hero{left:62%;top:-6%;transform-origin:10% 100%}
 .js .bubble--hero{animation:pop-in 340ms var(--ease-out) 2000ms both}
 .hero__foot{position:relative;z-index:3;display:flex;align-items:end;justify-content:space-between;gap:20px 32px;font-size:16px}
@@ -187,8 +190,8 @@ span.pal{cursor:default}
 /* ---------- 2. The story, scene A (chapters 1 to 3): a late-night kitchen, pinned and scrubbed by scroll (JS).
    Without JS it shows one finished frame (the Pause on the phone). With reduced motion JS turns it into still panels. ---------- */
 .night{--night:#140D15;position:relative;background:var(--night);color:var(--cream)}
-.js .night.is-pinned{height:1000vh}
-.js .night.cook.is-pinned{height:690vh}
+.js .night.is-pinned{height:900svh}
+.js .night.cook.is-pinned{height:650svh}
 .night__stage{position:relative;height:100svh;min-height:600px;overflow:hidden;
   background:var(--night) repeating-linear-gradient(90deg,rgba(255,244,224,.022) 0 3px,transparent 3px 72px)}
 .js .night.is-pinned .night__stage{position:sticky;top:0}
@@ -289,7 +292,7 @@ span.pal{cursor:default}
 .nx-flicker{z-index:10;inset:0;background:#000;opacity:0;pointer-events:none}
 /* the hand-off: a Pause-tomato circle with an ink edge bursts out of the phone's screen and becomes the next section.
    JS places it; the inner layer is counter-scaled, so its print stays full size and lines up with the try section's. */
-.n-wipe,.n-wipe__ring{position:absolute;z-index:6;left:0;top:0;width:200vmax;height:200vmax;border-radius:50%;transform:scale(0);opacity:0;pointer-events:none}
+.n-wipe,.n-wipe__ring{position:absolute;z-index:6;left:0;top:0;width:100vmax;height:100vmax;border-radius:50%;transform:scale(0);opacity:0;pointer-events:none}
 .n-wipe{overflow:hidden}
 .n-wipe__ring{background:#0C080D}
 .n-wipe__in{position:absolute;left:0;top:0;background-color:var(--tomato);background-image:var(--print);background-size:380px 272px;background-position:6px calc(100% - 6px)}
@@ -336,7 +339,7 @@ span.pal{cursor:default}
 .kx-spark--2{right:-6%;top:-4%}
 .kx-spark--3{left:60%;top:-34%}
 .kx-meal{transform-box:fill-box;transform-origin:50% 90%}
-.k-pal{position:absolute;z-index:7;left:79vw;bottom:calc(22% - 10px);width:min(15vw,28vh)}
+.k-pal{transform-origin:50% 100%;position:absolute;z-index:7;left:79vw;bottom:calc(22% - 10px);width:min(15vw,28vh)}
 .pal--chef{aspect-ratio:626/600;--lid-t:44.6%;--lid-b:62.7%;cursor:default}
 .k-pal .pal{width:100%}
 .k-pal .pal__face{opacity:0}
@@ -345,7 +348,7 @@ span.pal{cursor:default}
 .k-arm{transform-box:view-box;transform-origin:96px 474px}
 .k-knife{opacity:0}
 .k-rest{transform-box:view-box;transform-origin:556px 492px}
-.k-hat{position:absolute;left:30%;top:-30%;width:44%;height:auto;transform:rotate(-6deg)}
+.k-hat{transform-origin:50% 90%;position:absolute;left:30%;top:-30%;width:44%;height:auto;transform:rotate(-6deg)}
 .k-say{right:68%;bottom:78%;opacity:0;transform-origin:90% 100%}
 .k-say::after{left:auto;right:12%;transform:skewX(-28deg) rotate(45deg) scale(.7,1)}
 .k-say:last-child{opacity:1}

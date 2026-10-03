@@ -2,9 +2,9 @@
    Everything here is decoration on a page that works without it. Reduced motion gets the calm version.
 
    How it stays smooth:
-   - One requestAnimationFrame loop. Each frame reads first (scroll, a few boxes), then computes, then writes.
+   - One requestAnimationFrame loop. Geometry is cached on layout changes; frames compute, then write.
    - Every scroll-linked value eases toward its target (damped lerp, frame-rate independent), so nothing snaps.
-   - Only transform and opacity change per frame. Layers get will-change only while they move.
+   - Motion uses transform and opacity; discrete text and visibility update only when changed. Layers get will-change only while they move.
    - The loop sleeps when nothing is moving. Images are decoded in idle time, not mid-scroll. */
 (() => {
   'use strict';
@@ -19,7 +19,11 @@
   const eIn = t => t * t;
   const eInOut = t => (t < .5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
   const eBack = t => 1 + 2.70158 * (t - 1) ** 3 + 1.70158 * (t - 1) ** 2;
-  const eExpo = t => (t >= 1 ? 1 : 1 - 2 ** (-10 * t));
+  // Finite, seekable spring: exact endpoints, with a soft overshoot and settle.
+  const springEnd = 1 - Math.exp(-7) * (Math.cos(11) + 7 / 11 * Math.sin(11));
+  const eSpring = t => t === 0 || t === 1 ? t
+    : (1 - Math.exp(-7 * t) * (Math.cos(11 * t) + 7 / 11 * Math.sin(11 * t))) / springEnd;
+  const recoil = t => Math.sin(t * Math.PI * 4) * Math.exp(-5 * t) * (1 - t);
   const rand = (a, b) => a + Math.random() * (b - a);
   const $ = (s, r = d) => r.querySelector(s);
   const $$ = (s, r = d) => [...r.querySelectorAll(s)];
@@ -28,7 +32,9 @@
 
   /* ---------- layers that are moving right now get will-change; it is dropped when the loop sleeps ---------- */
   const hot = new Set();
-  const heat = els => { for (const el of els) if (el && !hot.has(el)) { el.style.willChange = 'transform, opacity'; hot.add(el); } };
+  let geometryDirty = true;
+  const invalidate = () => { geometryDirty = true; kick(); };
+  const heat = els => { if (reduce) return; for (const el of els) if (el && !hot.has(el)) { el.style.willChange = 'transform, opacity'; hot.add(el); } };
   const cool = () => { for (const el of hot) el.style.willChange = ''; hot.clear(); };
 
   /* ---------- geometry, measured on load and resize, never per frame ---------- */
@@ -40,75 +46,107 @@
   const ptr = { x: innerWidth / 2, y: innerHeight / 3, mouse: false, tapAt: 0 };
   let lastActive = performance.now();
   const poke = () => { lastActive = performance.now(); if (asleep) wakeUp(); kick(); };
-  addEventListener('pointermove', e => { ptr.x = e.clientX; ptr.y = e.clientY; ptr.mouse = e.pointerType === 'mouse'; poke(); }, { passive: true });
+  addEventListener('pointermove', e => {
+    ptr.x = e.clientX; ptr.y = e.clientY; ptr.mouse = e.pointerType === 'mouse';
+    lastActive = performance.now();
+    if (asleep) wakeUp();
+    if (!reduce && (rigs.some(r => visible(r.el)) || jellies.some(j => visible(j.el)))) kick();
+  }, { passive: true });
   addEventListener('pointerdown', e => { ptr.x = e.clientX; ptr.y = e.clientY; ptr.tapAt = performance.now(); poke(); }, { passive: true });
 
   const seen = new WeakMap();
-  const io = new IntersectionObserver(es => { es.forEach(e => seen.set(e.target, e.isIntersecting)); kick(); }, { rootMargin: '160px 0px' });
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => {
+      seen.set(e.target, e.isIntersecting);
+      e.target.classList.toggle('motion-paused', !e.isIntersecting);
+      if (!e.isIntersecting) {
+        for (const el of hot) if (e.target === el || e.target.contains(el)) { el.style.willChange = ''; hot.delete(el); }
+      }
+    });
+    kick();
+  }, { rootMargin: '160px 0px' });
   const watch = el => { if (el) { seen.set(el, false); io.observe(el); } return el; };
   const visible = el => !!seen.get(el);
+  watch(hero);
 
-  /* ---------- smooth scrolling: wheel and trackpad glide, touch and keyboard stay native ---------- */
+  /* ---------- scroll ownership: native pixel input, a short glide for line/page wheels ---------- */
   const S = { on: !reduce, y: scrollY, target: scrollY, written: scrollY, moving: false, tween: null, focus: null };
-  const canScrollInside = (el, dy) => {
+  const cancelScroll = () => {
+    S.moving = false; S.tween = null; S.focus = null;
+    S.y = S.target = S.written = scrollY;
+  };
+  const nativeWheelTarget = el => {
+    if (el.closest?.('input, textarea, select, [contenteditable]:not([contenteditable="false"])')) return true;
     for (; el && el !== d.body && el !== root; el = el.parentElement) {
       const o = getComputedStyle(el).overflowY;
-      if ((o === 'auto' || o === 'scroll') && el.scrollHeight > el.clientHeight + 1 &&
-          (dy > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0)) return true;
+      // Let the browser also own chaining and overscroll-behavior at a nested scroller's edges.
+      if ((o === 'auto' || o === 'scroll') && el.scrollHeight > el.clientHeight + 1) return true;
     }
     return false;
   };
   if (S.on) {
-    // Not passive: taking over the wheel needs preventDefault. Every other listener is passive.
+    // Pixel deltas cannot reliably identify a trackpad versus a high-resolution mouse.
+    // Preserve their native inertia rather than guessing from delta size or event frequency.
+    // Non-passive only here: line/page wheels actually need preventDefault.
     addEventListener('wheel', e => {
-      if (e.ctrlKey || e.defaultPrevented || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;   // pinch zoom and sideways stay native
-      let dy = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? G.vh : 1);
-      if (canScrollInside(e.target, dy)) return;
+      if (e.deltaMode === 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey ||
+          e.defaultPrevented || !e.cancelable || !e.deltaY || Math.abs(e.deltaX) > Math.abs(e.deltaY) ||
+          geometryDirty || nativeWheelTarget(e.target)) { cancelScroll(); return; }
+      const dy = e.deltaY * (e.deltaMode === 1 ? 16 : G.vh);
+      const sy = scrollY;
+      if ((dy < 0 && sy <= 0) || (dy > 0 && sy >= G.max - 1)) { cancelScroll(); return; }
       e.preventDefault();
-      if (!S.moving) S.y = S.target = scrollY;
-      S.tween = null;
+      if (!S.moving || S.tween || Math.abs(sy - S.written) > 1.5 ||
+          Math.sign(dy) !== Math.sign(S.target - S.y)) S.y = S.target = sy;
+      S.written = sy; S.tween = null; S.focus = null;
       S.target = clamp(S.target + dy, 0, G.max);
       S.moving = true; poke();
     }, { passive: false });
-    // Keys scroll natively; they simply cancel a glide in progress
     addEventListener('keydown', e => {
-      if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key)) { S.moving = false; S.tween = null; }
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Tab', 'Escape'].includes(e.key)) cancelScroll();
     }, { passive: true });
-    // Same-page links glide (but the Pause demo's own fragments must change the hash as normal)
+    addEventListener('pointerdown', cancelScroll, { passive: true, capture: true });
+    addEventListener('touchstart', cancelScroll, { passive: true, capture: true });
+    addEventListener('focusin', cancelScroll, { passive: true });
+    addEventListener('resize', cancelScroll, { passive: true });
+    addEventListener('hashchange', cancelScroll, { passive: true });
+    addEventListener('popstate', cancelScroll, { passive: true });
+    // Same-page links glide; the demo's state fragments retain their native hash/focus behavior.
     d.addEventListener('click', e => {
-      const a = e.target.closest && e.target.closest('a[href^="#"]');
-      if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      const id = decodeURIComponent(a.getAttribute('href').slice(1));
+      const a = e.target.closest?.('a[href^="#"]');
+      if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey ||
+          a.hasAttribute('download') || (a.target && a.target !== '_self') || geometryDirty) return;
+      let id;
+      try { id = decodeURIComponent(a.getAttribute('href').slice(1)); } catch { return; }
       const el = id && d.getElementById(id);
-      if (!el || el.classList.contains('tgt')) return;
-      e.preventDefault();
+      if (!el || el.classList.contains('tgt')) { cancelScroll(); return; }
       const to = clamp(el.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(el).scrollMarginTop) || 0), 0, G.max);
-      S.y = scrollY;
-      S.tween = { from: S.y, to, t0: performance.now(), dur: clamp(Math.abs(to - S.y) * .35, 700, 1600) };
+      e.preventDefault();
+      S.y = S.written = scrollY;
+      S.tween = { from: S.y, to, t0: performance.now(), dur: clamp(Math.abs(to - S.y) * .22, 360, 1100) };
       S.target = to; S.moving = true; S.focus = el;
-      history.pushState(null, '', '#' + id);
+      if (location.hash !== a.hash) history.pushState(null, '', a.hash);
       poke();
     });
   }
   addEventListener('scroll', () => {
-    if (S.moving && Math.abs(scrollY - S.written) > 4) { S.moving = false; S.tween = null; }   // a scrollbar, a key or find-in-page took over
+    if (S.moving && Math.abs(scrollY - S.written) > 1.5) cancelScroll();
     if (!S.moving) S.y = S.target = scrollY;
     poke();
   }, { passive: true });
-  function stepScroll(now, dt) {
-    if (!S.moving) return scrollY;
+  function stepScroll(now, dt, sy) {
+    // Check before writing too: native input may arrive before its scroll event is dispatched.
+    if (S.moving && Math.abs(sy - S.written) > 1.5) cancelScroll();
+    if (!S.moving) return sy;
     if (S.tween) {
       const t = clamp((now - S.tween.t0) / S.tween.dur, 0, 1);
-      S.y = lerp(S.tween.from, S.tween.to, eExpo(t));
-      if (t >= 1) {
-        S.tween = null; S.moving = false;
-        if (S.focus) { if (!S.focus.hasAttribute('tabindex')) S.focus.setAttribute('tabindex', '-1'); S.focus.focus({ preventScroll: true }); S.focus = null; }
-      }
+      S.y = lerp(S.tween.from, S.tween.to, eInOut(t));
+      if (t >= 1) { S.tween = null; S.moving = false; }
     } else {
-      S.y = damp(S.y, S.target, 7, dt);
-      if (Math.abs(S.target - S.y) < .5) { S.y = S.target; S.moving = false; }
+      S.y = damp(S.y, S.target, 16, dt);
+      if (Math.abs(S.target - S.y) < .25) { S.y = S.target; S.moving = false; }
     }
-    return S.y;
+    return clamp(S.y, 0, G.max);
   }
 
   /* ---------- pal's lines ---------- */
@@ -120,22 +158,26 @@
     if (!bubble) return;
     bubble.hidden = false;
     bubble.textContent = text;
-    bubble.classList.remove('is-pop'); void bubble.offsetWidth; bubble.classList.add('is-pop');
+    bubble._pop?.cancel();
+    bubble._pop = bubble.animate(reduce ? [{ opacity: 0 }, { opacity: 1 }] : [
+      { opacity: 0, transform: 'scale(.6) rotate(-6deg)' },
+      { opacity: 1, transform: 'scale(1.06) rotate(2deg)', offset: .6 },
+      { opacity: 1, transform: 'none' }
+    ], { duration: reduce ? 200 : 340, easing: 'cubic-bezier(.23,1,.32,1)' });
     clearTimeout(bubble._t);
     bubble._t = setTimeout(() => { if (!bubble.matches('.bubble--hero')) bubble.hidden = true; }, 2600);
   };
 
   /* ---------- rigged pals: the face turns toward the cursor, the body leans ---------- */
   const rigs = $$('[data-rig]').map(el => (watch(el), { el, face: $('.pal__face', el), rig: $('.pal__rig', el), fx: 0, fy: 0, lean: 0, wx: 0, wy: 0, wt: 0, box: null }));
-  function rigsRead() { for (const r of rigs) r.box = visible(r.el) ? r.el.getBoundingClientRect() : null; }
-  function rigsWrite(now, dt) {
+  function rigsWrite(now, dt, y) {
     let moving = false;
     for (const r of rigs) {
-      if (!r.box) continue;
-      const b = r.box, cx = b.left + b.width / 2, cy = b.top + b.height * .45;
+      if (!r.box || !visible(r.el) || (r.el === heroPal && asleep)) continue;
+      const b = r.box, cx = b.l + b.w / 2, cy = b.t - y + b.h * .45;
       let tx, ty, lean;
       if (ptr.mouse || now - ptr.tapAt < 1800) {
-        const dx = ptr.x - cx, dy = ptr.y - cy, dist = Math.hypot(dx, dy) || 1, k = Math.min(1, dist / (b.width * 1.2));
+        const dx = ptr.x - cx, dy = ptr.y - cy, dist = Math.hypot(dx, dy) || 1, k = Math.min(1, dist / (b.w * 1.2));
         tx = dx / dist * k * 4.6; ty = dy / dist * k * 3.6; lean = clamp(dx / G.vw * 16, -7, 7);
       } else {                                    // touch: he looks around on his own
         if (now > r.wt) { r.wx = rand(-4, 4); r.wy = rand(-3, 2.5); r.wt = now + rand(2400, 4800); }
@@ -167,15 +209,14 @@
   const jellies = $$('[data-jelly]').map(el => {
     watch(el);
     const chs = $$('.ch', el).map(c => ({ c, ox: 0, oy: 0, tx: 0, ty: 0, r: 0, s: 1, sx: rand(-1, 1), sy: rand(-1.4, -.5), sr: rand(-70, 70) }));
-    return { el, chs, scatter: el.hasAttribute('data-scatter'), fs: 100, box: null, sp: 0 };
+    return { el, chs, layers: chs.map(k => k.c), scatter: el.hasAttribute('data-scatter'), fs: 100, box: null, sp: 0 };
   });
-  function jellyRead() { for (const j of jellies) j.box = visible(j.el) ? j.el.getBoundingClientRect() : null; }
-  function jellyWrite(y, dy, dt) {
+  function jellyWrite(y, dt) {
     let moving = false;
     const hpT = hero ? clamp(y / (G.heroH * .85), 0, 1) : 0;
     for (const j of jellies) {
-      if (!j.box) continue;
-      const R = j.fs * 1.15, top = j.box.top - (j.scatter ? dy : 0), left = j.box.left;   // boxes were read before this frame's scroll
+      if (!j.box || !visible(j.el)) continue;
+      const R = j.fs * 1.15, top = j.box.t - y, left = j.box.l;
       if (j.scatter) j.sp = damp(j.sp, hpT, 10, dt);
       const s = eIn(j.sp);
       let any = false;
@@ -193,7 +234,7 @@
         st.translate = `${k.tx.toFixed(1)}px ${k.ty.toFixed(1)}px`; st.rotate = `${k.r.toFixed(2)}deg`; st.scale = k.s.toFixed(3);
       }
       if (j.scatter && Math.abs(j.sp - hpT) > .0005) any = true;
-      if (any) { moving = true; heat(j.chs.map(k => k.c)); }
+      if (any) { moving = true; heat(j.layers); }
     }
     return moving;
   }
@@ -213,14 +254,14 @@
   const spinners = [...$$('.marquee__track'), ...$$('[data-spin]')].flatMap(el => el.getAnimations ? el.getAnimations() : []);
   function speedWrite(y, dt) {
     const step = (y - prevY) / Math.max(dt * 60, .25); prevY = y;             // pixels per 60th of a second
+    if (reduce) { vel = 0; return false; }
     vel = damp(vel, step, 10, dt);
-    if (reduce) return Math.abs(vel) > .02;
     const rT = 1 + Math.min(5, Math.abs(vel) * .1);
     rate = damp(rate, rT, 4, dt);
     if (spinners.length && Math.abs(spinners[0].playbackRate - rate) > .02) spinners.forEach(a => a.updatePlaybackRate && a.updatePlaybackRate(rate));
-    if (marquee && visible(marquee)) {
-      const sT = clamp(-vel * .35, -14, 14);
-      skew = damp(skew, sT, 8, dt);
+    const sT = marquee && visible(marquee) ? clamp(-vel * .35, -14, 14) : 0;
+    skew = damp(skew, sT, 8, dt); // settle even offscreen, otherwise the loop never sleeps
+    if (marquee && (visible(marquee) || Math.abs(skew) > .01)) {
       if (Math.abs(skew) > .01 || Math.abs(sT) > .01) heat(rows);
       rows.forEach((r, i) => { r.style.transform = `skewX(${(i ? -skew : skew).toFixed(2)}deg)`; });
     }
@@ -234,9 +275,23 @@
   const boxIn = (el, root) => { let l = 0, t = 0; for (let e = el; e && e !== root; e = e.offsetParent) { l += e.offsetLeft; t += e.offsetTop; } return { l, t, w: el.offsetWidth, h: el.offsetHeight }; };
   const svgBox = (el, root) => { const cs = getComputedStyle(el), b = boxIn(el.parentElement, root); return { l: b.l + (parseFloat(cs.left) || 0), t: b.t + (parseFloat(cs.top) || 0), w: parseFloat(cs.width) || 0, h: parseFloat(cs.height) || parseFloat(cs.width) || 0 }; };
   // Fully transparent pieces are hidden too: a near-zero scale on a shadowed element stalls rendering
-  const set = (el, tf, op = 1) => { if (!el) return; el.style.transform = tf; el.style.opacity = op; el.style.visibility = op > .002 ? '' : 'hidden'; };
-  const capsAt = (caps, p) => caps.forEach(c => {
-    const a = +c.dataset.in, b = +c.dataset.out, o = seg(p, a, a + .008) * (1 - seg(p, b - .008, b));
+  const rendered = new WeakMap();
+  const set = (el, tf, op = 1) => {
+    if (!el) return;
+    op = clamp(op, 0, 1);
+    const prev = rendered.get(el), shown = op > .002;
+    if (prev && prev.tf === tf && prev.op === op) return;
+    if (shown) {
+      heat([el]);
+      if (!prev || prev.tf !== tf || !prev.shown) el.style.transform = tf;
+    }
+    if (!prev || prev.op !== op) el.style.opacity = op;
+    if (!prev || prev.shown !== shown) el.style.visibility = shown ? '' : 'hidden';
+    rendered.set(el, { tf, op, shown });
+  };
+  const cue = el => ({ el, a: +el.dataset.in, b: +el.dataset.out });
+  const capsAt = (caps, p) => caps.forEach(({ el: c, a, b }) => {
+    const o = seg(p, a, a + .008) * (1 - seg(p, b - .008, b));
     set(c, `translateY(${((1 - eOut(seg(p, a, a + .015))) * 16).toFixed(1)}px) rotate(-2deg)`, o);
   });
   function addScene(section, build) {
@@ -263,15 +318,17 @@
   function scenesWrite(y, dt) {
     let moving = false;
     for (const sc of scenes) {
-      if (!visible(sc.section)) continue;
-      const total = sc.h - G.vh;
+      const total = sc.h - sc.stageH;
       if (total <= 0) continue;                    // not pinned (layout failed): the CSS frame stands
       const pT = clamp((y - sc.top) / total, 0, 1);
-      sc.p = damp(sc.p, pT, 9, dt);
+      // Already-smoothed wheel/anchor motion needs no second layer of lag.
+      sc.p = sc.last < 0 || !visible(sc.section) || S.moving ? pT : damp(sc.p, pT, 26, dt);
       if (Math.abs(sc.p - pT) < .0003) sc.p = pT; else moving = true;
-      if (Math.abs(sc.p - sc.last) < .00004) continue;
-      heat(sc.R.all);
-      sc.R.render(sc.p * sc.span, sc.last * sc.span);
+      if (sc.p === sc.last || (sc.p !== pT && Math.abs(sc.p - sc.last) < .00004)) continue;
+      sc.R.render(sc.p * sc.span);
+      if (!visible(sc.section)) for (const el of sc.R.all) {
+        if (hot.delete(el)) el.style.willChange = '';
+      }
       sc.last = sc.p;
     }
     return moving;
@@ -281,7 +338,7 @@
   function buildA(st) {
     const q = s => $(s, st), qa = s => $$(s, st);
     const R = {
-      st, head: q('.n-head'), n1: q('.n-1'), n2: q('.n-2'), grr: q('.n-grr'), caps: qa('.n-caps .cap'), cap: q('.n-cap'),
+      st, head: q('.n-head'), n1: q('.n-1'), n2: q('.n-2'), grr: q('.n-grr'), caps: qa('.n-caps .cap').map(cue), cap: q('.n-cap'),
       win: q('.nx-win'), scooter: q('.nx-scooter'), clock: q('.nx-clock'), hh: q('.nx-clock__h'), mm: q('.nx-clock__m'),
       lamp: q('.nx-lamp'), cone: q('.nx-lamp__cone'), fridge: q('.nx-fridge'), door: q('.nx-fridge__door'), light: q('.nx-fridge__light'), spill: q('.nx-fridge__spill'),
       glow: q('.nx-glow:not(.nx-glow--pause)'), glowP: q('.nx-glow--pause'), dim: q('.nx-dim'), phone: q('.n-phone'),
@@ -292,8 +349,8 @@
       dirs: [[-1, -.8, -1], [-.6, -1.2, 1], [1, -.6, 1], [1.1, -1, -1], [1, .3, 1]], shown: { n: -1, v: -1 }
     };
     R.pal.style.transformOrigin = '50% 100%';
-    R.all = [R.head, R.n1, R.n2, R.grr, R.cap, ...R.caps, R.win, R.scooter, R.clock, R.hh, R.mm, R.lamp, R.cone, R.fridge, R.door, R.light, R.spill,
-      R.glow, R.glowP, R.dim, R.phone, R.list, R.pause, R.btn, R.hand, R.pal, R.bub, R.stk, R.wipe, R.wipeIn, R.ring, ...R.dust, ...R.foods, ...R.items.map(i => i.el)];
+    R.all = [R.head, R.n1, R.n2, R.grr, R.cap, ...R.caps.map(c => c.el), R.win, R.scooter, R.clock, R.hh, R.mm, R.lamp, R.cone, R.fridge, R.door, R.light, R.spill,
+      R.glow, R.glowP, R.dim, R.flick, R.phone, R.list, R.pause, R.btn, R.hand, R.pal, R.bub, R.stk, R.wipe, R.wipeIn, R.ring, ...R.dust, ...R.foods, ...R.items.map(i => i.el)];
     R.measure = () => {
       const W = st.offsetWidth, H = st.offsetHeight, cs = getComputedStyle(R.phone), v = k => parseFloat(cs.getPropertyValue(k));
       const zH = H * v('--zoom-h'), rH = H * v('--room-h');
@@ -330,10 +387,12 @@
       const cx = W / 2, cy = H * v('--zoom-t') + zH / 2, Rr = R.wipe.offsetWidth / 2;
       R.wipeEnd = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy)) / Rr + .02; R.wipeR = Rr;
       R.wipe0 = Math.max(.004, (R.pw / 2 - 10) / Rr);   // starts as big as the phone, hidden behind it, so it never reads as a small ring
-      for (const el of [R.wipe, R.ring]) { el.style.left = (cx - Rr) + 'px'; el.style.top = (cy - Rr) + 'px'; }
-      Object.assign(R.wipeIn.style, { left: (Rr - cx - 6) + 'px', top: (Rr - cy - 6) + 'px', width: (W + 12) + 'px', height: (H + 12) + 'px', transformOrigin: `${cx + 6}px ${cy + 6}px` }); // 6px bleed so the stage edge never shows through
+      R.applyGeometry = () => {
+        for (const el of [R.wipe, R.ring]) { el.style.left = (cx - Rr) + 'px'; el.style.top = (cy - Rr) + 'px'; }
+        Object.assign(R.wipeIn.style, { left: (Rr - cx - 6) + 'px', top: (Rr - cy - 6) + 'px', width: (W + 12) + 'px', height: (H + 12) + 'px', transformOrigin: `${cx + 6}px ${cy + 6}px` }); // 6px bleed so the stage edge never shows through
+      };
     };
-    R.render = (p, last = -1) => {
+    R.render = p => {
       const vw = R.W / 100, vh = R.H / 100, pw = R.pw;
       // chapter 1: it's 9pm, the fridge is boring, the stomach rumbles, cravings float in
       set(R.head, 'none', 1 - seg(p, .2, .24));
@@ -347,11 +406,12 @@
       const g = seg(p, .11, .21), gs = Math.sin(g * Math.PI);
       const rattle = (k, a) => (Math.sin(p * k) * a * gs).toFixed(2);
       const par = k => ((p - .3) * k).toFixed(2);
-      set(R.win, `translate(${rattle(3100, 2)}px,${par(-30)}px)`);
-      set(R.clock, `translate(${rattle(2900, 3)}px,${par(-20)}px) rotate(${(rattle(3300, 4) * 1 + Math.sin(seg(p, .56, .66) * Math.PI * 5) * (1 - seg(p, .56, .66)) * 10).toFixed(2)}deg)`);
-      set(R.lamp, `translate(0,${par(-14)}px) rotate(${rattle(2600, 2)}deg)`, 1 - eInOut(seg(p, .22, .27)));
-      set(R.fridge, `translate(${rattle(3500, 3)}px,${par(-6)}px)`);
-      set(R.grr, `translate(${rattle(2400, 9)}px,${rattle(2700, 6)}px) rotate(${rattle(2000, 5)}deg) scale(${lerp(.6, 1.12, eOut(g)).toFixed(3)})`, gs);
+      const shock = recoil(seg(p, .56, .625));
+      set(R.win, `translate(${(Number(rattle(210, 2)) + shock * 4).toFixed(2)}px,${par(-30)}px)`);
+      set(R.clock, `translate(${(Number(rattle(190, 3)) + shock * 3).toFixed(2)}px,${par(-20)}px) rotate(${(Number(rattle(230, 4)) + recoil(seg(p, .565, .67)) * 12).toFixed(2)}deg)`);
+      set(R.lamp, `translate(0,${par(-14)}px) rotate(${(Number(rattle(180, 2)) + recoil(seg(p, .564, .69)) * 7).toFixed(2)}deg)`, 1 - eInOut(seg(p, .22, .27)));
+      set(R.fridge, `translate(${(Number(rattle(240, 3)) + shock * 2).toFixed(2)}px,${par(-6)}px)`);
+      set(R.grr, `translate(${rattle(170, 6)}px,${rattle(200, 4)}px) rotate(${rattle(140, 4)}deg) scale(${lerp(.6, 1.12, eOut(g)).toFixed(3)})`, gs);
       const open = eOut(seg(p, .06, .13)) * (1 - eInOut(seg(p, .17, .21)));
       set(R.door, `perspective(1200px) rotateY(${(-72 * open).toFixed(2)}deg)`);
       set(R.light, 'none', open); set(R.spill, 'none', open);
@@ -379,18 +439,23 @@
       const v = Math.round(tot);
       if (R.shown.n !== n) { R.count.textContent = n; R.shown.n = n; }
       if (R.shown.v !== v) { R.total.textContent = '£' + v; R.shown.v = v; }
-      const tH = eInOut(seg(p, .45, .5)), tF = eOut(seg(p, .56, .62)), tap = Math.sin(seg(p, .5, .54) * Math.PI);
-      set(R.hand, `translate(${(lerp(.9 * pw, 0, tH) + tF * .8 * pw).toFixed(1)}px,${(lerp(.9 * pw, 0, tH) - tF * 1.4 * pw).toFixed(1)}px) rotate(${(lerp(-20, 0, tH) + tF * 120).toFixed(1)}deg) scale(${(1 - tap * .12).toFixed(3)})`, seg(p, .45, .47) * (1 - tF));
+      const tH = eOut(seg(p, .448, .504)), tF = eOut(seg(p, .565, .625)), tap = Math.sin(seg(p, .508, .552) * Math.PI);
+      const hesitate = Math.sin(seg(p, .49, .512) * Math.PI) * .055 * pw;
+      set(R.hand, `translate(${(lerp(.9 * pw, 0, tH) + tF * .8 * pw).toFixed(1)}px,${(lerp(.9 * pw, 0, tH) - hesitate - tF * 1.4 * pw).toFixed(1)}px) rotate(${(lerp(-20, 0, tH) + tF * 120).toFixed(1)}deg) scale(${(1 - tap * .12).toFixed(3)})`, seg(p, .45, .47) * (1 - tF));
       // chapter 3: pal drops in, squashes the button, the Pause takes over
-      const tS = eOut(seg(p, .56, .6));
-      const pulse = 1 + .05 * Math.sin(seg(p, .47, .56) * Math.PI * 4);
-      set(R.btn, `scale(${(pulse * lerp(1, 1.06, tS)).toFixed(4)},${(pulse * lerp(1, .78, tS)).toFixed(4)})`);
-      const fall = seg(p, .5, .56), imp = seg(p, .56, .64);
-      const py = p < .56 ? lerp(-1.4 * R.H, 0, eIn(fall)) : 0;
-      const sx = p < .56 ? lerp(1, .9, fall) : lerp(1.24, 1, eOut(imp)), sy = p < .56 ? lerp(1, 1.15, fall) : lerp(.78, 1, eOut(imp));
-      const settle = eOut(seg(p, .58, .62));
+      const contact = eOut(seg(p, .56, .568)), rebound = seg(p, .568, .635);
+      const settleSpring = eSpring(rebound), tS = eOut(seg(p, .56, .585));
+      const pulse = 1 + .035 * Math.sin(seg(p, .47, .56) * Math.PI * 4);
+      const buttonX = lerp(1, 1.12, contact) - .06 * settleSpring;
+      const buttonY = lerp(1, .64, contact) + .14 * settleSpring;
+      set(R.btn, `scale(${(pulse * buttonX).toFixed(4)},${(pulse * buttonY).toFixed(4)})`);
+      const fall = seg(p, .5, .56);
+      const py = p < .56 ? lerp(-1.4 * R.H, 0, eIn(fall)) : -Math.sin(rebound * Math.PI) * Math.exp(-3 * rebound) * .09 * pw;
+      const sx = p < .56 ? lerp(1, .88, fall) : lerp(.88, 1.25, contact) - .25 * settleSpring;
+      const sy = p < .56 ? lerp(1, 1.16, fall) : lerp(1.16, .76, contact) + .24 * settleSpring;
+      const settle = eInOut(seg(p, .583, .639));
       set(R.pal, `translateY(${(py + lerp(.048 * pw * tS, .26 * pw, settle)).toFixed(1)}px) scale(${sx.toFixed(4)},${sy.toFixed(4)})`, p < .5 ? 0 : 1);
-      const u = seg(p, .56, .66);
+      const u = seg(p, .563, .663);
       R.dust.forEach((el, i) => {                   // puffs burst out from under the button's edges
         const dir = i % 2 ? 1 : -1, k = (i >> 1) + 1;
         set(el, `translate(${(dir * (R.bw * .5 + k * .07 * pw * eOut(u))).toFixed(1)}px,${(-k * .035 * pw * eOut(u)).toFixed(1)}px) scale(${lerp(.4, 1.2, u).toFixed(3)})`, u > 0 && u < 1 ? 1 - u : 0);
@@ -399,8 +464,8 @@
       t = seg(p, .69, .72); set(R.stk, `rotate(7deg) scale(${lerp(1.8, 1, eOut(t)).toFixed(4)})`, t);
       t = eOut(seg(p, .66, .72)); set(R.cap, `translateY(${lerp(30, 0, t).toFixed(1)}px)`, t * (1 - seg(p, .8, .84)));
       // the food: floats in with the craving, thrown onto the counter when pal lands
-      const blast = seg(p, .56, .72);
       R.foods.forEach((f, i) => {
+        const blast = seg(p, .564 + i * .003, .72 + i * .006);
         const a = eOut(seg(p, .1 + i * .025, .22 + i * .025)), [dx, , dr] = R.dirs[i], L = R.land[i];
         const bob = Math.sin(p * 40 + i * 1.7) * 9 * (1 - blast), arc = Math.sin(blast * Math.PI) * 18 * vh;
         set(f, `translate3d(${(L.x * eOut(blast)).toFixed(1)}px,${(lerp(6 * vh, 0, a) + bob + L.y * eIn(blast) - arc).toFixed(1)}px,0) rotate(calc(var(--tilt, 0deg) + ${(lerp(dx * 40, 0, a) + dr * eOut(blast) * (200 + i * 40)).toFixed(1)}deg)) scale(${lerp(.6, 1, a).toFixed(3)})`, Math.min(a * 2, 1));
@@ -410,10 +475,9 @@
       set(R.wipe, `scale(${sc.toFixed(5)})`, on);
       R.wipeIn.style.transform = `scale(${(1 / sc).toFixed(4)})`;
       set(R.ring, `scale(${(sc + 7 / R.wipeR).toFixed(5)})`, on);   // a constant 7px ink edge
-      if (last >= 0 && last < .56 && p >= .56) {     // the landing, live only: the room shakes and the lights flicker
-        R.st.animate([{ transform: 'none' }, { transform: 'translate(-10px,8px)' }, { transform: 'translate(9px,-7px)' }, { transform: 'translate(-6px,4px)' }, { transform: 'translate(3px,-2px)' }, { transform: 'none' }], { duration: 420 });
-        R.flick.animate([{ opacity: 0 }, { opacity: .75 }, { opacity: .05 }, { opacity: .55 }, { opacity: 0 }, { opacity: .35 }, { opacity: 0 }], { duration: 560 });
-      }
+      // Contact drives the room in either direction; no competing wall-clock animation.
+      set(R.flick, 'none', Math.abs(recoil(seg(p, .562, .622))) * .48);
+
     };
     return R;
   }
@@ -424,21 +488,21 @@
   function buildB(st) {
     const q = s => $(s, st), qa = s => $$(s, st);
     const R = {
-      st, caps: qa('.k-caps .cap'), warm: q('.kx-warm'), win: q('.nx-win'), clock: q('.nx-clock'), hh: q('.nx-clock__h'), mm: q('.nx-clock__m'),
+      st, caps: qa('.k-caps .cap').map(cue), warm: q('.kx-warm'), win: q('.nx-win'), clock: q('.nx-clock'), hh: q('.nx-clock__h'), mm: q('.nx-clock__m'),
       cone: q('.nx-lamp__cone'), fridge: q('.nx-fridge'), door: q('.nx-fridge__door'), light: q('.nx-fridge__light'), spill: q('.nx-fridge__spill'),
       fCarrot: q('.nx-fridge__body .nx-carrot'), flames: q('.kx-flames'), hob: q('.kx-hob'), pan: q('.kx-pan'), pop: q('.kx-pop'),
       steam: q('.kx-pan .kx-steam'), sauce: q('.kx-sauce'), board: q('.kx-board'), carrot: q('.kx-carrot'), knifeDown: q('.kx-knife-down'),
       ings: qa('.ing'), slices: qa('.slices i'), bits: qa('.bit'), plate: q('.kx-plate'), meal: q('.kx-meal'), dSteam: q('.kx-plate .kx-steam'), sparks: qa('.kx-spark'),
-      palWrap: q('.k-pal'), face: q('.k-pal .pal__face'), happy: q('.k-happy'), arm: q('.k-arm'), knife: q('.k-knife'), spoon: q('.k-spoon'),
-      shafts: qa('.k-spoon__shaft, .k-spoon__wood'), sBowl: q('.k-spoon__bowl'), says: qa('.k-say')
+      palWrap: q('.k-pal'), hat: q('.k-hat'), rest: q('.k-rest'), face: q('.k-pal .pal__face'), happy: q('.k-happy'), arm: q('.k-arm'), knife: q('.k-knife'), spoon: q('.k-spoon'),
+      shafts: qa('.k-spoon__shaft, .k-spoon__wood'), sBowl: q('.k-spoon__bowl'), says: qa('.k-say').map(cue)
     };
     // ingredient flights from the fridge: [which, start, end, to] (to: pan or board)
     R.flights = [[0, .08, .16, 'pan'], [2, .11, .18, 'board'], [1, .14, .22, 'pan'], [3, .32, .38, 'pan'], [4, .36, .42, 'pan']];
     R.chops = [.2, .237, .274, .311, .348];                // each cut throws one slice into the pan
     R.flips = [.5, .56];
     R.landings = [...R.flights.filter(f => f[3] === 'pan').map(f => f[2]), ...R.chops.map(c => c + .06)];
-    R.all = [...R.caps, R.warm, R.win, R.clock, R.hh, R.mm, R.cone, R.fridge, R.door, R.light, R.spill, R.fCarrot, R.flames, R.pan, R.pop, R.steam,
-      R.carrot, R.knifeDown, ...R.ings, ...R.slices, ...R.bits, R.plate, R.meal, R.dSteam, ...R.sparks, R.palWrap, R.face, R.happy, ...R.says];
+    R.all = [...R.caps.map(c => c.el), R.warm, R.win, R.clock, R.hh, R.mm, R.cone, R.fridge, R.door, R.light, R.spill, R.fCarrot, R.flames, R.pan, R.pop, R.steam,
+      R.carrot, R.knifeDown, ...R.ings, ...R.slices, ...R.bits, R.plate, R.meal, R.dSteam, ...R.sparks, R.palWrap, R.hat, R.rest, R.arm, R.knife, R.spoon, R.face, R.happy, ...R.says.map(c => c.el)];
     R.measure = () => {
       R.W = st.offsetWidth; R.H = st.offsetHeight;
       const f = boxIn(R.fridge, st), pan = boxIn(R.pan, st), b = boxIn(R.board, st), pl = boxIn(R.plate, st), k = boxIn(R.palWrap, st), hob = boxIn(R.hob, st);
@@ -455,16 +519,18 @@
       const u = k.w / 626, hand = { x: k.l + R.walk + 70 * u, y: k.t + 400 * u };
       const aim = (to) => Math.atan2(to.y - hand.y, to.x - hand.x) * 180 / Math.PI - 180;
       const len = Math.hypot(R.bowl.x - hand.x, R.bowl.y - hand.y) / u - 40;
-      R.shafts.forEach(el => el.setAttribute('d', `M40 474H${(-len).toFixed(0)}`));
-      R.sBowl.setAttribute('cx', (-len - 30).toFixed(0));
+      R.applyGeometry = () => {
+        R.shafts.forEach(el => el.setAttribute('d', `M40 474H${(-len).toFixed(0)}`));
+        R.sBowl.setAttribute('cx', (-len - 30).toFixed(0));
+      };
       // dinner is tossed from the pan over pal's hat onto the plate behind him: the arc clears his hat with room to spare
       R.arc = Math.max(R.H * .14, ((R.bowl.y + R.plateAt.y) / 2 - (k.t - k.h * .3) + 30) / .8);
       R.stirA = aim(R.bowl); R.serveA = aim({ x: Math.min(R.plateAt.x + pl.w * .3, R.bowl.x), y: pan.t + pan.h * .1 });   // never swing past the pan (on phones the plate is under pal, so that would cross his face)
-      R.sz = el => (el.getBoundingClientRect().width || 40);
       R.ingW = R.ings.map(el => svgBox(el, st).w); R.bitW = R.bits.map(el => svgBox(el, st).w); R.sliceW = R.slices[0] ? R.slices[0].offsetWidth : 20;
     };
     const fly = (el, a, b2, t, w, arc, spin, endScale = .55) => {
-      const x = lerp(a.x, b2.x, eInOut(t)) - w / 2, y = lerp(a.y, b2.y, eInOut(t)) - Math.sin(t * Math.PI) * arc - w / 2;
+      // Constant horizontal speed and a parabolic arc preserve velocity into contact.
+      const x = lerp(a.x, b2.x, t) - w / 2, y = lerp(a.y, b2.y, t) - 4 * t * (1 - t) * arc - w / 2;
       set(el, `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${(spin * t).toFixed(1)}deg) scale(${lerp(1, endScale, t ** 4).toFixed(3)})`, t > 0 && t < 1 ? 1 - seg(t, .88, 1) : 0);
     };
     R.render = p => {
@@ -485,14 +551,17 @@
         fly(R.ings[i], R.from, target, t, R.ingW[i] || 50, 26 * vh, (i % 2 ? 1 : -1) * 360, to === 'pan' ? .5 : 1);
       });
       // 2. the chop: pal's knife arm drives each cut, every cut throws a slice into the pan
-      const chopping = p >= .19 && p < .38;
-      let angle = -6;
-      if (chopping) {
-        const f = ((p - .19) / .037) % 1;
-        angle = f < .32 ? lerp(-22, 8, eIn(f / .32)) : lerp(8, -22, eOut((f - .32) / .68));
+      let angle = lerp(-6, -22, eInOut(seg(p, .182, .193))), chopBody = 0;
+      for (const c of R.chops) {
+        if (p >= c - .007) {
+          angle = p < c + .002 ? lerp(-22, 8, eIn(seg(p, c - .007, c + .002)))
+            : lerp(8, -22, eOut(seg(p, c + .002, c + .027)));
+        }
+        chopBody += Math.sin(seg(p, c + .002, c + .021) * Math.PI) * .025;
       }
+      angle = lerp(angle, -6, eInOut(seg(p, .375, .413)));
       if (p < .43) R.arm.style.transform = `rotate(${angle.toFixed(2)}deg)`;
-      const cuts = R.chops.filter(c => p >= c + .002).length;
+      const cuts = R.chops.reduce((n, c) => n + (p >= c + .002 ? 1 : 0), 0);
       set(R.carrot, `scaleX(${(1 - .156 * cuts).toFixed(3)})`, seg(p, .175, .18));
       R.slices.forEach((el, k) => {
         const c = R.chops[k], t = seg(p, c + .004, c + .06);
@@ -502,7 +571,7 @@
       set(R.knifeDown, 'rotate(-4deg)', seg(p, .43, .44));
       // pans jump and the hot oil goes "tss" each time something lands in it
       let pop = 0;
-      R.landings.forEach(L => { pop = Math.max(pop, Math.sin(seg(p, L - .004, L + .022) * Math.PI)); });
+      R.landings.forEach(L => { pop = Math.max(pop, Math.sin(seg(p, L, L + .026) * Math.PI)); });
       set(R.pop, `scale(${(.5 + .7 * eOut(pop)).toFixed(3)}) rotate(${(pop * 12).toFixed(1)}deg)`, pop);
       // 3. pal walks to the hob, swaps the knife for the spoon; 4. two flips; 5. he spoons dinner onto the plate
       const walked = eInOut(seg(p, .43, .48)), raise = eOut(seg(p, .45, .48));
@@ -532,15 +601,15 @@
         const go = seg(p, .69 + i * .016, .74 + i * .016);
         if (go > 0) {
           const to = { x: R.plateAt.x + (i - 1.5) * .08 * R.panW, y: R.plateAt.y - .1 * R.panH };
-          x = lerp(home.x, to.x, eInOut(go)); y = lerp(home.y, to.y, eInOut(go)) - Math.sin(go * Math.PI) * R.arc; rot += go * 260;
+          x = lerp(home.x, to.x, go); y = lerp(home.y, to.y, go) - 4 * go * (1 - go) * R.arc; rot += go * 260;
         }
         set(el, `translate3d(${(x - w / 2).toFixed(1)}px,${(y - w / 2).toFixed(1)}px,0) rotate(${rot.toFixed(1)}deg)`, seg(p, .45, .5) * (1 - seg(go, .85, 1)));
       });
       // 5. ta-da: the plate squashes as dinner lands, the pile pops up, sparkles, then it steams
-      const land = Math.sin(seg(p, .76, .8) * Math.PI);
+      const land = Math.sin(seg(p, .752, .802) * Math.PI);
       set(R.plate, `translateX(${((1 - plateIn) * R.plateOff).toFixed(1)}px) scale(${(1 + .05 * land).toFixed(4)},${(1 - .07 * land).toFixed(4)})`, plateIn);
       const meal = seg(p, .74, .8);
-      set(R.meal, `scale(${Math.max(.05, eBack(meal)).toFixed(4)})`, seg(p, .735, .745));
+      set(R.meal, `scale(${Math.max(.05, eSpring(meal)).toFixed(4)})`, seg(p, .735, .745));
       R.sparks.forEach((el, i) => {
         const t = seg(p, .79 + i * .012, .84 + i * .012), sp = Math.sin(t * Math.PI);
         set(el, `scale(${(.3 + sp).toFixed(3)}) rotate(${(t * 90).toFixed(1)}deg)`, sp);
@@ -549,13 +618,20 @@
       // pal: looks at what he is doing, walks, leans into the tosses, and cheers up at the end
       const happy = eOut(seg(p, .8, .85));
       const lookX = p < .43 ? -4.6 : p < .66 ? -5 : -3.5, lookY = p < .43 ? 4.2 : p < .66 ? 2.6 : 5;
-      R.face.style.transform = `translate(${lookX}%,${lookY}%)`;
-      set(R.face, R.face.style.transform, 1 - happy);
+      set(R.face, `translate(${lookX}%,${lookY}%)`, 1 - happy);
       set(R.happy, 'none', happy);
-      const hop = Math.abs(Math.sin(seg(p, .43, .48) * Math.PI * 3)) * 2.4 * vh + Math.sin(seg(p, .8, .86) * Math.PI) * 3 * vh;
-      set(R.palWrap, `translate(${(R.walk * walked).toFixed(1)}px,${(-hop).toFixed(1)}px) rotate(${(-flick * 3 + (chopping ? -2 : 0)).toFixed(2)}deg)`);
-      R.says.forEach(b2 => {
-        const a2 = +b2.dataset.in, z2 = +b2.dataset.out, o = seg(p, a2, a2 + .015) * (1 - seg(p, z2 - .015, z2));
+      const stride = seg(p, .43, .48), cheer = seg(p, .798, .852);
+      const hop = Math.abs(Math.sin(stride * Math.PI * 3)) * 2.4 * vh + Math.sin(cheer * Math.PI) * 3 * vh;
+      const anticipate = Math.sin(seg(p, .416, .43) * Math.PI) * .055;
+      const walkSquash = Math.sin(stride * Math.PI * 6) * .035;
+      const landing = recoil(seg(p, .852, .875)) * .065;
+      const squash = anticipate + chopBody + walkSquash + landing;
+      set(R.palWrap, `translate(${(R.walk * walked).toFixed(1)}px,${(-hop).toFixed(1)}px) rotate(${(-flick * 3 - chopBody * 45).toFixed(2)}deg) scale(${(1 + squash).toFixed(4)},${(1 - squash).toFixed(4)})`);
+      const hatLag = recoil(seg(p, .48, .525)) * 9 + recoil(seg(p, .856, .88)) * 12;
+      set(R.hat, `translateY(${(-chopBody * 80).toFixed(2)}%) rotate(${(-6 + hatLag - flick * 5).toFixed(2)}deg)`);
+      set(R.rest, `rotate(${(flick * 7 - Math.sin(stride * Math.PI * 6) * 5).toFixed(2)}deg)`);
+      R.says.forEach(({ el: b2, a: a2, b: z2 }) => {
+        const o = seg(p, a2, a2 + .015) * (1 - seg(p, z2 - .015, z2));
         set(b2, `scale(${Math.max(.05, eBack(seg(p, a2, a2 + .025))).toFixed(4)})`, o);
       });
     };
@@ -566,7 +642,8 @@
   addScene($('[data-cook]'), buildB);
 
   /* ---------- the money: drifting words, a receipt sliding out of its slot, coins ---------- */
-  const drifts = money ? $$('[data-drift]', money).map(el => ({ el, x: 0 })) : [];
+  const drifts = money ? $$('[data-drift]', money).map(el => ({ el, direction: +el.dataset.drift, x: 0 })) : [];
+  const moneyLayers = [...drifts.map(o => o.el), receipt];
   let printP = 0;
   const keptEl = money ? $('.receipt .total dd', money) : null;
   if (money) watch(money);
@@ -575,20 +652,20 @@
     let moving = false;
     const pv = clamp((y + G.vh - G.moneyTop) / (G.vh + G.moneyH), 0, 1);
     drifts.forEach(o => {
-      const xT = (+o.el.dataset.drift) * (.45 - pv) * G.vw * .28;
-      o.x = damp(o.x, xT, 8, dt);
+      const xT = o.direction * (.45 - pv) * G.vw * .28;
+      o.x = damp(o.x, xT, 12, dt);
       if (Math.abs(o.x - xT) > .2) moving = true;
       o.el.style.transform = `translate3d(${o.x.toFixed(1)}px,0,0)`;
     });
     if (receipt) {
       const prT = clamp((y + G.vh * .9 - G.clipTop) / (G.clipH * 1.1), 0, 1);
-      printP = damp(printP, prT, 7, dt);
+      printP = damp(printP, prT, 14, dt);
       if (Math.abs(printP - prT) > .0005) moving = true;
       receipt.style.transform = `translate3d(0,${(-(1 - eOut(printP)) * (G.clipH + 24)).toFixed(1)}px,0)`;
       const kept = Math.round(18 * eOut(seg(printP, .5, 1)));
       if (keptEl && keptEl._v !== kept) { keptEl.textContent = '£' + kept; keptEl._v = kept; }
     }
-    if (moving) heat([...drifts.map(o => o.el), receipt]);
+    if (moving) heat(moneyLayers);
     return moving;
   }
   const coinTpl = d.getElementById('coin');
@@ -625,17 +702,24 @@
   });
 
   /* ---------- the demo keeps one height (its tallest state), so choosing never shifts the page below ---------- */
-  const demo = $('.try .demo');
+  const demo = watch($('.try .demo'));
   if (demo) {
-    const fit = () => {
-      const sts = [...demo.querySelectorAll('.st')];
+    const sts = $$('.st', demo);
+    let fitWidth = -1;
+    const fit = (force = false) => {
+      if (!force && fitWidth === innerWidth) return;
+      fitWidth = innerWidth;
       demo.style.removeProperty('--st-h');
       sts.forEach(s => { s.style.display = 'grid'; });
       const h = Math.max(...sts.map(s => s.offsetHeight));
       sts.forEach(s => { s.style.display = ''; });
       demo.style.setProperty('--st-h', h + 'px');
+      invalidate();
     };
-    fit(); d.fonts && d.fonts.ready.then(fit); addEventListener('load', fit); addEventListener('resize', fit, { passive: true });
+    // One batched intrinsic-height read on width/font changes, never in the motion loop.
+    d.fonts && d.fonts.ready.then(() => fit(true));
+    addEventListener('load', () => fit(true), { once: true });
+    addEventListener('resize', () => fit(), { passive: true });
   }
 
   /* ---------- try it: "order anyway" runs away from a mouse, three times ---------- */
@@ -647,12 +731,13 @@
     const reset = () => { n = 0; dodge.style.translate = ''; };
     dodge.addEventListener('pointerenter', e => {
       if (e.pointerType !== 'mouse' || n >= 3) return;
-      say(bubble, lines[n]); n++;
-      if (n === 3) { dodge.style.translate = ''; return; }
+      n++;
+      if (n === 3) { say(bubble, lines[n - 1]); dodge.style.translate = ''; return; }
       // Jump somewhere that stays inside the section and clear of "i'll cook"
       const box = dodge.closest('.try').getBoundingClientRect(), cur = dodge.style.translate.split(' ').map(parseFloat);
       const b = dodge.getBoundingClientRect(), home = { l: b.left - (cur[0] || 0), t: b.top - (cur[1] || 0), w: b.width, h: b.height };
       const keep = dodge.parentElement.querySelector('.cp-btn--primary').getBoundingClientRect();
+      say(bubble, lines[n - 1]); // geometry first; changing the bubble can invalidate layout
       for (let tries = 0; tries < 24; tries++) {
         const dx = rand(-260, 260), dy = rand(-120, 120);
         const l = home.l + dx, t = home.t + dy, r = l + home.w, btm = t + home.h;
@@ -731,8 +816,13 @@
   // Switch tabs and he guards the fridge
   const title = d.title;
   d.addEventListener('visibilitychange', () => {
-    if (d.hidden) d.title = 'pal is guarding the fridge';
-    else { d.title = 'welcome back. still not ordering?'; setTimeout(() => { d.title = title; }, 2500); }
+    root.classList.toggle('motion-hidden', d.hidden);
+    if (d.hidden) {
+      cancelScroll();
+      cancelAnimationFrame(frameId); frameId = 0; running = false; cool();
+      d.title = 'pal is guarding the fridge';
+    } else {
+      prevY = scrollY; invalidate(); d.title = 'welcome back. still not ordering?'; setTimeout(() => { d.title = title; }, 2500); }
   });
 
   /* ---------- the privacy page's reading bar ---------- */
@@ -753,11 +843,13 @@
     if (hero) G.heroH = hero.offsetHeight;
     if (money) { G.moneyTop = pageTop(money); G.moneyH = money.offsetHeight; }
     if (clip) { G.clipTop = pageTop(clip); G.clipH = clip.offsetHeight; }
-    for (const sc of scenes) { sc.top = pageTop(sc.section); sc.h = sc.section.offsetHeight; sc.R.measure(); sc.last = -1; }
-    for (const k of strips) { k.R.measure(); k.R.render(k.p); }
+    for (const sc of scenes) { sc.top = pageTop(sc.section); sc.h = sc.section.offsetHeight; sc.stageH = sc.R.st.offsetHeight; sc.R.measure(); sc.last = -1; }
+    for (const k of strips) k.R.measure();
     S.target = clamp(S.target, 0, G.max);
     // Layout offsets, not screen boxes, so letters still mid-animation measure where they will rest
+    for (const r of rigs) r.box = boxIn(r.el, null);
     for (const j of jellies) {
+      j.box = boxIn(j.el, null);
       j.fs = parseFloat(getComputedStyle(j.el).fontSize);
       const b0 = j.chs[0]?.c.offsetParent === j.el ? { l: 0, t: 0 } : { l: j.el.offsetLeft, t: j.el.offsetTop };
       for (const k of j.chs) { k.ox = k.c.offsetLeft - b0.l + k.c.offsetWidth / 2; k.oy = k.c.offsetTop - b0.t + k.c.offsetHeight / 2; }
@@ -765,33 +857,46 @@
   }
 
   /* ---------- one loop: read, then compute and write. It sleeps when nothing is moving. ---------- */
-  let running = false, ready = false, still = 0, lastT = 0;
-  function kick() { still = 0; if (ready && !running) { running = true; lastT = performance.now(); requestAnimationFrame(frame); } }
+  let running = false, ready = false, still = 0, lastT = 0, frameId = 0;
+  function kick() { still = 0; if (ready && !running && !d.hidden) { running = true; lastT = performance.now(); frameId = requestAnimationFrame(frame); } }
   function frame(now) {
     const dt = clamp((now - lastT) / 1000, 1 / 240, 1 / 20); lastT = now;
     // 1. read
     const sy = scrollY;
-    if (!reduce) { rigsRead(); jellyRead(); }
-    // 2. compute and write
-    const y = stepScroll(now, dt), dy = y - sy;
+    const measured = geometryDirty;
+    if (measured) { measure(); geometryDirty = false; }
+    const y = stepScroll(now, dt, sy);
+    // 2. all layout reads are complete before any geometry or animation writes
+    if (measured) {
+      for (const sc of scenes) sc.R.applyGeometry();
+      for (const k of strips) { k.R.applyGeometry(); k.R.render(k.p); }
+    }
     let busy = S.moving;
     busy = speedWrite(y, dt) || busy;
     if (!reduce) {
-      busy = rigsWrite(now, dt) || busy;
-      busy = jellyWrite(y, dy, dt) || busy;
+      busy = rigsWrite(now, dt, y) || busy;
+      busy = jellyWrite(y, dt) || busy;
       busy = scenesWrite(y, dt) || busy;
       busy = moneyWrite(y, dt) || busy;
     }
     busy = barWrite(y, dt) || busy;
     // 3. scroll last, so this frame shows the position everything above was computed for
-    if (S.on && Math.abs(y - sy) > .01) { scrollTo(0, y); S.written = y; }
-    if (busy) still = 0;
-    if (++still > 20) { running = false; cool(); return; }
-    requestAnimationFrame(frame);
+    if (S.on && Math.abs(y - sy) > .01) { scrollTo({ top: y, left: 0, behavior: 'instant' }); S.written = y; }
+    if (!S.moving && S.focus) {
+      const el = S.focus; S.focus = null;
+      const temporaryTabindex = !el.hasAttribute('tabindex');
+      if (temporaryTabindex) el.setAttribute('tabindex', '-1');
+      el.focus({ preventScroll: true });
+      if (temporaryTabindex) el.addEventListener('blur', () => el.removeAttribute('tabindex'), { once: true });
+    }
+    still = busy ? 0 : still + dt;
+    if (still >= .08) { running = false; frameId = 0; cool(); return; }
+    frameId = requestAnimationFrame(frame);
   }
   setInterval(() => {
+    if (d.hidden) return;
     if (performance.now() - lastActive > 20000) fallAsleep();
-    if (!ptr.mouse && !reduce && rigs.some(r => visible(r.el))) kick();    // touch: let him look around now and then
+    if (!ptr.mouse && !reduce && rigs.some(r => visible(r.el) && !(r.el === heroPal && asleep) && performance.now() >= r.wt)) kick();    // touch: let him look around now and then
   }, 2400);
 
   /* ---------- images: decode the rest in idle time, so nothing decodes mid-scroll ---------- */
@@ -814,11 +919,13 @@
   }
 
   const start = () => {
-    measure(); ready = true; kick();
-    new ResizeObserver(() => { measure(); kick(); }).observe(d.body);
+    ready = true; invalidate();
+    const ro = new ResizeObserver(invalidate);
+    ro.observe(d.body);
+    for (const sc of scenes) ro.observe(sc.R.st);
   };
   (d.fonts && d.fonts.ready ? d.fonts.ready : Promise.resolve()).then(start);
-  addEventListener('resize', () => { measure(); kick(); }, { passive: true });
+  addEventListener('resize', invalidate, { passive: true });
   if (d.readyState === 'complete') idle(warm); else addEventListener('load', () => idle(warm), { once: true });
   console.log('%cpal says hi. now go and cook something.', 'font:700 15px system-ui;color:#F0533A');
 })();
