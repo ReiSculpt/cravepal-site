@@ -1,0 +1,421 @@
+/* cravepal.app, the story scenes: the pinned, scroll-scrubbed kitchen (scene A, chapters 01 to 03, and scene B,
+   chapter 04), drawn as pal's mint kitchen from the CravePal Design Standards: the wall, the curved floor, colour only
+   on the props, ink text. It is 9pm, so the window shows the night; the room keeps its palette. home.css sets the page
+   and the tokens (--wall, --floor, --ink, --paper, --card, --display, --text); this file only styles the scenes. */
+.night{--system:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif}
+
+/* the chef in chapter 04: Adam's bun with face layers, so his face can change */
+.night .pal{position:relative;display:block;padding:0;border:0;background:none;cursor:default}
+.night .pal__rig{position:absolute;inset:0;display:block;transform-origin:50% 96%}
+.night .pal__rig>img,.night .pal__face,.night .pal__face img{position:absolute;inset:0;width:100%;height:100%;max-width:none}
+.night .pal__face{display:block}
+.night .pal__lids{opacity:0;animation:cp-blink 6.4s steps(1) infinite}
+@keyframes cp-blink{0%,40%,43%,100%{opacity:0}41%,42%{opacity:1}}
+
+/* pal's voice in the scenes: the SpeechBubble, paper with one soft shadow and a small tail pointing at pal */
+.night .bubble{position:absolute;z-index:6;width:max-content;max-width:180px;padding:9px 13px;border-radius:16px;background:var(--paper);color:var(--ink);font:700 15px/1.25 var(--text);text-align:left;filter:var(--bubble-shadow)}
+.night .bubble::after{content:"";position:absolute;left:22px;bottom:-8px;width:0;height:0;border:8px solid transparent;border-bottom:0;border-top:9px solid var(--paper)}
+
+/* the page's numbered chapter headers, carried into the pinned stage; JS swaps them as the story moves on */
+.sc-chaps{position:absolute;z-index:11;left:var(--gut);right:var(--gut);top:30px;pointer-events:none}
+.sc-chap{position:absolute;left:0;right:0;top:0}
+.sc-chap~.sc-chap{opacity:0}
+.night .scene-note{text-align:right}
+
+/* chapter 03 is introduced inside the pinned scene; the try section that follows keeps its heading for screen readers only */
+.js .pause-chapter .chapter-heading{opacity:0}
+
+/* decorative loops pause off screen (JS marks the scene) */
+.motion-paused,.motion-paused *,.motion-idle *,.motion-hidden *{animation-play-state:paused!important}
+
+/* ---------- Scene A (chapters 01 to 03): a late-night kitchen, pinned and scrubbed by scroll (JS).
+   Without JS it shows one finished frame (the Pause on the phone). With reduced motion JS turns it into still panels. ---------- */
+.night{position:relative;background:var(--wall);color:var(--ink)}
+.night__stage{position:relative;height:100svh;overflow:hidden;background:var(--wall)}
+@media (prefers-reduced-motion:no-preference){   /* in the CSS, not added by the deferred script: a reload mid-scene keeps its place */
+  .js .night{height:760svh}
+  .js .night.cook{height:540svh}
+  .js .night .night__stage{position:sticky;top:0}
+}
+.nx,.n,.kx,.n-phone,.foods,.ings,.nx-glow,.n-wipe,.kx-warm{position:absolute;margin:0}
+
+/* back: the window */
+.nx-win{z-index:1;right:5vw;top:max(9%,92px);width:min(30vw,60vh);aspect-ratio:4/3;border-radius:26px;overflow:hidden}
+.nx-win__sky,.nx-win__frame{position:absolute;inset:0;width:100%;height:100%}
+.nx-scooter{position:absolute;left:0;bottom:7%;width:28%;height:auto;transform:translateX(160%)}
+.tw{animation:twinkle 3.4s steps(1) infinite}
+.tw--2{animation-duration:4.6s;animation-delay:-1.3s}
+@keyframes twinkle{50%{opacity:.25}}
+
+/* mid: clock (just past the end of "it's 9pm."), lamp, fridge */
+.nx-clock{z-index:1;left:calc(var(--gut) + 56px * 4.15 + 28px);top:calc(clamp(70px,9vh,110px) + 2px);width:min(5.6vw,10vh);aspect-ratio:1}   /* just past the end of "it’s 9pm." */
+.nx-clock svg{width:100%;height:100%}
+.nx-clock i,.nx-clock b{position:absolute;left:50%;bottom:50%;border-radius:99px;background:var(--ink);transform-origin:50% 100%}
+.nx-clock__h{width:7%;height:26%;margin-left:-3.5%;transform:rotate(270deg)}
+.nx-clock__m{width:5%;height:36%;margin-left:-2.5%;background:#E27D52!important;transform:rotate(0deg)}
+.nx-clock b{width:12%;height:12%;margin:0 0 -6% -6%}
+.nx-lamp{z-index:2;left:59vw;top:0;width:min(7vw,12vh);height:30%}
+.nx-lamp svg{position:absolute;inset:0;width:100%;height:100%}
+.nx-lamp__cone{position:absolute;left:50%;top:70%;width:320%;aspect-ratio:1;margin-left:-160%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,233,168,.75),rgba(255,233,168,0))}   /* the lamp's soft glow */
+.nx-fridge{z-index:5;left:5vw;bottom:0;height:58%;aspect-ratio:200/360}
+.nx-fridge__spill{position:absolute;left:30%;bottom:-4%;width:300%;height:80%;background:radial-gradient(ellipse at 15% 85%,rgba(255,243,196,.55),rgba(255,243,196,0) 62%);opacity:0;pointer-events:none}
+.nx-fridge svg,.nx-fridge__light{position:absolute;inset:0;width:100%;height:100%}
+.nx-fridge svg{z-index:1}
+.nx-fridge__light{z-index:1;inset:6% 10% 4%;border-radius:8%;background:radial-gradient(ellipse at 50% 30%,rgba(255,250,220,.75),rgba(255,250,220,0) 70%);opacity:0}
+.nx-fridge__door{transform-origin:2% 50%}
+.nx-counter{z-index:3;left:-25%;right:-25%;bottom:0;height:22%;background:linear-gradient(var(--floor-top),var(--floor) 150px);border-top:2px solid var(--horizon);border-radius:50% 50% 0 0 / 30px 30px 0 0}   /* the curved sage floor */
+
+.nx-glow{z-index:3;left:calc(50% - 34vw);bottom:-24%;width:68vw;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,233,168,.45),rgba(255,233,168,0) 62%);opacity:0;pointer-events:none}
+
+/* words */
+.n-head{z-index:9;left:var(--gut);top:clamp(70px,9vh,110px);right:var(--gut);pointer-events:none;opacity:0}
+.n-1{position:relative;display:block;font:400 56px/1.1 var(--display);letter-spacing:-1.1px;transform-origin:0 100%;width:max-content;color:var(--ink)}
+.n-1 em{font-style:normal}
+.n-2{position:relative;display:block;margin-top:16px;max-width:30em;font:400 16px/1.5 var(--text);color:var(--ink)}
+/* between the fridge and the phone, above the counter */
+.n-grr{z-index:9;left:calc(5vw + 100svh * .3222 + 40px);top:58%;font:400 56px/1 var(--display);letter-spacing:-1.1px;color:var(--ink);opacity:0;transform-origin:50% 50%}
+/* narration boxes, left of the phone */
+.n-caps{z-index:9;left:var(--gut);top:20%;width:calc(50% - 100svh * .2038 - var(--gut) - 24px)}
+.cap{position:absolute;left:0;top:0;max-width:100%;width:max-content;font:400 56px/1.1 var(--display);letter-spacing:-1.1px;color:var(--ink);text-wrap:balance;opacity:0}
+/* the £22 as a Card: borderless, see-through, the soft green shadow; the money in ink */
+.cap--ticket{top:calc(92px - 20svh);width:min(280px,100%);padding:14px 18px 16px;background:var(--card);border-radius:18px;box-shadow:var(--card-shadow);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font:500 15px/1.35 var(--text);letter-spacing:0}
+.cap--ticket .ticket-top{display:block;padding-bottom:8px;border-bottom:1.5px solid var(--divider);font:700 13px/1.35 var(--text);letter-spacing:.26px}
+.cap--ticket strong{display:block;margin-top:8px;font:400 56px/1.21 var(--display);letter-spacing:-1.1px;font-variant-numeric:tabular-nums}
+.cap--ticket .ticket-sub{display:block;margin-top:2px;font:500 15px/1.35 var(--text)}
+.k-caps .cap--end{opacity:1}
+
+/* front: the phone, drawn at its zoomed-in size; JS scales it back into the room. Sizes inside are cqi, 1% of its width.
+   --room-*: where it stands in the room (fractions of the stage), --zoom-*: where the camera ends up. */
+.n-phone{--room-l:.52;--room-b:.09;--room-h:.58;--zoom-t:.07;--zoom-h:.86;z-index:7;left:50%;top:7%;height:86%;aspect-ratio:100/211;translate:-50% 0;container-type:inline-size;
+  border-radius:15% / 7.1%;background:#2B3A33;box-shadow:0 34px 40px -26px rgba(23,87,58,.6)}
+/* (corner radius is a percentage: container units on the container itself would resolve against the page and bend it into a pill) */
+.n-phone::before{content:"";position:absolute;inset:1.6cqi;border-radius:13.5cqi;background:var(--ink)}
+.n-phone::after{content:"";position:absolute;left:-1.4cqi;top:21%;width:1.6cqi;height:6.5%;border-radius:1.2cqi 0 0 1.2cqi;background:#2B3A33;box-shadow:0 10cqi 0 #2B3A33}
+/* inside, a plain takeaway app (no real brand: the orange stand-in), drawn in the system font like any app */
+.n-screen{position:absolute;z-index:1;inset:4.6cqi;border-radius:11cqi;overflow:hidden;background:var(--wall);color:var(--ink);font-family:var(--system)}
+.n-screen::after{content:"";position:absolute;z-index:6;top:2.4cqi;left:50%;width:26cqi;height:7cqi;margin-left:-13cqi;border-radius:4cqi;background:var(--ink)}
+.app{position:absolute;z-index:1;inset:0;display:flex;flex-direction:column;padding:10cqi 6cqi 0}
+.app__top{font-weight:800;font-size:max(16px,12cqi);line-height:1;letter-spacing:-.02em}
+.app__view{position:relative;flex:1;overflow:hidden;margin-top:4cqi;margin-bottom:46cqi}
+.app__list{display:grid;gap:4cqi}
+.app__item{position:relative;display:grid;grid-template-columns:17cqi 1fr 11cqi;align-items:center;gap:4cqi;padding:3cqi;border-radius:18px;background:var(--card);box-shadow:var(--card-shadow)}
+.app__item::before{content:"";position:absolute;left:28cqi;top:38%;width:25cqi;height:2cqi;border-radius:999px;background:var(--muted);box-shadow:0 5cqi 0 rgba(29,43,36,.18);opacity:var(--summary-opacity,0)}
+.app__item svg{width:100%;height:auto}
+.app__item span{display:grid;gap:1cqi;min-width:0}
+.app__item b{font-weight:800;font-size:max(11px,5.8cqi);line-height:1.05}
+.app__item i{font-style:normal;font-weight:600;font-size:max(11px,6cqi);color:#52615A}
+.app__item em{position:relative;display:block;width:11cqi;height:11cqi;font-style:normal}
+.app__item em span{position:absolute;inset:0;display:grid;place-items:center;border-radius:50%;font-weight:900;font-size:max(11px,7cqi);line-height:1}
+.app__item em span:first-child{background:var(--paper);border:2px solid var(--ink);color:var(--ink)}
+.app__item em span+span{background:var(--stand-in);color:var(--ink);opacity:0}
+.app__basket{position:absolute;left:6cqi;right:6cqi;bottom:30cqi;display:flex;align-items:center;gap:3cqi;padding:3cqi 4cqi;border-radius:18px;background:var(--card);color:var(--ink);font-weight:700;font-size:max(11px,6.2cqi)}
+.app__count{display:grid;place-items:center;min-width:9cqi;height:9cqi;border-radius:9cqi;background:var(--stand-in);color:var(--ink)}
+.app__total{margin-left:auto;font-weight:800;font-size:max(11px,8cqi)}
+/* the Pause, as the real Screen Time shield draws it: cream, pal as the icon, the system font, an ink button */
+.n-pause{position:absolute;z-index:3;inset:0;display:flex;flex-direction:column;align-items:center;gap:4cqi;padding:78cqi 9cqi 0;text-align:center;background:var(--paper);color:var(--ink);opacity:1}
+.n-pause__t{font-weight:700;font-size:max(11px,8.4cqi);line-height:1.15;letter-spacing:-.01em}
+.n-pause__s{font-weight:400;font-size:max(11px,5.6cqi);line-height:1.3;max-width:18em}
+.n-pause__b1,.n-pause__b2{position:absolute;left:8cqi;right:8cqi;display:grid;place-items:center;height:13cqi;border-radius:7cqi;font-weight:600;font-size:max(11px,6cqi)}
+.n-pause__b1{bottom:23cqi;background:var(--primary);color:var(--paper)}
+.n-pause__b2{bottom:8cqi;color:var(--ink)}
+.n-act{position:absolute;z-index:2;left:0;right:0;bottom:7cqi;display:flex;justify-content:center;font-size:max(11px,14cqi)}
+.n-btn{position:relative;background:none;color:var(--paper);border-radius:999px;font-weight:600;letter-spacing:-.02em;line-height:1;transform-origin:50% 100%;z-index:1}
+.n-btn__face{position:relative;display:block;padding:.24em .8em .3em;background:var(--primary);border-radius:999px}
+.n-btn__lip{position:absolute;inset:0;background:var(--primary-lip);border-radius:999px;transform:translateY(4px)}
+.n-dust{position:absolute;z-index:0;left:50%;bottom:.1em;width:0;height:0}
+.n-dust i{position:absolute;width:7cqi;height:7cqi;margin:-3.5cqi;border-radius:50%;background:#FFFFFF;border:2px solid var(--ink);opacity:0}
+.n-hand{position:absolute;z-index:3;left:0;top:0;width:30cqi;opacity:0;transform-origin:46% 6%}   /* JS puts the fingertip (46% 6%) on the button */
+.n-tap{position:absolute;z-index:2;left:50%;top:50%;width:34cqi;aspect-ratio:1;margin:-17cqi 0 0 -17cqi;border-radius:50%;border:1.8cqi solid var(--ink);opacity:0;pointer-events:none}   /* the ring a tap leaves */
+/* pal lands on the order button (its top is 34cqi above the phone's bottom), squashes it, then hops up to be the Pause's icon */
+.n-pal{position:absolute;z-index:2;left:50%;bottom:34cqi;width:84cqi;margin-left:-42cqi;transform-origin:50% 100%;transform:translateY(-100cqi) scale(.56)}
+.n-pal img{width:100%;height:auto}
+.n-bubble{position:absolute;right:88%;bottom:80%;font-size:19px;white-space:nowrap;transform-origin:90% 100%}
+.n-bubble::after{left:auto;right:18px}
+.n-sticker{position:absolute;z-index:3;right:100%;bottom:30%;margin-right:6cqi;padding:0 14px;min-height:34px;display:flex;align-items:center;background:var(--paper);color:var(--ink);border-radius:999px;box-shadow:var(--floating);font:400 16px/1.21 var(--display);white-space:nowrap}
+
+.n-wipe{z-index:12;inset:0;background:var(--wall);transform:translateY(100%);pointer-events:none}
+
+/* floating food */
+.foods{z-index:6;inset:0;pointer-events:none}
+.food{position:absolute;width:clamp(58px,6.2vw,112px);height:auto;transform:rotate(var(--tilt,0deg))}
+.food--1{left:41vw;top:36%;--tilt:-10deg}   /* between the headline, the grumble and the phone */
+.food--2{left:calc(9vw + 100svh * .3222);top:80%;--tilt:12deg}   /* low on the counter, clear of the words, the clock and the phone */
+.food--3{left:78vw;top:57%;--tilt:8deg}
+.food--4{left:86vw;top:25%;--tilt:-14deg}
+.food--5{left:91vw;top:66%;--tilt:10deg}
+
+/* chapter 3's explanation, right of the phone */
+/* on the wall beside the phone, just under the window, so the thrown food has the counter to itself */
+.n-cap{z-index:9;left:calc(50% + 100svh * .2038 + 28px);right:var(--gut);top:calc(max(9%,92px) + min(30vw,60vh) * .75 + 24px);max-width:36em}
+.n-cap__title{font:400 30px/1.21 var(--display);letter-spacing:-.3px;color:var(--ink);text-wrap:balance}
+.n-cap p{margin-top:10px;font:400 16px/1.5 var(--text);color:var(--ink)}   /* clear of the narration above it */
+.nx-shelf{z-index:1;left:calc(5vw + 100svh * .3222 + 36px);bottom:calc(58% + 40px);width:min(13vw,22vh,190px)}   /* on the wall beside the fridge, above the hob's steam */
+.nx-shelf svg{width:100%;height:auto}
+.night:not(.cook) .nx-shelf{left:44vw;width:130px}
+.nx svg :is(path,rect,circle,ellipse,line){stroke-width:2.2px;vector-effect:non-scaling-stroke}   /* pot steam, faint on the mint wall */
+.kx-warm{z-index:3;inset:0;background:radial-gradient(ellipse at 50% 70%,rgba(255,233,168,.28),rgba(255,233,168,0) 65%);opacity:1;pointer-events:none}
+.k-caps{top:12%;width:min(44vw,700px)}
+.k-caps .cap--end em{font-style:normal}
+.k-caps .cap--end small{display:block;margin-top:12px;font:400 16px/1.5 var(--text);letter-spacing:0;color:var(--ink)}
+/* the £4 as a paper chip, like the streak chip: a soft floating shadow, no border */
+.k-price{position:absolute;z-index:9;right:-2%;top:-58%;display:grid;place-items:center;align-content:center;width:42%;aspect-ratio:1;border-radius:50%;background:var(--paper);color:var(--ink);box-shadow:var(--floating);transform:rotate(8deg)}
+.k-price strong{font:400 28px/1 var(--display);font-variant-numeric:tabular-nums}
+.k-price span{margin-top:3px;font:600 11px/1.2 var(--text)}
+.kx-hob{z-index:5;left:36vw;bottom:calc(22% - 4px);width:min(24vw,44vh);aspect-ratio:300/170}
+.kx-hob__base{position:absolute;left:0;right:0;bottom:0;width:100%;height:24%}
+.kx-flames{position:absolute;left:22%;right:22%;bottom:22%;height:16%;display:flex;justify-content:space-around;align-items:flex-end;opacity:1;transform-origin:50% 100%}
+.kx-flames i{display:block;width:18%;height:100%;border-radius:50% 50% 40% 40%;background:linear-gradient(#FFD45C,#E27D52);transform-origin:50% 100%;animation:flame .45s ease-in-out infinite alternate}
+.kx-flames i:nth-child(2){animation-delay:-.2s;height:125%}
+.kx-flames i:nth-child(3){animation-delay:-.33s}
+@keyframes flame{to{transform:scale(.82,1.18) skewX(-4deg)}}
+.kx-pan{position:absolute;left:4%;width:88%;bottom:36%;aspect-ratio:260/110;transform-origin:88% 40%}
+.kx-pan__art{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.kx-pop{position:absolute;left:30%;bottom:62%;width:24%;height:auto;opacity:0;transform-origin:50% 100%}
+.kx-steam{position:absolute;left:14%;width:48%;bottom:56%;height:170%;display:flex;justify-content:space-around;opacity:.9}
+.kx-steam svg{display:block;width:18%;height:100%;opacity:.6;animation:steam 2.6s ease-in infinite}
+.kx-steam svg:nth-child(2){animation-delay:-.9s}
+.kx-steam svg:nth-child(3){animation-delay:-1.7s}
+@keyframes steam{0%{opacity:0;transform:translate(0,25%) scaleY(.6)}35%{opacity:1}100%{opacity:0;transform:translate(35%,-45%) rotate(10deg) scaleY(1.1)}}
+.kx-board{z-index:5;left:64vw;bottom:calc(22% - 4px);width:min(15vw,28vh);aspect-ratio:240/110}
+.kx-board__wood{position:absolute;left:0;bottom:0;width:100%;height:auto}
+.kx-carrot{position:absolute;left:18%;bottom:40%;width:50%;height:auto;transform-origin:0 50%;transform:scaleX(.22)}
+.kx-knife-down{position:absolute;left:52%;bottom:26%;width:47%;height:auto;transform:rotate(-4deg)}   /* parked at the board's right end, clear of his face */
+.ings,.slices,.bits{position:absolute;z-index:6;inset:0;pointer-events:none}
+.slices{z-index:3}   /* cut in front of him, the slices pass behind pal on their way to the pan, never across his face */
+.ing{position:absolute;left:0;top:0;width:clamp(44px,4.6vw,84px);height:auto;opacity:0}
+.slices i{position:absolute;left:0;top:0;width:clamp(14px,1.5vw,26px);aspect-ratio:1;border-radius:50%;background:#F29A4A;border:2px solid #1D2B24;opacity:0}
+.bit{position:absolute;left:0;top:0;width:clamp(24px,2.6vw,46px);height:auto;opacity:0}
+.kx-plate{z-index:8;left:79.5vw;bottom:calc(22% - 6px);width:min(16vw,30vh);aspect-ratio:240/150;transform-origin:50% 100%}   /* on the counter, in the spot pal leaves when he walks to the hob */
+.kx-dish{position:absolute;inset:0;width:100%;height:100%}
+.kx-plate .kx-steam{left:30%;width:40%;bottom:66%;height:100%;opacity:0}
+.kx-spark{position:absolute;width:15%;height:auto;opacity:0}
+.kx-spark--1{left:-8%;top:18%}
+.kx-spark--2{right:-6%;top:-4%}
+.kx-spark--3{left:60%;top:-34%}
+.kx-meal{transform-box:fill-box;transform-origin:50% 90%}
+.k-pal{transform-origin:50% 100%;position:absolute;z-index:4;left:79vw;bottom:calc(22% - 10px);width:min(15vw,28vh)}
+.pal--chef{aspect-ratio:626/600;cursor:default}
+.k-pal .pal{width:100%}
+.k-pal .pal__face{opacity:0}
+.k-happy{opacity:1}
+.k-hands{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.k-arm{transform-box:view-box;transform-origin:96px 474px}
+.k-rest{transform-box:view-box;transform-origin:556px 492px}
+.k-hat{transform-origin:50% 90%;position:absolute;left:30%;top:-30%;width:44%;height:auto;transform:rotate(-6deg)}
+.k-say{right:68%;bottom:78%;opacity:0;transform-origin:90% 100%;font-size:19px}
+.k-say::after{left:auto;right:18px}
+.k-say:last-child{opacity:1}
+.k-say--stir{right:auto;left:84%;bottom:72%}   /* beside his head, over the board: clear of the window, the spoon and the flips */
+.k-say--stir::after{left:22px;right:auto}
+
+
+
+
+
+
+/* reduced motion: each scene becomes a strip of still panels (JS clones the stage and freezes each copy) */
+.night.is-strip{display:grid;gap:0;padding-bottom:0}
+.night.is-strip .night__stage{position:relative}
+
+@media (max-width:760px),(max-width:1100px) and (max-aspect-ratio:4/5){   /* phones, and portrait tablets where the side column is too thin */
+  .sc-chaps{top:18px}
+  .night .scene-note{display:none}
+  .n-head{top:70px}
+  .n-1{font-size:30px;letter-spacing:-.3px;line-height:1.21}
+  .n-2{display:none}   /* the phone has no room beside the fridge; the heading carries the beat */
+  .nx-win{top:auto;bottom:54%;right:4vw;width:44vw}
+  .nx-clock{top:auto;bottom:57%;left:7vw;width:15vw}
+  .nx-lamp{left:68vw;width:16vw;height:22%}
+  .nx-fridge{left:-5vw;height:33%;bottom:23%}
+  .nx-counter{height:23%}
+  .nx-glow{left:-10vw;width:120vw;bottom:-20%}
+  .n-grr{left:var(--gut);top:155px;font-size:30px;letter-spacing:-.3px;transform-origin:0 50%}   /* under the headline; grows rightwards, never off the left edge */
+  .n-caps{left:var(--gut);right:var(--gut);top:64px;width:auto}
+  .cap{font-size:30px;letter-spacing:-.3px;line-height:1.21}
+  .n-phone{--room-l:.43;--room-b:.24;--room-h:.34;--zoom-t:.2;--zoom-h:.56;top:20%;height:56%}   /* below the narration, clear of chapter 03's words at the bottom */
+  .n-bubble{font-size:15px;right:78%;bottom:84%}
+  .n-hand{width:38cqi}   /* a bigger finger so the tap reads on a phone */
+  .n-sticker{left:0;right:0;bottom:-14px;width:max-content;margin:auto}   /* on the phone's bottom edge */
+  .food{width:13vw}
+  .food--1{left:4vw;top:80%}   /* below the fridge, never on its magnets */
+  .food--2{left:40vw;top:84%}
+  .food--3{left:84vw;top:61%}
+  .food--4{left:84vw;top:45%}
+  .food--5{display:none}
+  .n-cap{left:var(--gut);right:var(--gut);max-width:none;top:auto;bottom:12px}
+  .n-cap p{font-size:15px;line-height:1.45;margin-top:6px}
+  .k-caps{top:66px;width:auto;left:var(--gut);right:80px}
+  .k-caps .cap--end small{margin-top:8px;font-size:15px}
+  .k-price span{font-size:11px}
+  .k-price{display:none}
+  .kx-hob{left:-4vw;width:46vw;bottom:calc(20% - 4px)}
+  .kx-board{left:calc(98vw - max(58vw,27svh));width:max(58vw,27svh);bottom:calc(20% - 4px)}
+  .k-pal{left:calc(98vw - max(58vw,27svh));width:max(58vw,27svh);bottom:calc(20% - 8px)}
+  .k-say{font-size:15px}
+  .k-say--stir{left:auto;right:2%;bottom:132%}   /* above the hat: the window is on the other side here */
+  .k-say--stir::after{left:auto;right:18px}
+  .kx-plate{left:62vw;width:35vw;bottom:calc(20% - 6px)}
+  .nx-shelf{display:none}
+}
+/* the £22 ticket on phones, portrait tablets and short landscape screens: one compact row, clear of the phone's title */
+@media (max-width:760px),(max-width:1100px) and (max-aspect-ratio:4/5),(min-width:761px) and (max-height:500px){
+  .cap--ticket{top:0;margin-top:-6px;width:min(270px,76vw);padding:10px 14px 12px;display:grid;grid-template-columns:auto 1fr;align-items:end;column-gap:14px}
+  .cap--ticket .ticket-top{grid-column:1/-1;padding-bottom:6px}
+  .cap--ticket strong{margin-top:6px;font-size:28px;line-height:1;letter-spacing:0}
+  .cap--ticket .ticket-sub{margin:0 0 1px;font:500 13px/1.3 var(--text)}
+}
+@media (min-width:761px) and (max-width:1200px) and (min-aspect-ratio:4/5){
+  .n-caps .cap:not(.cap--ticket),.n-grr{font-size:30px;letter-spacing:-.3px;line-height:1.21}
+}
+/* short phones (568 to 640 tall): a smaller headline, the grumble under it, a smaller phone */
+@media (max-width:760px) and (max-height:640px){
+  .n-phone{--zoom-t:.28;--zoom-h:.47;top:28%;height:47%}
+  .app__item{grid-template-columns:14cqi minmax(0,1fr) 11cqi;gap:3cqi;padding:3cqi 2cqi}
+  .app__item b{overflow-wrap:anywhere}
+  .n-cap p{display:none}   /* the try section right after says it in full */
+  .n-sticker{display:none}   /* no room under the phone here */
+  .nx-win{bottom:50%;width:38vw}
+}
+@media (min-width:761px) and (max-width:1100px) and (max-aspect-ratio:4/5){   /* portrait tablets: the phone layout, with the vw-sized props capped by height */
+  .n-1,.n-grr,.cap{font-size:56px;letter-spacing:-1.1px;line-height:1.1}
+  .n-grr{top:206px}
+  .nx-win{width:27vh}
+  .nx-clock{width:9vh}
+  .n-cap p{font-size:16px}
+  .food--1{top:80%}
+  .kx-hob{left:4vw;width:40vw}
+  .kx-board{left:calc(84vw - max(36vw,27svh));width:max(36vw,27svh)}
+  .k-pal{left:calc(84vw - max(36vw,27svh));width:max(36vw,27svh)}
+  .kx-plate{left:66vw;width:28vw}
+  .k-say{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){
+  .tw,.kx-flames i,.kx-steam svg,.night .pal__lids{animation:none}
+}
+
+/* A short landscape viewport still needs the counter inside the pinned frame. */
+@media (min-width:761px) and (max-height:500px){
+  .sc-chaps{top:12px}
+  .cap--ticket{top:calc(54px - 20svh)}
+  .nx-win{top:14%;width:22vw}
+  .n-cap{top:auto;bottom:16px}
+  .n-cap p{font-size:15px;line-height:1.4}
+  .n-head{top:62px}
+  .k-caps{top:18%}
+}
+
+/* Bagel leads the story; small labels and speech retain Figtree's open counters. */
+.n-sticker{font-family:var(--text);font-weight:700}
+.app__total{font-family:var(--display);font-weight:400}
+
+/* Review: keep action on the worktop, with a clear silhouette around the chef. */
+.nx-lamp,.nx-glow{z-index:0}
+.nx svg :is(path,rect,circle,ellipse,line){stroke-width:3px}
+.nx-counter{background:linear-gradient(var(--floor-top),var(--floor) 45%,var(--wall))}
+.night:not(.cook) .nx-shelf{left:52vw}
+.food--4{left:86vw;top:67%}
+.app__item i{color:var(--ink)}
+.n-pause__t{text-wrap:balance}
+.n-btn{transform-origin:50% 0}
+.n-dust i{border:0;background:var(--paper);filter:blur(2px)}
+.night .n-bubble{left:0;right:0;margin:auto;top:20cqi;bottom:auto;font-size:clamp(11px,4.6cqi,19px);white-space:nowrap;padding:7px 10px}
+.night .n-bubble::after{left:calc(50% - 8px);right:auto}
+.n-sticker{left:0;right:0;bottom:-16px;width:max-content;margin:auto}
+.kx-steam{height:80%}
+.kx-plate .kx-steam{height:65%}
+
+
+
+.chef-neutral{position:absolute;inset:0;width:100%;height:100%}
+
+.bits{z-index:3}
+@media (max-width:760px),(max-width:1100px) and (max-aspect-ratio:4/5){
+  .food--4{left:83vw;top:75%}
+  .kx-board,.k-pal{margin-left:-10px}
+  .kx-plate{left:3vw;width:32vw;bottom:9%}
+  .k-say--stir{left:auto;right:70%;bottom:88%}
+  .k-say--stir::after{left:auto;right:16px}
+}
+@media (max-width:760px) and (max-height:640px){
+  .night:not(.cook) .nx-lamp{left:85vw;width:12vw;height:12%}
+}
+
+
+.kx-pan-front svg{display:block;width:100%;height:100%}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Cooking uses one width-bounded worktop. Responsive modes change its variables,
+   while each prop has exactly one positioning rule. */
+.cook{--room:min(1680px,calc(100vw - 2 * var(--gut)));--worktop:22%;--fridge-w:min(calc(var(--room) * .17),28.8svh);--hob-x:calc(var(--gut) + var(--room) * .42);--hob-w:calc(var(--room) * .13);--chef-x:calc(var(--gut) + var(--room) * .56);--chef-w:calc(var(--room) * .15);--plate-x:calc(var(--gut) + var(--room) * .78);--plate-w:calc(var(--room) * .105);--plate-bottom:calc(var(--worktop) - 4px);--win-w:min(calc(var(--room) * .21),24svh);--win-top:10%;--lamp-x:46%;--lamp-h:25%;--voice:clamp(13px,calc(var(--room) * .014),23px)}
+.cook .nx-counter{height:var(--worktop);z-index:1}
+.cook .nx-scooter{display:none}
+.cook .sc-chaps .section-label{background:var(--wall);padding-right:8px}
+.cook .kx-steam path{stroke:#8DBFA2}
+.cook .nx-fridge{left:var(--gut);bottom:4%;width:var(--fridge-w);height:auto;aspect-ratio:200/360}
+.cook .nx-win{left:auto;right:var(--gut);top:var(--win-top);bottom:auto;width:var(--win-w)}
+.cook .nx-lamp{left:var(--lamp-x);top:0;width:var(--lamp-w,7%);height:var(--lamp-h);z-index:0}
+.cook .nx-lamp::before{content:"";position:absolute;left:calc(50% - 1px);top:0;height:80%;width:2px;background:#1D2B24}
+.cook .nx-lamp__cone{width:150%;margin-left:-75%;top:82%}
+.cook .nx-clock{left:calc(var(--gut) + var(--room) * .38);right:auto;top:30%;bottom:auto;width:calc(var(--room) * .055)}
+.cook .nx-shelf{left:var(--gut);bottom:calc(4% + var(--fridge-w) * 1.8 + 24px);width:var(--shelf-w,calc(var(--room) * .12))}
+.cook .kx-warm{z-index:2}
+.cook .kx-hob{left:var(--hob-x);width:var(--hob-w);bottom:calc(var(--worktop) - 4px);z-index:3}
+.cook .kx-board,.cook .k-pal{left:var(--chef-x);width:var(--chef-w);margin-left:0;bottom:calc(var(--worktop) - 4px)}
+.cook .kx-hob::before{content:none}
+.cook .kx-hob__base{height:12%}
+.cook .kx-pan{bottom:14%;left:6%;width:84%}   /* sits on the burner, its rim below pal's hand so the spoon reaches down into the food */
+.cook .kx-flames{left:14%;right:20%;bottom:11%;height:16%}
+.cook .kx-board{z-index:5}
+.cook .kx-spark--2{right:4%}
+.cook .kx-plate{left:var(--plate-x);width:var(--plate-w);bottom:var(--plate-bottom);z-index:6}
+.cook .k-price{left:auto;right:0;top:-64%}
+.cook .k-hat{left:21%;top:-30.63%;width:58%;height:auto;transform:none;transform-origin:50% 100%}   /* drawn proportions kept; the band sits snug where his head is about as wide as it */
+.cook .k-say{left:92%;right:auto;bottom:100%;font-size:var(--voice);max-width:none;white-space:nowrap;padding:.5em .7em;z-index:10;transform-origin:10% 100%}
+.cook .k-say::after{left:8px;right:auto;transform:rotate(25deg)}
+.cook .ings{z-index:3}
+.cook .slices{z-index:7}
+.cook .slices i{width:max(11px,calc(var(--chef-w) * .075));height:max(8px,calc(var(--chef-w) * .056));aspect-ratio:auto;border:1.5px solid #1D2B24;background:radial-gradient(ellipse,#F8C074 0 22%,#D86E22 24% 33%,#F29A4A 36% 64%,#D86E22 67%)}
+.cook .kx-pan-front{position:absolute;z-index:8;pointer-events:none}
+.cook .k-utensils{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:7;pointer-events:none}
+.cook .k-utensils path,.cook .k-utensils ellipse{vector-effect:non-scaling-stroke}
+.cook .kx-knife-down{display:none}
+.cook .k-hand-left,.cook .k-hand-right{position:absolute;overflow:visible;z-index:9;pointer-events:none}
+.cook .k-caps{top:12%;width:40%}
+.cook .kx-carrot{transform:none}
+@media (max-width:760px),(max-width:1100px) and (max-aspect-ratio:4/5){
+ .cook{--kitchen:min(calc(100vw - 15px),58svh);--kitchen-left:calc((100% - var(--kitchen)) / 2);--room:calc(var(--kitchen) * 2.2);--worktop:44%;--fridge-w:calc(var(--kitchen) * .46);--hob-x:calc(var(--kitchen-left) + var(--kitchen) * .08);--hob-w:calc(var(--kitchen) * .30);--chef-x:calc(var(--kitchen-left) + var(--kitchen) * .40);--chef-w:calc(var(--kitchen) * .35);--plate-x:calc(var(--kitchen-left) + var(--kitchen) - var(--plate-w) - 8px);--plate-bottom:calc(var(--worktop) - 4px);--win-w:30vw;--win-top:25%;--lamp-x:49%;--lamp-w:10%;--lamp-h:28%;--voice:clamp(12px,2.3vw,19px)}
+ .cook .nx-fridge{left:calc(var(--kitchen-left) + var(--kitchen) * .03);bottom:calc(var(--worktop) - var(--fridge-w) * 1.8 - 8px)}
+ .cook .nx-clock{left:8vw;top:34%;width:11vw}
+ .cook .nx-shelf{display:none}
+ .cook .k-caps{top:66px;left:var(--gut);right:auto;width:43%}
+ .cook .k-say{left:82%;right:auto;bottom:85%;padding:.45em .6em}
+ .cook .k-price{display:none}
+}
+@media (min-width:761px) and (max-width:1100px) and (max-aspect-ratio:4/5){
+ .cook .k-say{left:82%;right:auto;bottom:85%}
+ .cook{--win-w:26vw;--win-top:10%;--lamp-h:22%;--worktop:52%}
+ .cook .nx-clock{top:26%}
+}
+@media (min-width:761px) and (max-height:500px){
+ .cook{--win-top:20%;--win-w:19svh;--lamp-h:22%;--chef-w:22vw;--voice:12px}
+ .cook .scene-note{display:none}
+ .cook .k-caps{top:60px;width:42%}
+ .cook .k-caps .cap{font-size:30px}
+ .cook .k-caps small{font-size:13px;max-width:25em}
+ .cook .nx-shelf{display:none}
+ .cook .nx-clock{display:none}
+}
+
+@media (min-width:1400px) and (max-height:820px){
+ .cook{--shelf-w:14svh}
+}

@@ -3,465 +3,415 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cravepal, a Pause before you order takeaway</title>
-<meta name="description" content="Cravepal puts a Pause in front of the takeaway apps and sites you pick, and counts the money you keep by cooking instead. Coming soon for iPhone and Chrome.">
-<meta name="theme-color" content="#F0533A">
+<title>CravePal, a Pause before you order takeaway</title>
+<meta name="description" content="CravePal puts a Pause in front of the takeaway apps and sites you pick, and counts the money you keep by cooking instead. Coming soon for iPhone and Chrome.">
+<meta name="theme-color" content="#DCEFE2">
 <link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/pal/pal-grumpy-body.webp" as="image">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="preload" href="assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/pal/pal-grumpy.webp" as="image">
+<link rel="stylesheet" href="assets/home.css">
+<link rel="stylesheet" href="assets/scenes.css">
 <script>document.documentElement.classList.add('js')</script>
-<script src="assets/pal.js" defer></script>
+<script src="assets/home.js" defer></script>
+<script src="assets/scenes.js" defer></script>
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Cravepal">
-<meta property="og:title" content="Cravepal, a Pause before you order takeaway">
+<meta property="og:site_name" content="CravePal">
+<meta property="og:title" content="CravePal, a Pause before you order takeaway">
 <meta property="og:description" content="pal steps in before you order, and counts the money you keep. Coming soon for iPhone and Chrome.">
 <meta property="og:url" content="https://cravepal.app/">
 <meta property="og:image" content="https://cravepal.app/assets/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="pal the dumpling clutching his wallet on a tomato red background, beside the words pal steps in before you order">
+<meta property="og:image:alt" content="pal the dumpling in his bamboo steamer on a mint green wall, beside the CravePal wordmark and the words we have food at home">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 <body class="home">
-<header class="top">
-  <div class="wrap">
-    <span class="wordmark">cravepal</span>
-    <nav aria-label="Site"><a href="#try">Try a Pause</a><a href="privacy/">Privacy</a></nav>
-  </div>
+<a class="skip" href="#story">Skip to the story</a>
+<header class="masthead" id="top">
+<a class="brand" href="#" aria-label="CravePal home">CravePal</a>
+<span class="soon-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 14.4 9h5.6l-4.5 3.4 1.8 5.6L12 14.6 6.7 18l1.8-5.6L4 9h5.6z" fill="#F2BE4A" stroke="#1D2B24" stroke-width="1.6" stroke-linejoin="round"/></svg>Coming soon<span class="soon-wide">· iPhone + Chrome</span></span>
 </header>
-
 <main>
-  <!-- 1. The stare-down. The headline is pal's line; pal watches the cursor and can be booped. -->
-  <section class="hero on-tomato" data-hero aria-labelledby="hero-title">
-    <div class="wrap hero__in">
-      <div class="hero__stage">
-      <p class="hero__title jelly" data-split data-jelly data-scatter><span class="sr-only">we have food at home.</span><span aria-hidden="true"><span class="w"><span class="ch" style="--i:0">w</span><span class="ch" style="--i:1">e</span></span> <span class="w"><span class="ch" style="--i:2">h</span><span class="ch" style="--i:3">a</span><span class="ch" style="--i:4">v</span><span class="ch" style="--i:5">e</span></span> <span class="w"><span class="ch" style="--i:6">f</span><span class="ch" style="--i:7">o</span><span class="ch" style="--i:8">o</span><span class="ch" style="--i:9">d</span></span> <span class="w"><span class="ch" style="--i:10">a</span><span class="ch" style="--i:11">t</span></span> <span class="w"><span class="ch" style="--i:12">h</span><span class="ch" style="--i:13">o</span><span class="ch" style="--i:14">m</span><span class="ch" style="--i:15">e</span><span class="ch" style="--i:16">.</span></span></span></p>
-      <div class="hero__pal">
-        <button class="pal pal--grumpy" type="button" data-rig data-boop aria-label="Boop pal">
-          <span class="pal__rig">
-            <img decoding="async" class="pal__body" src="assets/pal/pal-grumpy-body.webp" width="626" height="600" alt="" fetchpriority="high">
-            <span class="pal__face"><img decoding="async" src="assets/pal/pal-grumpy-face.webp" width="626" height="600" alt=""><img decoding="async" class="pal__lids" src="assets/pal/pal-grumpy-lids.webp" width="626" height="600" alt=""></span>
-            <img decoding="async" class="pal__dream" data-src="assets/pal/pal-dream.webp" width="777" height="586" alt="">
-          </span>
-        </button>
-        <p class="bubble bubble--hero" role="status" data-bubble>boop me. i&nbsp;dare&nbsp;you.</p>
-      </div>
-      </div>
-      <div class="hero__foot">
-        <h1 class="hero__lede" id="hero-title">Cravepal puts a Pause in front of the takeaway apps and sites you pick, then counts the money you keep by cooking instead.</h1>
-        <p class="badge" aria-label="Coming soon for iPhone and Chrome">
-          <svg viewBox="0 0 200 200" aria-hidden="true" data-spin><defs><path id="ring" d="M100 100m-74 0a74 74 0 1 1 148 0a74 74 0 1 1-148 0"/></defs><circle cx="100" cy="100" r="98" /><text><textPath href="#ring" textLength="462">coming soon · iPhone · Chrome · coming soon · iPhone · Chrome ·</textPath></text></svg>
-          <span aria-hidden="true">soon</span>
-        </p>
-      </div>
-    </div>
-  </section>
+<section class="hero" id="hero" aria-labelledby="hero-title">
+<!-- pal's kitchen, as on Home: the pendant lamp from the top edge, the window with sky and a plant, the blush shelf -->
+<div class="kitchen" aria-hidden="true">
+<svg class="k-lamp" viewBox="0 0 120 260"><defs><radialGradient id="hero-glow"><stop offset="0" stop-color="#FFE9A8" stop-opacity=".9"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs><circle cx="60" cy="214" r="58" fill="url(#hero-glow)"/><path d="M60 0v160" stroke="#1D2B24" stroke-width="3"/><rect x="53" y="154" width="14" height="12" rx="3" fill="#1D2B24"/><path d="M18 204q0-40 42-40t42 40z" fill="#F2BE4A" stroke="#1D2B24" stroke-width="4" stroke-linejoin="round"/><path d="M34 190q6-14 20-18" fill="none" stroke="#FFE6A3" stroke-width="6" stroke-linecap="round"/><circle cx="60" cy="212" r="10" fill="#FFF3C4" stroke="#1D2B24" stroke-width="3.5"/></svg>
+<svg class="k-window" viewBox="0 0 168 196"><defs><linearGradient id="hero-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A9DBF2"/><stop offset="1" stop-color="#E4F5FB"/></linearGradient><clipPath id="hero-pane"><rect x="10" y="8" width="148" height="160" rx="18"/></clipPath></defs><g clip-path="url(#hero-pane)"><rect x="10" y="8" width="148" height="160" fill="url(#hero-sky)"/><circle cx="122" cy="52" r="20" fill="#FFD45C"/><path d="M28 62q2-12 14-10 4-10 15-6 9 1 9 12 7 2 5 8H28z" fill="#FFFFFF"/><path d="M10 150q40-30 82-14t66-6v40H10z" fill="#9BCF8E"/></g><path d="M84 8v160M10 88h148" stroke="#FFFCF5" stroke-width="6"/><g stroke="#1D2B24" stroke-width="3" stroke-linejoin="round"><path d="M116 140q-14-22-4-40 6 18 6 40M120 140q4-30 22-38-6 22-14 40M118 140q-22-12-28-30 16 4 24 30" fill="#4FA36F"/><path d="M104 140h32l-4 26h-24z" fill="#E27D52"/><rect x="101" y="136" width="38" height="9" rx="3" fill="#C9643C"/></g><rect x="10" y="8" width="148" height="160" rx="18" fill="none" stroke="#1D2B24" stroke-width="4"/><rect x="2" y="168" width="164" height="14" rx="7" fill="#FFFCF5" stroke="#1D2B24" stroke-width="3.5"/></svg>
+<svg class="k-shelf" viewBox="0 0 190 130"><g stroke="#1D2B24" stroke-width="3.5" stroke-linejoin="round"><rect x="16" y="14" width="40" height="14" rx="4" fill="#F28B6B"/><rect x="12" y="26" width="48" height="66" rx="10" fill="#F4FBF6"/><path d="M14 54h44v28q0 8-8 8H22q-8 0-8-8z" fill="#F29A4A" stroke="none"/><rect x="12" y="26" width="48" height="66" rx="10" fill="none"/><rect x="78" y="40" width="34" height="12" rx="4" fill="#F2BE4A"/><rect x="74" y="50" width="42" height="42" rx="9" fill="#F4FBF6"/><path d="M76 66h38v18q0 6-6 6H82q-6 0-6-6z" fill="#6BAF6E" stroke="none"/><rect x="74" y="50" width="42" height="42" rx="9" fill="none"/><circle cx="142" cy="78" r="15" fill="#E94F3F"/><path d="M142 63q2-6 8-6M136 64q6 2 12 0" fill="none" stroke="#3E8A52" stroke-width="3.5" stroke-linecap="round"/><rect x="2" y="92" width="186" height="13" rx="6.5" fill="#F4B3A2"/><path d="M28 106v16M162 106v16" stroke-width="5" stroke-linecap="round"/></g></svg>
+</div>
+<div class="floor" aria-hidden="true"></div>
+<div class="hero-copy">
+<p class="section-label">A little Pause. A different evening.</p>
+<h1 id="hero-title">we have food <span>at <span class="home-word">home.<svg viewBox="0 0 450 36" aria-hidden="true"><path d="M5 18Q215-9 445 12M35 29Q260 12 410 26"/></svg></span></span></h1>
+<p class="lede">A little Pause before takeaway. A grumpy pal. More money left for you.</p>
 
-  <!-- 2. The story, scene A: hungry, ordering, blocked. Pinned and scrubbed by scroll. -->
-  <section class="night" data-night data-stills=".15,.48,.72" aria-labelledby="night-title">
+</div>
+<div class="hero-pal">
+<p class="pal-aside">small dumpling.<br>big feelings about<br>your money.<svg viewBox="0 0 110 70" aria-hidden="true"><path d="M5 8q74-15 82 42m-17-10 19 13 9-20"/></svg></p>
+<p class="bubble bubble--hero" data-boop-speech role="status">not on my watch.</p>
+<button class="pal-button" data-boop aria-label="Boop pal, the grumpy dumpling"><img src="assets/pal/pal-grumpy.webp" width="560" height="512" alt="pal standing with his arms around his wallet." fetchpriority="high"></button>
+</div>
+<div class="hero-actions"><p class="hero-launch">Coming soon for iPhone and Chrome.</p><a class="btn btn--primary" href="#story">Here’s how it goes <span aria-hidden="true">↓</span></a></div>
+</section>
+<div class="story-intro" id="story"><p>One evening. A different ending.</p><span>Scroll to change the plan <span aria-hidden="true">↓</span></span></div>
+<!-- Chapters 01 to 03 as a pinned kitchen at night, scrubbed by scroll: hungry, ordering, blocked.
+     With reduced motion it is three still panels. -->
+<section class="night" id="hungry" data-night data-stills=".15,.48,.78" aria-labelledby="hungry-title">
     <div class="night__stage" data-stage>
-      <!-- Back layer: the window, with the moon, the city, a neon sign and a scooter going past -->
+      <!-- The page's numbered chapters, carried into the scene: they change as the story moves on -->
+      <div class="sc-chaps" aria-hidden="true">
+        <div class="chapter-heading sc-chap" data-in="-1" data-out=".22"><p class="section-label"><span class="chapter-number">01</span> The familiar feeling</p><span class="scene-note">You + an unconvincing fridge</span></div>
+        <div class="chapter-heading sc-chap" data-in=".22" data-out=".5"><p class="section-label"><span class="chapter-number">02</span> The usual suspect</p><span class="scene-note">A few taps later…</span></div>
+        <div class="chapter-heading sc-chap" data-in=".5" data-out="2"><p class="section-label"><span class="chapter-number">03</span> Here comes your pal</p><span class="scene-note">Tiny guy. Firm boundaries.</span></div>
+      </div>
+      <!-- Back layer: the night window and its plant; the room keeps the mint palette -->
       <div class="nx nx-win" aria-hidden="true">
         <svg class="nx-win__sky" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
           <rect width="400" height="300" fill="#1D2A4D"/>
-          <g fill="#FFF4E0"><circle cx="40" cy="40" r="2"/><circle class="tw" cx="120" cy="22" r="1.6"/><circle cx="190" cy="60" r="1.4"/><circle class="tw tw--2" cx="70" cy="95" r="1.5"/><circle cx="240" cy="30" r="1.8"/><circle class="tw" cx="360" cy="150" r="1.4"/></g>
-          <circle cx="300" cy="78" r="62" fill="#FFF4E0" opacity=".07"/>
-          <circle cx="300" cy="78" r="36" fill="#FFF4E0"/><circle cx="288" cy="70" r="7" fill="#EADCC4"/><circle cx="311" cy="92" r="5" fill="#EADCC4"/><circle cx="314" cy="64" r="3.5" fill="#EADCC4"/>
+          <g fill="#FFFCF5"><circle cx="40" cy="40" r="2"/><circle class="tw" cx="120" cy="22" r="1.6"/><circle cx="190" cy="60" r="1.4"/><circle class="tw tw--2" cx="70" cy="95" r="1.5"/><circle cx="240" cy="30" r="1.8"/><circle class="tw" cx="360" cy="150" r="1.4"/></g>
+          <circle cx="300" cy="78" r="62" fill="#FFFCF5" opacity=".07"/>
+          <circle cx="300" cy="78" r="36" fill="#FFFCF5"/><circle cx="288" cy="70" r="7" fill="#E8EEDF"/><circle cx="311" cy="92" r="5" fill="#E8EEDF"/><circle cx="314" cy="64" r="3.5" fill="#E8EEDF"/>
           <path d="M0 300V190h34v-30h40v50h22v-70h52v90h24v-40h44v60h30v-100h48v90h28v-50h44v40h34v110z" fill="#16203F"/>
           <path d="M0 300V235h50v-25h38v40h30v-35h46v45h26v-30h58v32h40v-52h46v42h66v80z" fill="#0F1730"/>
-          <g fill="#FFC93C"><rect x="110" y="150" width="8" height="10"/><rect class="tw" x="126" y="170" width="8" height="10"/><rect x="110" y="190" width="8" height="10"/><rect x="290" y="128" width="8" height="10"/><rect class="tw tw--2" x="306" y="148" width="8" height="10"/><rect x="306" y="188" width="8" height="10"/><rect x="186" y="170" width="7" height="9"/><rect class="tw" x="58" y="182" width="7" height="9"/></g>
-          <g><rect x="60" y="158" width="92" height="34" rx="10" fill="none" stroke="#F0533A" stroke-width="8" opacity=".3"/><rect x="60" y="158" width="92" height="34" rx="10" fill="#1A0F14" stroke="#F0533A" stroke-width="3"/><text x="106" y="182" text-anchor="middle" font-family="Bagel Fat One, sans-serif" font-size="17" fill="#FF8A73">open late</text></g>
+          <g fill="#F2BE4A"><rect x="110" y="150" width="8" height="10"/><rect class="tw" x="126" y="170" width="8" height="10"/><rect x="110" y="190" width="8" height="10"/><rect x="290" y="128" width="8" height="10"/><rect class="tw tw--2" x="306" y="148" width="8" height="10"/><rect x="306" y="188" width="8" height="10"/><rect x="186" y="170" width="7" height="9"/><rect class="tw" x="58" y="182" width="7" height="9"/></g>
+
         </svg>
-        <svg class="nx-scooter" viewBox="-30 0 150 70"><g stroke="#0C080D" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="58" y="8" width="34" height="28" rx="5" fill="#FFC93C"/><path d="M20 50h62l10-14H40z" fill="#F0533A"/><path d="M28 50l-8-26h10" fill="none"/><circle cx="24" cy="56" r="10" fill="#1E1420"/><circle cx="88" cy="56" r="10" fill="#1E1420"/><circle cx="48" cy="14" r="10" fill="#FFF4E0"/><path d="M42 24l-4 20h18l4-16z" fill="#FFF4E0"/></g><g stroke="#FFF4E0" stroke-width="3" stroke-linecap="round" opacity=".7"><path d="M-4 30h-18M-2 42h-24M0 52h-14"/></g></svg>
-        <svg class="nx-win__frame" viewBox="0 0 400 300" preserveAspectRatio="none"><g fill="none" stroke="#0C080D"><rect x="6" y="6" width="388" height="288" rx="14" stroke-width="12"/><path d="M200 6v288M6 150h388" stroke-width="10"/></g><g fill="none" stroke="#E9DFCF"><rect x="6" y="6" width="388" height="288" rx="14" stroke-width="6"/><path d="M200 6v288M6 150h388" stroke-width="5"/></g></svg>
+        <svg class="nx-scooter" viewBox="-30 0 150 70"><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="58" y="8" width="34" height="28" rx="5" fill="#F2BE4A"/><path d="M20 50h62l10-14H40z" fill="#F28B6B"/><path d="M28 50l-8-26h10" fill="none"/><circle cx="24" cy="56" r="10" fill="#1D2B24"/><circle cx="88" cy="56" r="10" fill="#1D2B24"/><circle cx="48" cy="14" r="10" fill="#FFFCF5"/><path d="M42 24l-4 20h18l4-16z" fill="#FFFCF5"/></g><g stroke="#FFFCF5" stroke-width="3" stroke-linecap="round" opacity=".7"><path d="M-4 30h-18M-2 42h-24M0 52h-14"/></g></svg>
+        <svg class="nx-win__frame" viewBox="0 0 400 300" preserveAspectRatio="none"><g fill="none" stroke="#1D2B24"><rect x="5" y="5" width="390" height="290" rx="26" stroke-width="9"/></g><g fill="none" stroke="#FFFCF5"><path d="M200 12v276M12 150h376" stroke-width="7"/></g><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round"><path d="M322 246q-20-30-6-56 9 26 9 56M327 246q6-42 31-53-8 31-20 53M324 246q-31-17-39-42 22 6 34 42" fill="#4FA36F"/><path d="M304 246h45l-6 36h-33z" fill="#E27D52"/><rect x="300" y="240" width="53" height="12" rx="4" fill="#C9643C"/></g><rect x="12" y="282" width="376" height="10" fill="#FFFCF5"/></svg>
       </div>
 
       <!-- Mid layer: the clock, the lamp and the fridge -->
       <div class="nx nx-clock" aria-hidden="true">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#FFF4E0" stroke="#0C080D" stroke-width="6"/><g stroke="#1E1420" stroke-width="5" stroke-linecap="round"><path d="M50 12v8M50 80v8M12 50h8M80 50h8"/></g><g stroke="#1E1420" stroke-width="3" stroke-linecap="round"><path d="M69 17l-3 5M83 31l-5 3M83 69l-5-3M69 83l-3-5M31 83l3-5M17 69l5-3M17 31l5 3M31 17l3 5"/></g></svg>
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#FFFCF5" stroke="#1D2B24" stroke-width="6"/><g stroke="#1D2B24" stroke-width="5" stroke-linecap="round"><path d="M50 12v8M50 80v8M12 50h8M80 50h8"/></g><g stroke="#1D2B24" stroke-width="3" stroke-linecap="round"><path d="M69 17l-3 5M83 31l-5 3M83 69l-5-3M69 83l-3-5M31 83l3-5M17 69l5-3M17 31l5 3M31 17l3 5"/></g></svg>
         <i class="nx-clock__h"></i><i class="nx-clock__m"></i><b></b>
       </div>
       <div class="nx nx-lamp" aria-hidden="true">
         <i class="nx-lamp__cone"></i>
-        <svg viewBox="0 0 120 300" preserveAspectRatio="xMidYMax meet"><path d="M60 0v214" stroke="#0C080D" stroke-width="5"/><path d="M14 270q0-56 46-56t46 56z" fill="#F0533A" stroke="#0C080D" stroke-width="6" stroke-linejoin="round"/><ellipse cx="60" cy="270" rx="22" ry="7" fill="#FFF4E0"/></svg>
+        <svg viewBox="0 0 120 300" preserveAspectRatio="xMidYMax meet"><path d="M60 0v214" stroke="#1D2B24" stroke-width="3.5"/><rect x="52" y="206" width="16" height="13" rx="3" fill="#1D2B24"/><path d="M14 264q0-48 46-48t46 48z" fill="#F2BE4A" stroke="#1D2B24" stroke-width="4.5" stroke-linejoin="round"/><path d="M32 248q7-16 22-20" fill="none" stroke="#FFE6A3" stroke-width="7" stroke-linecap="round"/><circle cx="60" cy="274" r="12" fill="#FFF3C4" stroke="#1D2B24" stroke-width="4"/></svg>
       </div>
       <div class="nx nx-fridge" aria-hidden="true">
         <i class="nx-fridge__spill"></i>
-        <svg class="nx-fridge__body" viewBox="0 0 200 360"><rect x="6" y="6" width="188" height="348" rx="22" fill="#E6D9C3" stroke="#0C080D" stroke-width="8"/><rect x="18" y="20" width="164" height="322" rx="12" fill="#FFF6DC"/><rect x="18" y="20" width="164" height="60" rx="12" fill="#FFFBEA"/><g stroke="#E3CFA6" stroke-width="6"><path d="M20 128h160M20 232h160"/></g><g stroke="#0C080D" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="34" y="92" width="52" height="34" rx="6" fill="#FFC93C"/><path d="M42 104h36M42 114h24" stroke-width="3"/><path d="M118 74h28l4 54h-36z" fill="#FFFDF6"/><path d="M118 92h32" stroke="#6BBF59" stroke-width="6"/><g class="nx-carrot"><path d="M70 220l46-24 12 14z" fill="#F08A3A"/><path d="M126 204l18-14M128 208l20-2M124 200l8-20" stroke="#4E9A47" stroke-width="6"/><circle cx="96" cy="210" r="1.8" fill="#0C080D"/><circle cx="106" cy="205" r="1.8" fill="#0C080D"/><path d="M95 219q6-6 13-5" fill="none"/></g><ellipse cx="56" cy="306" rx="14" ry="18" fill="#FFFDF6"/><ellipse cx="88" cy="308" rx="14" ry="18" fill="#FFFDF6"/><rect x="118" y="282" width="40" height="46" rx="8" fill="#F0533A"/><rect x="118" y="282" width="40" height="12" rx="4" fill="#1E1420"/></g></svg>
+        <svg class="nx-fridge__body" viewBox="0 0 200 360"><rect x="6" y="6" width="188" height="348" rx="22" fill="#E3F0E7" stroke="#1D2B24" stroke-width="8"/><rect x="18" y="20" width="164" height="322" rx="12" fill="#FFFCF5"/><rect x="18" y="20" width="164" height="60" rx="12" fill="#FFFFFF"/><g stroke="#D8E8DE" stroke-width="6"><path d="M20 128h160M20 232h160"/></g><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="34" y="92" width="52" height="34" rx="6" fill="#F2BE4A"/><path d="M42 104h36M42 114h24" stroke-width="3"/><path d="M118 74h28l4 54h-36z" fill="#FFFDF6"/><path d="M118 92h32" stroke="#4FA36F" stroke-width="6"/><g class="nx-carrot"><path d="M70 220l46-24 12 14z" fill="#F08A3A"/><path d="M126 204l18-14M128 208l20-2M124 200l8-20" stroke="#3E8A52" stroke-width="6"/><circle cx="96" cy="210" r="1.8" fill="#1D2B24"/><circle cx="106" cy="205" r="1.8" fill="#1D2B24"/><path d="M95 219q6-6 13-5" fill="none"/></g><ellipse cx="56" cy="306" rx="14" ry="18" fill="#FFFDF6"/><ellipse cx="88" cy="308" rx="14" ry="18" fill="#FFFDF6"/><rect x="118" y="282" width="40" height="46" rx="8" fill="#F28B6B"/><rect x="118" y="282" width="40" height="12" rx="4" fill="#1D2B24"/></g></svg>
         <i class="nx-fridge__light"></i>
-        <svg class="nx-fridge__door" viewBox="0 0 200 360"><rect x="6" y="6" width="188" height="348" rx="22" fill="#F3EADB" stroke="#0C080D" stroke-width="8"/><path d="M168 12h14q8 0 8 10v318q0 10-8 10h-14z" fill="#DCCDB4"/><path d="M14 30v296" stroke="#FFFCF4" stroke-width="5" stroke-linecap="round"/><path d="M6 118h188" stroke="#0C080D" stroke-width="6"/><g stroke="#0C080D" stroke-width="4" stroke-linejoin="round"><rect x="154" y="38" width="16" height="58" rx="8" fill="#3A2E3D"/><rect x="154" y="146" width="16" height="92" rx="8" fill="#3A2E3D"/></g><path d="M158 46v40M158 156v72" stroke="#6B5A63" stroke-width="3" stroke-linecap="round"/><g stroke="#0C080D" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><g transform="rotate(-5 72 182)"><rect x="34" y="146" width="76" height="86" rx="4" fill="#FFFDF6"/><path d="M46 172h50M46 186h42M46 200h48M46 214h30" stroke="#C9BBA6" stroke-width="3"/></g><circle cx="72" cy="146" r="10" fill="#F0533A"/><g transform="rotate(6 70 64)"><rect x="40" y="36" width="62" height="56" rx="4" fill="#FFFDF6"/><path d="M52 80q0-30 19-30t19 30z" fill="#FFF4E0"/><path d="M60 58q11-8 22 0" fill="none" stroke-width="3"/><circle cx="64" cy="70" r="2" fill="#0C080D" stroke="none"/><circle cx="78" cy="70" r="2" fill="#0C080D" stroke="none"/></g><path d="M71 30l4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1z" fill="#FFC93C"/><path d="M126 268c12-18 30-18 34 0-4 18-22 18-34 0z" fill="#6BBF59"/></g></svg>
+        <svg class="nx-fridge__door" viewBox="0 0 200 360"><rect x="6" y="6" width="188" height="348" rx="22" fill="#F4FBF6" stroke="#1D2B24" stroke-width="8"/><path d="M168 12h14q8 0 8 10v318q0 10-8 10h-14z" fill="#D2E6DA"/><path d="M14 30v296" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><path d="M6 118h188" stroke="#1D2B24" stroke-width="6"/><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round"><rect x="154" y="38" width="16" height="58" rx="8" fill="#33443B"/><rect x="154" y="146" width="16" height="92" rx="8" fill="#33443B"/></g><path d="M158 46v40M158 156v72" stroke="#5E7066" stroke-width="3" stroke-linecap="round"/><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><g transform="rotate(-5 72 182)"><rect x="34" y="146" width="76" height="86" rx="4" fill="#FFFDF6"/><path d="M46 172h50M46 186h42M46 200h48M46 214h30" stroke="#B9C9BF" stroke-width="3"/></g><circle cx="72" cy="146" r="10" fill="#F28B6B"/><g transform="rotate(6 70 64)"><rect x="40" y="36" width="62" height="56" rx="4" fill="#FFFDF6"/><path d="M52 80q0-30 19-30t19 30z" fill="#FFFCF5"/><path d="M60 58q11-8 22 0" fill="none" stroke-width="3"/><circle cx="64" cy="70" r="2" fill="#1D2B24" stroke="none"/><circle cx="78" cy="70" r="2" fill="#1D2B24" stroke="none"/></g><path d="M71 30l4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1z" fill="#F2BE4A"/><path d="M126 268c12-18 30-18 34 0-4 18-22 18-34 0z" fill="#4FA36F"/></g></svg>
       </div>
 
+<div class="nx nx-shelf" aria-hidden="true"><svg viewBox="0 0 190 130"><g stroke="#1D2B24" stroke-width="3.5" stroke-linejoin="round"><rect x="16" y="14" width="40" height="14" rx="4" fill="#F28B6B"/><rect x="12" y="26" width="48" height="66" rx="10" fill="#F4FBF6"/><path d="M14 54h44v28q0 8-8 8H22q-8 0-8-8z" fill="#F29A4A" stroke="none"/><rect x="12" y="26" width="48" height="66" rx="10" fill="none"/><rect x="78" y="40" width="34" height="12" rx="4" fill="#F2BE4A"/><rect x="74" y="50" width="42" height="42" rx="9" fill="#F4FBF6"/><path d="M76 66h38v18q0 6-6 6H82q-6 0-6-6z" fill="#6BAF6E" stroke="none"/><rect x="74" y="50" width="42" height="42" rx="9" fill="none"/><circle cx="142" cy="78" r="15" fill="#E94F3F"/><path d="M142 63q2-6 8-6M136 64q6 2 12 0" fill="none" stroke="#3E8A52" stroke-width="3.5" stroke-linecap="round"/><rect x="2" y="92" width="186" height="13" rx="6.5" fill="#F4B3A2"/><path d="M28 106v16M162 106v16" stroke-width="5" stroke-linecap="round"/></g></svg></div>
       <div class="nx nx-counter" aria-hidden="true"></div>
-      <i class="nx-glow" aria-hidden="true"></i><i class="nx-glow nx-glow--pause" aria-hidden="true"></i>
+      <i class="nx-glow" aria-hidden="true"></i>
 
       <div class="n n-head">
-        <p class="n-1 jelly" data-split data-jelly><span class="sr-only">it’s 9pm.</span><span aria-hidden="true"><span class="w"><span class="ch" style="--i:0">i</span><span class="ch" style="--i:1">t</span><span class="ch" style="--i:2">’</span><span class="ch" style="--i:3">s</span></span> <span class="w"><span class="ch" style="--i:4">9</span><span class="ch" style="--i:5">p</span><span class="ch" style="--i:6">m</span><span class="ch" style="--i:7">.</span></span></span></p>
-        <p class="n-2">the fridge looks boring.</p>
+        <h2 class="n-1" id="hungry-title">it’s 9pm.<br>you’re <em>hungry.</em></h2>
+        <p class="n-2">The fridge looks boring. Your usual takeaway looks… tempting.</p>
       </div>
 
-      <i class="nx-dim" aria-hidden="true"></i>
 
       <!-- Chapter 1 sound effect, and the narration boxes for chapter 2 -->
       <p class="n n-grr" aria-hidden="true">grrrumble.</p>
       <div class="n n-caps">
         <p class="cap" data-in=".23" data-out=".335">you open the app.</p>
-        <p class="cap" data-in=".335" data-out=".46">the basket fills up.</p>
-        <p class="cap" data-in=".46" data-out=".53">£22 for one dinner.</p>
+        <p class="cap" data-in=".335" data-out=".46">just one little takeaway.</p>
+        <p class="cap cap--ticket" data-in=".46" data-out=".53"><span class="ticket-top">Tonight’s plan</span><strong>−£22</strong><span class="ticket-sub">For one dinner.<br>The whole basket.</span></p>
       </div>
 
       <!-- The phone: a generic takeaway app, the order button on its screen. The camera pushes in, then pal lands. -->
       <div class="n-phone" aria-hidden="true">
         <div class="n-screen">
           <div class="app">
-            <p class="app__top">hungry?</p>
+            <p class="app__top">Hungry?</p>
             <div class="app__view"><div class="app__list">
-              <div class="app__item" data-at=".33" data-price="8"><svg viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><path d="M18 46q0-30 32-30t32 30z" fill="#F2B65A"/><path d="M14 56q9-8 18 0t18 0 18 0 18 0" fill="#6BBF59"/><rect x="16" y="56" width="68" height="14" rx="6" fill="#6B3A2A"/><path d="M18 72h64q0 14-14 14H32q-14 0-14-14z" fill="#F2B65A"/></g></svg><span><b>chicken burger</b><i>£8</i></span><em><span>+</span><span>1</span></em></div>
-              <div class="app__item"><svg viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><path d="M20 22l62 10-34 58z" fill="#FFC93C"/><path d="M20 22l62 10-4 10-56-10z" fill="#E8A04A"/><circle cx="46" cy="44" r="6" fill="#F0533A"/><circle cx="58" cy="60" r="5" fill="#F0533A"/></g></svg><span><b>pizza slice</b><i>£6</i></span><em><span>+</span><span>1</span></em></div>
-              <div class="app__item" data-at=".38" data-price="9"><svg viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M58 8l-14 40M70 12l-18 38" stroke="#E3CFA6" stroke-width="6"/><path d="M22 38h56l-8 50H30z" fill="#FFF4E0"/><path d="M26 58h48" stroke="#F0533A" stroke-width="8"/></g></svg><span><b>spicy noodles</b><i>£9</i></span><em><span>+</span><span>1</span></em></div>
-              <div class="app__item"><svg viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M56 4l-8 32" stroke="#F0533A" stroke-width="7"/><path d="M28 30h44l-6 60H34z" fill="#FFF4E0"/><rect x="24" y="24" width="52" height="10" rx="5" fill="#1E1420"/></g></svg><span><b>fizzy drink</b><i>£2</i></span><em><span>+</span><span>1</span></em></div>
-              <div class="app__item" data-at=".43" data-price="5"><svg viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><g fill="#FFC93C"><rect x="30" y="10" width="9" height="40" rx="3" transform="rotate(-8 34 30)"/><rect x="44" y="6" width="9" height="44" rx="3"/><rect x="58" y="10" width="9" height="40" rx="3" transform="rotate(9 62 30)"/></g><path d="M24 40h52l-6 50H30z" fill="#F0533A"/></g></svg><span><b>loaded fries</b><i>£5</i></span><em><span>+</span><span>1</span></em></div>
-              <div class="app__item"><svg viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><circle cx="50" cy="56" r="30" fill="#E8A04A"/><circle cx="50" cy="56" r="18" fill="#FFF4E0"/></g></svg><span><b>glazed doughnut</b><i>£3</i></span><em><span>+</span><span>1</span></em></div>
+              <div class="app__item" data-at=".33" data-price="8"><svg viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><path d="M18 46q0-30 32-30t32 30z" fill="#F2B65A"/><path d="M14 56q9-8 18 0t18 0 18 0 18 0" fill="#4FA36F"/><rect x="16" y="56" width="68" height="14" rx="6" fill="#6B3A2A"/><path d="M18 72h64q0 14-14 14H32q-14 0-14-14z" fill="#F2B65A"/></g></svg><span><b>Chicken burger</b><i>£8</i></span><em><span>+</span><span>1</span></em></div>
+              <div class="app__item"><svg viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><path d="M20 22l62 10-34 58z" fill="#F2BE4A"/><path d="M20 22l62 10-4 10-56-10z" fill="#E8A04A"/><circle cx="46" cy="44" r="6" fill="#F28B6B"/><circle cx="58" cy="60" r="5" fill="#F28B6B"/></g></svg><span><b>Pizza slice</b><i>£6</i></span><em><span>+</span><span>1</span></em></div>
+              <div class="app__item" data-at=".38" data-price="9"><svg viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M58 8l-14 40M70 12l-18 38" stroke="#D8E8DE" stroke-width="6"/><path d="M22 38h56l-8 50H30z" fill="#FFFCF5"/><path d="M26 58h48" stroke="#F28B6B" stroke-width="8"/></g></svg><span><b>Spicy noodles</b><i>£9</i></span><em><span>+</span><span>1</span></em></div>
+              <div class="app__item"><svg viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M56 4l-8 32" stroke="#F28B6B" stroke-width="7"/><path d="M28 30h44l-6 60H34z" fill="#FFFCF5"/><rect x="24" y="24" width="52" height="10" rx="5" fill="#1D2B24"/></g></svg><span><b>Fizzy drink</b><i>£2</i></span><em><span>+</span><span>1</span></em></div>
+              <div class="app__item" data-at=".43" data-price="5"><svg viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><g fill="#F2BE4A"><rect x="30" y="10" width="9" height="40" rx="3" transform="rotate(-8 34 30)"/><rect x="44" y="6" width="9" height="44" rx="3"/><rect x="58" y="10" width="9" height="40" rx="3" transform="rotate(9 62 30)"/></g><path d="M24 40h52l-6 50H30z" fill="#F28B6B"/></g></svg><span><b>Loaded fries</b><i>£5</i></span><em><span>+</span><span>1</span></em></div>
+              <div class="app__item"><svg viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><circle cx="50" cy="56" r="30" fill="#E8A04A"/><circle cx="50" cy="56" r="18" fill="#FFFCF5"/></g></svg><span><b>Glazed doughnut</b><i>£3</i></span><em><span>+</span><span>1</span></em></div>
             </div></div>
-            <div class="app__basket"><span class="app__count">0</span><span>basket</span><b class="app__total">£0</b></div>
+            <div class="app__basket"><span class="app__count">0</span><span>Basket</span><b class="app__total">£0</b></div>
           </div>
-          <div class="n-pause"><p class="n-pause__t">we have food at home.</p><p class="n-pause__s">cooking tonight keeps £18 in your pocket.</p></div>
+          <div class="n-pause"><p class="n-pause__t">we have food at home.</p><p class="n-pause__s">Cooking tonight keeps £18 in your pocket.</p><span class="n-pause__b1">I’ll cook</span><span class="n-pause__b2">Order anyway</span></div>
           <div class="n-act">
-            <div class="n-btn"><span>order</span></div>
+            <div class="n-btn"><i class="n-btn__lip"></i><span class="n-btn__face">Order</span></div>
+            <i class="n-tap"></i>
             <div class="n-dust"><i></i><i></i><i></i><i></i><i></i><i></i></div>
           </div>
         </div>
-        <svg class="n-hand" viewBox="0 0 64 84"><path d="M26 6c5-3 10 0 10 6v24l3-1c4-2 8 0 9 4v2c4-1 8 1 9 5v2c4 0 7 3 7 7v10c0 12-9 21-21 21H35c-9 0-15-4-19-12L7 56c-2-4 0-8 4-10 4-1 7 0 9 4l3 5V12c0-3 1-5 3-6z" fill="#FFE2C8" stroke="#0C080D" stroke-width="4" stroke-linejoin="round"/><path d="M36 37v14M48 41v10M57 47v7" fill="none" stroke="#0C080D" stroke-width="3" stroke-linecap="round"/></svg>
-        <div class="n-pal">
-          <span class="pal pal--grumpy" data-rig>
-            <span class="pal__rig">
-              <img decoding="async" class="pal__body" src="assets/pal/pal-grumpy-body.webp" width="626" height="600" alt="" loading="lazy">
-              <span class="pal__face"><img decoding="async" src="assets/pal/pal-grumpy-face.webp" width="626" height="600" alt="" loading="lazy"><img decoding="async" class="pal__lids" src="assets/pal/pal-grumpy-lids.webp" width="626" height="600" alt="" loading="lazy"></span>
-            </span>
-          </span>
-        </div>
+        <svg class="n-hand" viewBox="0 0 64 84"><path d="M26 6c5-3 10 0 10 6v24l3-1c4-2 8 0 9 4v2c4-1 8 1 9 5v2c4 0 7 3 7 7v10c0 12-9 21-21 21H35c-9 0-15-4-19-12L7 56c-2-4 0-8 4-10 4-1 7 0 9 4l3 5V12c0-3 1-5 3-6z" fill="#FFE2C8" stroke="#1D2B24" stroke-width="4" stroke-linejoin="round"/><path d="M36 37v14M48 41v10M57 47v7" fill="none" stroke="#1D2B24" stroke-width="3" stroke-linecap="round"/></svg>
+        <div class="n-pal"><img decoding="async" src="assets/pal/pal-grumpy.webp" width="560" height="512" alt="" loading="lazy"></div>
         <p class="n-bubble bubble">not today.</p>
-        <p class="n-sticker">that’s a Pause.</p>
+        <p class="n-sticker">That’s a Pause.</p>
       </div>
 
       <!-- Floating food, scattered by pal -->
       <div class="foods" aria-hidden="true">
-        <svg class="food food--1" viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><path d="M18 46q0-30 32-30t32 30z" fill="#F2B65A"/><g fill="#FFF4E0" stroke="none"><ellipse cx="40" cy="28" rx="3" ry="2"/><ellipse cx="56" cy="24" rx="3" ry="2"/><ellipse cx="62" cy="34" rx="3" ry="2"/></g><path d="M14 56q9-8 18 0t18 0 18 0 18 0" fill="#6BBF59"/><rect x="16" y="56" width="68" height="14" rx="6" fill="#6B3A2A"/><path d="M22 54h56l-8 10z" fill="#FFC93C"/><path d="M18 72h64q0 14-14 14H32q-14 0-14-14z" fill="#F2B65A"/></g></svg>
-        <svg class="food food--2" viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><path d="M20 22l62 10-34 58z" fill="#FFC93C"/><path d="M20 22l62 10-4 10-56-10z" fill="#E8A04A"/><circle cx="46" cy="44" r="6" fill="#F0533A"/><circle cx="58" cy="60" r="5" fill="#F0533A"/><circle cx="40" cy="58" r="4" fill="#F0533A"/></g></svg>
-        <svg class="food food--3" viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M58 8l-14 40M70 12l-18 38" stroke="#E3CFA6" stroke-width="6"/><path d="M28 30q22-10 44 0" fill="none" stroke="#FFC93C" stroke-width="5"/><path d="M22 38h56l-8 50H30z" fill="#FFF4E0"/><path d="M26 58h48" stroke="#F0533A" stroke-width="8"/></g></svg>
-        <svg class="food food--4" viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><g fill="#FFC93C"><rect x="30" y="10" width="9" height="40" rx="3" transform="rotate(-8 34 30)"/><rect x="44" y="6" width="9" height="44" rx="3"/><rect x="58" y="10" width="9" height="40" rx="3" transform="rotate(9 62 30)"/></g><path d="M24 40h52l-6 50H30z" fill="#F0533A"/><path d="M38 60q12 10 24 0" fill="none" stroke="#FFF4E0" stroke-width="5"/></g></svg>
-        <svg class="food food--5" viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M56 4l-8 32" stroke="#F0533A" stroke-width="7"/><path d="M28 30h44l-6 60H34z" fill="#FFF4E0"/><rect x="24" y="24" width="52" height="10" rx="5" fill="#1E1420"/><path d="M32 56h36" stroke="#F0533A" stroke-width="8"/></g></svg>
+        <svg class="food food--1" viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><path d="M18 46q0-30 32-30t32 30z" fill="#F2B65A"/><g fill="#FFFCF5" stroke="none"><ellipse cx="40" cy="28" rx="3" ry="2"/><ellipse cx="56" cy="24" rx="3" ry="2"/><ellipse cx="62" cy="34" rx="3" ry="2"/></g><path d="M14 56q9-8 18 0t18 0 18 0 18 0" fill="#4FA36F"/><rect x="16" y="56" width="68" height="14" rx="6" fill="#6B3A2A"/><path d="M22 54h56l-8 10z" fill="#F2BE4A"/><path d="M18 72h64q0 14-14 14H32q-14 0-14-14z" fill="#F2B65A"/></g></svg>
+        <svg class="food food--2" viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><path d="M20 22l62 10-34 58z" fill="#F2BE4A"/><path d="M20 22l62 10-4 10-56-10z" fill="#E8A04A"/><circle cx="46" cy="44" r="6" fill="#F28B6B"/><circle cx="58" cy="60" r="5" fill="#F28B6B"/><circle cx="40" cy="58" r="4" fill="#F28B6B"/></g></svg>
+        <svg class="food food--3" viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M58 8l-14 40M70 12l-18 38" stroke="#D8E8DE" stroke-width="6"/><path d="M28 30q22-10 44 0" fill="none" stroke="#F2BE4A" stroke-width="5"/><path d="M22 38h56l-8 50H30z" fill="#FFFCF5"/><path d="M26 58h48" stroke="#F28B6B" stroke-width="8"/></g></svg>
+        <svg class="food food--4" viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><g fill="#F2BE4A"><rect x="30" y="10" width="9" height="40" rx="3" transform="rotate(-8 34 30)"/><rect x="44" y="6" width="9" height="44" rx="3"/><rect x="58" y="10" width="9" height="40" rx="3" transform="rotate(9 62 30)"/></g><path d="M24 40h52l-6 50H30z" fill="#F28B6B"/><path d="M38 60q12 10 24 0" fill="none" stroke="#FFFCF5" stroke-width="5"/></g></svg>
+        <svg class="food food--5" viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M56 4l-8 32" stroke="#F28B6B" stroke-width="7"/><path d="M28 30h44l-6 60H34z" fill="#FFFCF5"/><rect x="24" y="24" width="52" height="10" rx="5" fill="#1D2B24"/><path d="M32 56h36" stroke="#F28B6B" stroke-width="8"/></g></svg>
       </div>
 
-      <i class="nx-flicker" aria-hidden="true"></i>
-      <i class="n-wipe__ring" aria-hidden="true"></i><div class="n-wipe" aria-hidden="true"><i class="n-wipe__in"></i></div>
+      <div class="n-wipe" aria-hidden="true"></div>
       <div class="n n-cap">
         <h2 id="night-title" class="n-cap__title">pal steps in before you order.</h2>
-        <p>Cravepal puts pal in front of the takeaway apps and sites you pick. When you open one, he gets there first.</p>
+        <p>CravePal puts pal in front of the takeaway apps and sites you pick. When you open one, he gets there first.</p>
       </div>
     </div>
-  </section>
-
-  <!-- 3. Try it. A working Pause (fragments, so it works without JavaScript); with JavaScript, "order anyway" runs away. -->
-  <section class="try on-tomato" id="try" aria-labelledby="try-title">
-    <div class="wrap try__in">
-      <div class="try__head">
-        <h2 class="try__title" id="try-title">your turn. try to order.</h2>
-        <p class="try__note">A sample Pause with example prices. In Cravepal, you set your own. On iPhone, pal guards the apps you pick with Apple’s Screen Time. In Chrome, he guards the sites on your list.</p>
-      </div>
-
-      <span class="tgt" id="pause"></span><span class="tgt" id="you-sure"></span><span class="tgt" id="still-sure"></span><span class="tgt" id="nice-one"></span><span class="tgt" id="off-you-go"></span>
-
-      <div class="demo" aria-live="polite">
-        <div class="st st--pause">
-          <div class="cp-copy">
-            <h3 class="cp-title">we have food at home.</h3>
-            <p class="cp-sub">cooking tonight keeps £18 in your pocket.</p>
-            <div class="cp-actions">
-              <a class="cp-btn cp-btn--primary" href="#nice-one">i’ll cook</a>
-              <a class="cp-btn cp-btn--ghost" href="#you-sure" data-dodge>order anyway</a>
-            </div>
-          </div>
-          <div class="cp-stage"><div class="cp-perch">
-            <div class="cp-pal" data-pose="grumpy" role="img" aria-label="pal, grumpy, holding his wallet tight"><div class="cp-pal__body"><div class="cp-pal__act">
-              <div class="cp-pose cp-pose--grumpy"><img decoding="async" src="assets/pal/pal-grumpy.webp" alt="" loading="lazy"><img decoding="async" class="cp-lids" src="assets/pal/pal-grumpy-lids.webp" alt="" loading="lazy"></div>
-            </div></div></div>
-            <p class="bubble bubble--demo" role="status" data-dodge-bubble hidden></p>
-            <div class="cp-address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg><span class="cp-domain">your usual takeaway</span></div>
-          </div></div>
-        </div>
-
-        <div class="st st--you-sure">
-          <div class="cp-copy">
-            <h3 class="cp-title">you sure?</h3>
-            <p class="cp-sub">that’s £22 on a meal you could make for £4.</p>
-            <div class="cp-actions">
-              <a class="cp-btn cp-btn--primary" href="#nice-one">fine, i’ll cook</a>
-              <a class="cp-btn cp-btn--ghost" href="#still-sure">yes, unlock for 30 mins</a>
-            </div>
-          </div>
-          <div class="cp-stage"><div class="cp-perch">
-            <div class="cp-pal" data-pose="alert" role="img" aria-label="pal peeking out of his wallet, alarmed"><div class="cp-pal__body"><div class="cp-pal__act">
-              <div class="cp-pose cp-pose--peek"><img decoding="async" src="assets/pal/pal-peek.webp" alt="" loading="lazy"><img decoding="async" class="cp-fx cp-ticks" src="assets/pal/pal-peek-ticks.webp" alt="" loading="lazy"><img decoding="async" class="cp-lids" src="assets/pal/pal-peek-lids.webp" alt="" loading="lazy"></div>
-            </div></div></div>
-            <div class="cp-address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg><span class="cp-domain">your usual takeaway</span>
-              <span class="cp-sticker cp-tag-order">£22<small>takeaway</small></span>
-              <span class="cp-sticker cp-tag-home">£4<small>at home</small></span>
-            </div>
-          </div></div>
-        </div>
-
-        <div class="st st--still-sure">
-          <div class="cp-copy">
-            <h3 class="cp-title">still sure?</h3>
-            <p class="cp-sub">4 minutes in. the basket’s full, but the fridge isn’t going anywhere.</p>
-            <div class="cp-actions">
-              <a class="cp-btn cp-btn--primary" href="#nice-one">i’ll cook after all</a>
-              <a class="cp-btn cp-btn--ghost" href="#off-you-go">yes, i’m ordering</a>
-            </div>
-          </div>
-          <div class="cp-stage"><div class="cp-perch">
-            <div class="cp-pal" data-pose="dream" role="img" aria-label="pal lying down, worried, dreaming of a stack of money"><div class="cp-pal__body"><div class="cp-pal__act">
-              <div class="cp-pose cp-pose--dream"><img decoding="async" src="assets/pal/pal-dream.webp" alt="" loading="lazy"><img decoding="async" class="cp-fx cp-b1" src="assets/pal/pal-dream-b1.webp" alt="" loading="lazy"><img decoding="async" class="cp-fx cp-b2" src="assets/pal/pal-dream-b2.webp" alt="" loading="lazy"><img decoding="async" class="cp-fx cp-cloud" src="assets/pal/pal-dream-cloud.webp" alt="" loading="lazy"><img decoding="async" class="cp-lids" src="assets/pal/pal-dream-lids.webp" alt="" loading="lazy"></div>
-            </div></div></div>
-            <div class="cp-address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg><span class="cp-domain">your usual takeaway</span>
-              <span class="cp-sticker cp-timer"><b>26</b><small>min left</small></span>
-            </div>
-          </div></div>
-        </div>
-
-        <div class="st st--nice-one">
-          <div class="cp-copy">
-            <h3 class="cp-title">nice one.</h3>
-            <p class="cp-sub">£18 kept, and on your total.</p>
-            <div class="cp-actions"><a class="cp-btn cp-btn--ghost" href="#pause">start again</a></div>
-          </div>
-          <div class="cp-stage"><div class="cp-perch">
-            <div class="cp-pal" data-pose="hug" role="img" aria-label="pal, happy, hugging his wallet"><div class="cp-pal__body"><div class="cp-pal__act">
-              <div class="cp-pose cp-pose--hug"><img decoding="async" src="assets/pal/pal-hug.webp" alt="" loading="lazy"><img decoding="async" class="cp-fx cp-heart" src="assets/pal/pal-hug-heart.webp" alt="" loading="lazy"><img decoding="async" class="cp-fx cp-heart cp-heart--2" src="assets/pal/pal-hug-heart.webp" alt="" loading="lazy"></div>
-            </div></div></div>
-            <div class="cp-address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg><span class="cp-domain">your usual takeaway</span>
-              <span class="cp-sticker cp-stamp">kept £18</span>
-            </div>
-          </div></div>
-        </div>
-
-        <div class="st st--off-you-go">
-          <div class="cp-copy">
-            <h3 class="cp-title">off you go.</h3>
-            <p class="cp-sub">the takeaway opens. pal will be back next time.</p>
-            <div class="cp-actions"><a class="cp-btn cp-btn--ghost" href="#pause">start again</a></div>
-          </div>
-          <div class="cp-stage"><div class="cp-perch">
-            <div class="cp-pal" data-pose="flat" role="img" aria-label="pal lying flat, a little sad"><div class="cp-pal__body"><div class="cp-pal__act">
-              <div class="cp-pose cp-pose--dream"><img decoding="async" src="assets/pal/pal-dream.webp" alt="" loading="lazy"><img decoding="async" class="cp-lids" src="assets/pal/pal-dream-lids.webp" alt="" loading="lazy"></div>
-            </div></div></div>
-            <div class="cp-address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg><span class="cp-domain">your usual takeaway</span></div>
-          </div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. Cooking at home. Pinned and scrubbed like the 9pm scene, in the same kitchen with the lights on. -->
-  <section class="night cook" data-cook data-span=".88" data-stills=".22,.53,.95" aria-label="Cooking at home">
+</section>
+<section class="chapter pause-chapter" id="try" aria-labelledby="pause-title">
+<div class="chapter-heading"><p class="section-label"><span class="chapter-number">03</span> Here comes your pal</p><span class="scene-note">Tiny guy. Firm boundaries.</span></div>
+<div class="pause-layout">
+<div class="pause-copy">
+<p class="pause-word" aria-hidden="true">Paaause.</p>
+<p class="lede">Open one of the apps or sites you pick and CravePal steps in with a full-screen Pause. A moment to think before you order.</p>
+<button class="btn btn--primary" data-open-pause>Try a Pause</button>
+</div>
+<div class="pause-stage">
+<div class="bubble bubble--story"><h2 id="pause-title">“we have food at home.”</h2><span>pal. obviously.</span></div>
+<img src="assets/pal/pal-grumpy.webp" width="560" height="512" alt="pal standing between you and that takeaway." loading="lazy">
+</div>
+</div>
+<div class="floor" aria-hidden="true"></div>
+</section>
+<!-- Chapter 04 as the same kitchen with dinner on: pal chops, stirs and plates up. -->
+<section class="night cook" id="cooking" data-cook data-span=".88" data-stills=".53,.95" aria-labelledby="cooking-title">
+<h2 class="sr-only" id="cooking-title">a little chop. a little stir. dinner.</h2>
     <div class="night__stage cook__stage" data-stage>
-      <!-- Back layer: the window, with the moon, the city, a neon sign and a scooter going past -->
+      <!-- Back layer: the night window and its plant; the room keeps the mint palette -->
       <div class="nx nx-win" aria-hidden="true">
         <svg class="nx-win__sky" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
           <rect width="400" height="300" fill="#1D2A4D"/>
-          <g fill="#FFF4E0"><circle cx="40" cy="40" r="2"/><circle class="tw" cx="120" cy="22" r="1.6"/><circle cx="190" cy="60" r="1.4"/><circle class="tw tw--2" cx="70" cy="95" r="1.5"/><circle cx="240" cy="30" r="1.8"/><circle class="tw" cx="360" cy="150" r="1.4"/></g>
-          <circle cx="300" cy="78" r="62" fill="#FFF4E0" opacity=".07"/>
-          <circle cx="300" cy="78" r="36" fill="#FFF4E0"/><circle cx="288" cy="70" r="7" fill="#EADCC4"/><circle cx="311" cy="92" r="5" fill="#EADCC4"/><circle cx="314" cy="64" r="3.5" fill="#EADCC4"/>
+          <g fill="#FFFCF5"><circle cx="40" cy="40" r="2"/><circle class="tw" cx="120" cy="22" r="1.6"/><circle cx="190" cy="60" r="1.4"/><circle class="tw tw--2" cx="70" cy="95" r="1.5"/><circle cx="240" cy="30" r="1.8"/><circle class="tw" cx="360" cy="150" r="1.4"/></g>
+          <circle cx="300" cy="78" r="62" fill="#FFFCF5" opacity=".07"/>
+          <circle cx="300" cy="78" r="36" fill="#FFFCF5"/><circle cx="288" cy="70" r="7" fill="#E8EEDF"/><circle cx="311" cy="92" r="5" fill="#E8EEDF"/><circle cx="314" cy="64" r="3.5" fill="#E8EEDF"/>
           <path d="M0 300V190h34v-30h40v50h22v-70h52v90h24v-40h44v60h30v-100h48v90h28v-50h44v40h34v110z" fill="#16203F"/>
           <path d="M0 300V235h50v-25h38v40h30v-35h46v45h26v-30h58v32h40v-52h46v42h66v80z" fill="#0F1730"/>
-          <g fill="#FFC93C"><rect x="110" y="150" width="8" height="10"/><rect class="tw" x="126" y="170" width="8" height="10"/><rect x="110" y="190" width="8" height="10"/><rect x="290" y="128" width="8" height="10"/><rect class="tw tw--2" x="306" y="148" width="8" height="10"/><rect x="306" y="188" width="8" height="10"/><rect x="186" y="170" width="7" height="9"/><rect class="tw" x="58" y="182" width="7" height="9"/></g>
-          <g><rect x="60" y="158" width="92" height="34" rx="10" fill="none" stroke="#F0533A" stroke-width="8" opacity=".3"/><rect x="60" y="158" width="92" height="34" rx="10" fill="#1A0F14" stroke="#F0533A" stroke-width="3"/><text x="106" y="182" text-anchor="middle" font-family="Bagel Fat One, sans-serif" font-size="17" fill="#FF8A73">open late</text></g>
+          <g fill="#F2BE4A"><rect x="110" y="150" width="8" height="10"/><rect class="tw" x="126" y="170" width="8" height="10"/><rect x="110" y="190" width="8" height="10"/><rect x="290" y="128" width="8" height="10"/><rect class="tw tw--2" x="306" y="148" width="8" height="10"/><rect x="306" y="188" width="8" height="10"/><rect x="186" y="170" width="7" height="9"/><rect class="tw" x="58" y="182" width="7" height="9"/></g>
+
         </svg>
-        <svg class="nx-scooter" viewBox="-30 0 150 70"><g stroke="#0C080D" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="58" y="8" width="34" height="28" rx="5" fill="#FFC93C"/><path d="M20 50h62l10-14H40z" fill="#F0533A"/><path d="M28 50l-8-26h10" fill="none"/><circle cx="24" cy="56" r="10" fill="#1E1420"/><circle cx="88" cy="56" r="10" fill="#1E1420"/><circle cx="48" cy="14" r="10" fill="#FFF4E0"/><path d="M42 24l-4 20h18l4-16z" fill="#FFF4E0"/></g><g stroke="#FFF4E0" stroke-width="3" stroke-linecap="round" opacity=".7"><path d="M-4 30h-18M-2 42h-24M0 52h-14"/></g></svg>
-        <svg class="nx-win__frame" viewBox="0 0 400 300" preserveAspectRatio="none"><g fill="none" stroke="#0C080D"><rect x="6" y="6" width="388" height="288" rx="14" stroke-width="12"/><path d="M200 6v288M6 150h388" stroke-width="10"/></g><g fill="none" stroke="#E9DFCF"><rect x="6" y="6" width="388" height="288" rx="14" stroke-width="6"/><path d="M200 6v288M6 150h388" stroke-width="5"/></g></svg>
+        <svg class="nx-scooter" viewBox="-30 0 150 70"><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="58" y="8" width="34" height="28" rx="5" fill="#F2BE4A"/><path d="M20 50h62l10-14H40z" fill="#F28B6B"/><path d="M28 50l-8-26h10" fill="none"/><circle cx="24" cy="56" r="10" fill="#1D2B24"/><circle cx="88" cy="56" r="10" fill="#1D2B24"/><circle cx="48" cy="14" r="10" fill="#FFFCF5"/><path d="M42 24l-4 20h18l4-16z" fill="#FFFCF5"/></g><g stroke="#FFFCF5" stroke-width="3" stroke-linecap="round" opacity=".7"><path d="M-4 30h-18M-2 42h-24M0 52h-14"/></g></svg>
+        <svg class="nx-win__frame" viewBox="0 0 400 300" preserveAspectRatio="none"><g fill="none" stroke="#1D2B24"><rect x="5" y="5" width="390" height="290" rx="26" stroke-width="9"/></g><g fill="none" stroke="#FFFCF5"><path d="M200 12v276M12 150h376" stroke-width="7"/></g><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round"><path d="M322 246q-20-30-6-56 9 26 9 56M327 246q6-42 31-53-8 31-20 53M324 246q-31-17-39-42 22 6 34 42" fill="#4FA36F"/><path d="M304 246h45l-6 36h-33z" fill="#E27D52"/><rect x="300" y="240" width="53" height="12" rx="4" fill="#C9643C"/></g><rect x="12" y="282" width="376" height="10" fill="#FFFCF5"/></svg>
       </div>
 
       <!-- Mid layer: the clock, the lamp and the fridge -->
       <div class="nx nx-clock" aria-hidden="true">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#FFF4E0" stroke="#0C080D" stroke-width="6"/><g stroke="#1E1420" stroke-width="5" stroke-linecap="round"><path d="M50 12v8M50 80v8M12 50h8M80 50h8"/></g><g stroke="#1E1420" stroke-width="3" stroke-linecap="round"><path d="M69 17l-3 5M83 31l-5 3M83 69l-5-3M69 83l-3-5M31 83l3-5M17 69l5-3M17 31l5 3M31 17l3 5"/></g></svg>
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#FFFCF5" stroke="#1D2B24" stroke-width="6"/><g stroke="#1D2B24" stroke-width="5" stroke-linecap="round"><path d="M50 12v8M50 80v8M12 50h8M80 50h8"/></g><g stroke="#1D2B24" stroke-width="3" stroke-linecap="round"><path d="M69 17l-3 5M83 31l-5 3M83 69l-5-3M69 83l-3-5M31 83l3-5M17 69l5-3M17 31l5 3M31 17l3 5"/></g></svg>
         <i class="nx-clock__h"></i><i class="nx-clock__m"></i><b></b>
       </div>
       <div class="nx nx-lamp" aria-hidden="true">
         <i class="nx-lamp__cone"></i>
-        <svg viewBox="0 0 120 300" preserveAspectRatio="xMidYMax meet"><path d="M60 0v214" stroke="#0C080D" stroke-width="5"/><path d="M14 270q0-56 46-56t46 56z" fill="#F0533A" stroke="#0C080D" stroke-width="6" stroke-linejoin="round"/><ellipse cx="60" cy="270" rx="22" ry="7" fill="#FFF4E0"/></svg>
+        <svg viewBox="0 0 120 300" preserveAspectRatio="xMidYMax meet"><path d="M60 0v214" stroke="#1D2B24" stroke-width="3.5"/><rect x="52" y="206" width="16" height="13" rx="3" fill="#1D2B24"/><path d="M14 264q0-48 46-48t46 48z" fill="#F2BE4A" stroke="#1D2B24" stroke-width="4.5" stroke-linejoin="round"/><path d="M32 248q7-16 22-20" fill="none" stroke="#FFE6A3" stroke-width="7" stroke-linecap="round"/><circle cx="60" cy="274" r="12" fill="#FFF3C4" stroke="#1D2B24" stroke-width="4"/></svg>
       </div>
       <div class="nx nx-fridge" aria-hidden="true">
         <i class="nx-fridge__spill"></i>
-        <svg class="nx-fridge__body" viewBox="0 0 200 360"><rect x="6" y="6" width="188" height="348" rx="22" fill="#E6D9C3" stroke="#0C080D" stroke-width="8"/><rect x="18" y="20" width="164" height="322" rx="12" fill="#FFF6DC"/><rect x="18" y="20" width="164" height="60" rx="12" fill="#FFFBEA"/><g stroke="#E3CFA6" stroke-width="6"><path d="M20 128h160M20 232h160"/></g><g stroke="#0C080D" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="34" y="92" width="52" height="34" rx="6" fill="#FFC93C"/><path d="M42 104h36M42 114h24" stroke-width="3"/><path d="M118 74h28l4 54h-36z" fill="#FFFDF6"/><path d="M118 92h32" stroke="#6BBF59" stroke-width="6"/><g class="nx-carrot"><path d="M70 220l46-24 12 14z" fill="#F08A3A"/><path d="M126 204l18-14M128 208l20-2M124 200l8-20" stroke="#4E9A47" stroke-width="6"/><circle cx="96" cy="210" r="1.8" fill="#0C080D"/><circle cx="106" cy="205" r="1.8" fill="#0C080D"/><path d="M95 219q6-6 13-5" fill="none"/></g><ellipse cx="56" cy="306" rx="14" ry="18" fill="#FFFDF6"/><ellipse cx="88" cy="308" rx="14" ry="18" fill="#FFFDF6"/><rect x="118" y="282" width="40" height="46" rx="8" fill="#F0533A"/><rect x="118" y="282" width="40" height="12" rx="4" fill="#1E1420"/></g></svg>
+        <svg class="nx-fridge__body" viewBox="0 0 200 360"><rect x="6" y="6" width="188" height="348" rx="22" fill="#E3F0E7" stroke="#1D2B24" stroke-width="8"/><rect x="18" y="20" width="164" height="322" rx="12" fill="#FFFCF5"/><rect x="18" y="20" width="164" height="60" rx="12" fill="#FFFFFF"/><g stroke="#D8E8DE" stroke-width="6"><path d="M20 128h160M20 232h160"/></g><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="34" y="92" width="52" height="34" rx="6" fill="#F2BE4A"/><path d="M42 104h36M42 114h24" stroke-width="3"/><path d="M118 74h28l4 54h-36z" fill="#FFFDF6"/><path d="M118 92h32" stroke="#4FA36F" stroke-width="6"/><g class="nx-carrot"><path d="M70 220l46-24 12 14z" fill="#F08A3A"/><path d="M126 204l18-14M128 208l20-2M124 200l8-20" stroke="#3E8A52" stroke-width="6"/><circle cx="96" cy="210" r="1.8" fill="#1D2B24"/><circle cx="106" cy="205" r="1.8" fill="#1D2B24"/><path d="M95 219q6-6 13-5" fill="none"/></g><ellipse cx="56" cy="306" rx="14" ry="18" fill="#FFFDF6"/><ellipse cx="88" cy="308" rx="14" ry="18" fill="#FFFDF6"/><rect x="118" y="282" width="40" height="46" rx="8" fill="#F28B6B"/><rect x="118" y="282" width="40" height="12" rx="4" fill="#1D2B24"/></g></svg>
         <i class="nx-fridge__light"></i>
-        <svg class="nx-fridge__door" viewBox="0 0 200 360"><rect x="6" y="6" width="188" height="348" rx="22" fill="#F3EADB" stroke="#0C080D" stroke-width="8"/><path d="M168 12h14q8 0 8 10v318q0 10-8 10h-14z" fill="#DCCDB4"/><path d="M14 30v296" stroke="#FFFCF4" stroke-width="5" stroke-linecap="round"/><path d="M6 118h188" stroke="#0C080D" stroke-width="6"/><g stroke="#0C080D" stroke-width="4" stroke-linejoin="round"><rect x="154" y="38" width="16" height="58" rx="8" fill="#3A2E3D"/><rect x="154" y="146" width="16" height="92" rx="8" fill="#3A2E3D"/></g><path d="M158 46v40M158 156v72" stroke="#6B5A63" stroke-width="3" stroke-linecap="round"/><g stroke="#0C080D" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><g transform="rotate(-5 72 182)"><rect x="34" y="146" width="76" height="86" rx="4" fill="#FFFDF6"/><path d="M46 172h50M46 186h42M46 200h48M46 214h30" stroke="#C9BBA6" stroke-width="3"/></g><circle cx="72" cy="146" r="10" fill="#F0533A"/><g transform="rotate(6 70 64)"><rect x="40" y="36" width="62" height="56" rx="4" fill="#FFFDF6"/><path d="M52 80q0-30 19-30t19 30z" fill="#FFF4E0"/><path d="M60 58q11-8 22 0" fill="none" stroke-width="3"/><circle cx="64" cy="70" r="2" fill="#0C080D" stroke="none"/><circle cx="78" cy="70" r="2" fill="#0C080D" stroke="none"/></g><path d="M71 30l4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1z" fill="#FFC93C"/><path d="M126 268c12-18 30-18 34 0-4 18-22 18-34 0z" fill="#6BBF59"/></g></svg>
+        <svg class="nx-fridge__door" viewBox="0 0 200 360"><rect x="6" y="6" width="188" height="348" rx="22" fill="#F4FBF6" stroke="#1D2B24" stroke-width="8"/><path d="M168 12h14q8 0 8 10v318q0 10-8 10h-14z" fill="#D2E6DA"/><path d="M14 30v296" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><path d="M6 118h188" stroke="#1D2B24" stroke-width="6"/><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round"><rect x="154" y="38" width="16" height="58" rx="8" fill="#33443B"/><rect x="154" y="146" width="16" height="92" rx="8" fill="#33443B"/></g><path d="M158 46v40M158 156v72" stroke="#5E7066" stroke-width="3" stroke-linecap="round"/><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><g transform="rotate(-5 72 182)"><rect x="34" y="146" width="76" height="86" rx="4" fill="#FFFDF6"/><path d="M46 172h50M46 186h42M46 200h48M46 214h30" stroke="#B9C9BF" stroke-width="3"/></g><circle cx="72" cy="146" r="10" fill="#F28B6B"/><g transform="rotate(6 70 64)"><rect x="40" y="36" width="62" height="56" rx="4" fill="#FFFDF6"/><path d="M52 80q0-30 19-30t19 30z" fill="#FFFCF5"/><path d="M60 58q11-8 22 0" fill="none" stroke-width="3"/><circle cx="64" cy="70" r="2" fill="#1D2B24" stroke="none"/><circle cx="78" cy="70" r="2" fill="#1D2B24" stroke="none"/></g><path d="M71 30l4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1z" fill="#F2BE4A"/><path d="M126 268c12-18 30-18 34 0-4 18-22 18-34 0z" fill="#4FA36F"/></g></svg>
       </div>
 
       <div class="nx nx-counter" aria-hidden="true"></div>
+      <div class="sc-chaps" aria-hidden="true">
+        <div class="chapter-heading sc-chap" data-in="-1" data-out="2"><p class="section-label"><span class="chapter-number">04</span> The plot twist</p><span class="scene-note">Turns out, the fridge had a point.</span></div>
+      </div>
+      <!-- the blush shelf with jars and a tomato, as in pal's kitchen on Home -->
+      <div class="nx nx-shelf" aria-hidden="true"><svg viewBox="0 0 190 130"><g stroke="#1D2B24" stroke-width="3.5" stroke-linejoin="round"><rect x="16" y="14" width="40" height="14" rx="4" fill="#F28B6B"/><rect x="12" y="26" width="48" height="66" rx="10" fill="#F4FBF6"/><path d="M14 54h44v28q0 8-8 8H22q-8 0-8-8z" fill="#F29A4A" stroke="none"/><rect x="12" y="26" width="48" height="66" rx="10" fill="none"/><rect x="78" y="40" width="34" height="12" rx="4" fill="#F2BE4A"/><rect x="74" y="50" width="42" height="42" rx="9" fill="#F4FBF6"/><path d="M76 66h38v18q0 6-6 6H82q-6 0-6-6z" fill="#6BAF6E" stroke="none"/><rect x="74" y="50" width="42" height="42" rx="9" fill="none"/><circle cx="142" cy="78" r="15" fill="#E94F3F"/><path d="M142 63q2-6 8-6M136 64q6 2 12 0" fill="none" stroke="#3E8A52" stroke-width="3.5" stroke-linecap="round"/><rect x="2" y="92" width="186" height="13" rx="6.5" fill="#F4B3A2"/><path d="M28 106v16M162 106v16" stroke-width="5" stroke-linecap="round"/></g></svg></div>
       <i class="kx-warm" aria-hidden="true"></i>
 
       <div class="n n-caps k-caps">
-        <p class="cap" data-in="0" data-out=".14">you cook instead.</p>
-        <p class="cap" data-in=".14" data-out=".3">everything you needed was in the fridge.</p>
-        <p class="cap" data-in=".62" data-out=".76">twenty minutes later.</p>
-        <p class="cap cap--end" data-in=".78" data-out="2">dinner, made at home.</p>
+        <p class="cap" data-in="0" data-out=".17">you choose to cook.</p>
+        <p class="cap" data-in=".17" data-out=".44">a little chop.</p>
+        <p class="cap" data-in=".46" data-out=".7">a little stir.</p>
+        <p class="cap cap--end" data-in=".74" data-out="2"><em>dinner.</em><small>That £4 meal was there all along.</small></p>
       </div>
 
-      <!-- The hob: flames, the pan (with a hand on its handle for the toss and the pour) -->
+      <!-- The hob stays on the worktop; pal cooks with his wooden spoon. -->
       <div class="kx kx-hob" aria-hidden="true">
         <div class="kx-flames"><i></i><i></i><i></i></div>
         <div class="kx-pan">
-          <div class="kx-steam"><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M16 98q-12-14-2-28t-2-26 4-26 10-16" fill="none" stroke="#FFF4E0" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M14 98q10-14 0-28t2-26-4-26-8-16" fill="none" stroke="#FFF4E0" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M16 98q-12-14-2-28t-2-26 4-26 10-16" fill="none" stroke="#FFF4E0" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></div>
-          <svg class="kx-pan__art" viewBox="0 0 260 110"><g stroke="#0C080D" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"><path d="M196 44h56" stroke-width="14"/><path d="M196 44h56" stroke="#5B4A5F" stroke-width="6"/><path d="M14 40h184l-12 52q-3 12-16 12H42q-13 0-16-12z" fill="#2E2134"/><path d="M30 50h150" stroke="#4A3A4F" stroke-width="4"/><ellipse cx="106" cy="40" rx="92" ry="14" fill="#4A3A4F"/><path class="kx-sauce" d="M38 38q20-10 40 0t40 0 40 0" fill="none" stroke="#F0533A" stroke-width="9"/></g></svg>
-          <svg class="kx-pop" viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="4" stroke-linejoin="round"><path d="M50 4l9 25 26-10-14 23 25 9-25 9 14 23-26-10-9 25-9-25-26 10 14-23-25-9 25-9-14-23 26 10z" fill="#FFC93C"/></g><text x="50" y="58" text-anchor="middle" font-family="Bagel Fat One, sans-serif" font-size="22" fill="#1E1420">tss</text></svg>
+          <div class="kx-steam"><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M16 98q-12-14-2-28t-2-26 4-26 10-16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M14 98q10-14 0-28t2-26-4-26-8-16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M16 98q-12-14-2-28t-2-26 4-26 10-16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></div>
+          <svg class="kx-pan__art" viewBox="0 0 260 110"><g stroke="#1D2B24" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"><path d="M196 44h56" stroke-width="14"/><path d="M196 44h56" stroke="#5E7066" stroke-width="6"/><path d="M14 40h184l-12 52q-3 12-16 12H42q-13 0-16-12z" fill="#33443B"/><path d="M30 50h150" stroke="#55685D" stroke-width="4"/><ellipse cx="106" cy="40" rx="92" ry="14" fill="#55685D"/><g class="kx-noodles" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M43 37c-9-15 24-22 30-8s-22 15-11-1 28-9 30 3 18 10 24-3 32-4 27 8M48 40c6-18 23-17 32-4s18-15 31-5 28-8 43 6M60 39c4-10 11-11 18-2s18-15 30-2 28-13 37 0" stroke="#1D2B24" stroke-width="7"/><path d="M43 37c-9-15 24-22 30-8s-22 15-11-1 28-9 30 3 18 10 24-3 32-4 27 8M48 40c6-18 23-17 32-4s18-15 31-5 28-8 43 6M60 39c4-10 11-11 18-2s18-15 30-2 28-13 37 0" stroke="#F7C64B" stroke-width="3.5"/></g><path class="kx-sauce" d="M38 38q20-10 40 0t40 0 40 0" fill="none" stroke="#E23B26" stroke-width="9"/></g></svg>
+          <svg class="kx-pop" viewBox="0 0 100 100"><g fill="none" stroke="#FFFCF5" stroke-width="6" stroke-linecap="round"><path d="M24 76q-16-18 0-34M50 66q16-18 0-40M76 76q16-18 0-34"/></g></svg>
         </div>
-        <svg class="kx-hob__base" viewBox="0 0 300 60" preserveAspectRatio="none"><rect x="3" y="3" width="294" height="54" rx="10" fill="#1E1420" stroke="#0C080D" stroke-width="6"/><circle cx="40" cy="30" r="9" fill="#3A2E3D"/><circle cx="260" cy="30" r="9" fill="#3A2E3D"/></svg>
+        <svg class="kx-hob__base" viewBox="0 0 300 60" preserveAspectRatio="none"><rect x="3" y="3" width="294" height="54" rx="10" fill="#1D2B24" stroke="#1D2B24" stroke-width="6"/><circle cx="40" cy="30" r="9" fill="#33443B"/><circle cx="260" cy="30" r="9" fill="#33443B"/></svg>
       </div>
+
+      <div class="kx-pan-front" aria-hidden="true"><svg viewBox="0 0 260 110"><g stroke="#1D2B24" stroke-width="6" stroke-linejoin="round"><path d="M14 40q92 28 184 0l-12 52q-3 12-16 12H42q-13 0-16-12z" fill="#33443B"/><path d="M14 40q92 28 184 0" fill="none" stroke-linecap="round"/></g></svg></div>
 
       <!-- The board: the carrot pal chops, and where he puts the knife down -->
       <div class="kx kx-board" aria-hidden="true">
-        <svg class="kx-board__wood" viewBox="0 0 240 70"><rect x="4" y="14" width="232" height="52" rx="14" fill="#E3B27A" stroke="#0C080D" stroke-width="6"/><path d="M20 28h150" stroke="#EFC898" stroke-width="5" stroke-linecap="round"/><circle cx="214" cy="40" r="7" fill="#0C080D"/></svg>
-        <svg class="kx-carrot" viewBox="0 0 160 50"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M8 26q4-14 20-14h96l30 14-30 14H28Q12 40 8 26z" fill="#F08A3A"/><path d="M60 18v16M90 16v20" stroke="#D86E22" stroke-width="3"/></g></svg>
-        <svg class="kx-knife-down" viewBox="0 0 200 60"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><path d="M60 18h128q-8 30-62 30H60z" fill="#EDE9E4"/><rect x="6" y="16" width="58" height="20" rx="10" fill="#6B3A2A"/></g></svg>
+        <svg class="kx-board__wood" viewBox="0 0 240 70"><rect x="4" y="14" width="232" height="52" rx="14" fill="#E3B27A" stroke="#1D2B24" stroke-width="6"/><path d="M20 28h150" stroke="#EFC898" stroke-width="5" stroke-linecap="round"/><circle cx="214" cy="40" r="7" fill="#1D2B24"/></svg>
+        <svg class="kx-carrot" viewBox="0 0 160 50"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path class="k-carrot-shape" d="M8 26q4-14 20-14h96l30 14-30 14H28Q12 40 8 26z" fill="#F08A3A"/><path d="M60 18v16M90 16v20" stroke="#D86E22" stroke-width="3"/></g></svg>
+        <svg class="kx-knife-down" viewBox="0 0 200 60"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><path d="M60 18h128q-8 30-62 30H60z" fill="#EDE9E4"/><rect x="6" y="16" width="58" height="20" rx="10" fill="#6B3A2A"/></g></svg>
       </div>
 
-      <!-- Things in flight: from the fridge to the pan, carrot slices from the board, and the dinner onto the plate -->
+      <!-- Ingredients travel from the fridge; cut carrot rounds collect on the board, then fly into the pan. -->
       <div class="ings" aria-hidden="true">
-        <svg class="ing" viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><circle cx="50" cy="56" r="34" fill="#F0533A"/><path d="M50 22l-10-10M50 22l12-8M50 22v-12" stroke="#4E9A47" stroke-width="7" stroke-linecap="round"/></g></svg>
-        <svg class="ing" viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M14 70q36-56 72 0" fill="none" stroke="#FFC93C" stroke-width="9"/><path d="M20 78q30-44 60 0" fill="none" stroke="#F2B65A" stroke-width="9"/><path d="M26 86q24-32 48 0" fill="none" stroke="#FFC93C" stroke-width="9"/></g></svg>
-        <svg class="ing" viewBox="0 0 160 50"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M8 26q4-14 20-14h96l30 14-30 14H28Q12 40 8 26z" fill="#F08A3A"/><path d="M8 26l-6-10M8 26l-8 4" stroke="#4E9A47" stroke-width="5"/></g></svg>
-        <svg class="ing" viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><path d="M50 12q30 24 30 50a30 30 0 0 1-60 0q0-26 30-50z" fill="#FFF4E0"/><path d="M50 30v52M38 44q-6 16 0 34M62 44q6 16 0 34" fill="none" stroke="#E3CFA6" stroke-width="4"/></g></svg>
-        <svg class="ing" viewBox="0 0 100 100"><g stroke="#0C080D" stroke-width="5" stroke-linejoin="round"><path d="M50 86C20 70 16 34 50 12c34 22 30 58 0 74z" fill="#6BBF59"/><path d="M50 22v58" fill="none" stroke="#3E8A3A" stroke-width="4"/></g></svg>
+        <svg class="ing" viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><circle cx="50" cy="56" r="34" fill="#F28B6B"/><path d="M50 22l-10-10M50 22l12-8M50 22v-12" stroke="#4E9A47" stroke-width="7" stroke-linecap="round"/></g></svg>
+        <svg class="ing" viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M14 70q36-56 72 0" fill="none" stroke="#F2BE4A" stroke-width="9"/><path d="M20 78q30-44 60 0" fill="none" stroke="#F2B65A" stroke-width="9"/><path d="M26 86q24-32 48 0" fill="none" stroke="#F2BE4A" stroke-width="9"/></g></svg>
+        <svg class="ing" viewBox="0 0 160 50"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><path d="M8 26q4-14 20-14h96l30 14-30 14H28Q12 40 8 26z" fill="#F08A3A"/><path d="M60 18v16M90 16v20" stroke="#D86E22" stroke-width="3"/></g></svg>
+        <svg class="ing" viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><path d="M50 12q30 24 30 50a30 30 0 0 1-60 0q0-26 30-50z" fill="#FFFFFF"/><path d="M50 30v52M38 44q-6 16 0 34M62 44q6 16 0 34" fill="none" stroke="#E3CFA6" stroke-width="4"/></g></svg>
+        <svg class="ing" viewBox="0 0 100 100"><g stroke="#1D2B24" stroke-width="5" stroke-linejoin="round"><path d="M50 86C20 70 16 34 50 12c34 22 30 58 0 74z" fill="#6BBF59"/><path d="M50 22v58" fill="none" stroke="#3E8A3A" stroke-width="4"/></g></svg>
       </div>
       <div class="slices" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-      <div class="bits" aria-hidden="true">
-        <svg class="bit" viewBox="0 0 60 44"><g stroke="#0C080D" stroke-linejoin="round" stroke-linecap="round"><path d="M8 34C6 18 20 8 32 10c14-2 24 10 20 24q-22 8-44 0z" fill="#F7C64B" stroke-width="4"/><path d="M14 31c4-11 26-13 32 0M21 34c3-8 15-8 18 0" fill="none" stroke="#D38E22" stroke-width="2.4"/><path d="M19 17c2-8 20-8 22 0-2 6-20 6-22 0z" fill="#E23B26" stroke-width="3"/></g></svg>
-        <svg class="bit" viewBox="0 0 40 40"><g stroke="#0C080D" stroke-linejoin="round"><ellipse cx="20" cy="21" rx="16.2" ry="11.5" fill="#F0533A" stroke-width="4"/><ellipse cx="20" cy="20.3" rx="10.8" ry="7" fill="#FF8A6B" stroke="none"/><ellipse cx="20" cy="20.3" rx="3.5" ry="2.3" fill="#FFD9B8" stroke="none"/><g fill="#FFE3B0" stroke="none"><ellipse cx="13.2" cy="19" rx="2" ry="1.5"/><ellipse cx="26.8" cy="19" rx="2" ry="1.5"/><ellipse cx="14.6" cy="24.4" rx="2" ry="1.5"/><ellipse cx="25.4" cy="24.4" rx="2" ry="1.5"/></g></g></svg>
-        <svg class="bit" viewBox="0 0 60 44"><g stroke="#0C080D" stroke-linejoin="round" stroke-linecap="round" fill="none"><path d="M6 30c8-22 22 10 32-12s16-4 18-10" stroke-width="8"/><path d="M6 30c8-22 22 10 32-12s16-4 18-10" stroke="#F7C64B" stroke-width="4"/><circle cx="24" cy="25" r="4.5" fill="#E23B26" stroke-width="2.5"/></g></svg>
-        <svg class="bit" viewBox="0 0 60 44"><g stroke="#0C080D" stroke-linejoin="round" stroke-linecap="round"><path d="M8 34C6 18 20 8 32 10c14-2 24 10 20 24q-22 8-44 0z" fill="#F7C64B" stroke-width="4"/><path d="M13 30c5-12 27-14 33 0M20 34c3-7 15-7 18 0" fill="none" stroke="#D38E22" stroke-width="2.4"/><path d="M26 16c-6-8 0-14 10-12 2 8-3 13-10 12z" fill="#4FAE4A" stroke-width="2.5"/></g></svg>
-      </div>
 
-      <!-- The plate: slides along the counter into the spot pal left, and dinner is tossed onto it -->
+
+      <!-- Dinner is served on the worktop beside pal. -->
       <div class="kx kx-plate" aria-hidden="true">
-        <div class="kx-steam"><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M16 98q-12-14-2-28t-2-26 4-26 10-16" fill="none" stroke="#FFF4E0" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M14 98q10-14 0-28t2-26-4-26-8-16" fill="none" stroke="#FFF4E0" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M16 98q-12-14-2-28t-2-26 4-26 10-16" fill="none" stroke="#FFF4E0" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></div>
-        <svg class="kx-dish" viewBox="0 0 240 150"><g stroke="#0C080D" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"><path d="M14 100q10 40 106 44 96-4 106-44z" fill="#E9DFCF"/><ellipse cx="120" cy="100" rx="108" ry="26" fill="#FFFDF6"/><ellipse cx="120" cy="99" rx="78" ry="15" fill="#EFE4D1" stroke-width="3"/></g><g class="kx-meal" stroke="#0C080D" stroke-linejoin="round" stroke-linecap="round"><path d="M58 100c-12 8-24 10-32 4M180 102c12 8 26 8 32 0" fill="none" stroke-width="9"/><path d="M58 100c-12 8-24 10-32 4M180 102c12 8 26 8 32 0" fill="none" stroke="#F7C64B" stroke-width="4"/><path d="M48 102c-5-10-1-20 7-26-1-11 8-20 19-22 5-9 17-13 28-10 9-6 23-6 32 0 11-3 23 1 28 10 11 2 20 11 19 22 8 6 12 16 7 26q-70 14-140 0z" fill="#F7C64B" stroke-width="5"/><g fill="none" stroke="#D38E22" stroke-width="2.6"><path d="M60 98c0-26 28-42 60-42s60 16 60 42M74 100c2-20 22-32 46-32s44 12 46 32M90 102c2-14 14-22 30-22s28 8 30 22M64 88c10-14 24-4 34-14s24-8 32 2 22 4 36-6M62 97c14-10 24 2 38-6s22-6 32 2 24 6 40-4"/></g><path d="M68 92c6-18 28-30 50-30M100 98c4-8 12-12 22-12" fill="none" stroke="#FFE39A" stroke-width="2.2"/><path d="M84 60c-2-14 16-22 36-20 22-2 38 6 34 20-2 8-10 6-16 12-4 6-10-2-16 2-8 4-12-6-20-2-10 0-16-4-18-12z" fill="#E23B26" stroke-width="4"/><path d="M96 52q8-8 22-7" fill="none" stroke="#FFF" stroke-opacity=".75" stroke-width="4"/><circle cx="128" cy="47" r="2.4" fill="#FFF" fill-opacity=".8" stroke="none"/><g fill="#FFF6D8" stroke="none"><rect x="104" y="58" width="5" height="3.5" rx="1" transform="rotate(20 106 60)"/><rect x="124" y="62" width="5" height="3.5" rx="1" transform="rotate(-15 126 64)"/><rect x="140" y="54" width="4.5" height="3" rx="1"/><rect x="114" y="66" width="4" height="3" rx="1" transform="rotate(35 116 67)"/><rect x="96" y="62" width="4" height="3" rx="1"/></g><path d="M156 54 202 10" stroke-width="12"/><path d="M156 54 202 10" stroke="#D9D3CA" stroke-width="5"/><ellipse cx="156" cy="54" rx="12" ry="7" transform="rotate(-40 156 54)" fill="#F7C64B" stroke-width="3.5"/><path d="M147 56c5-6 13-8 18-4" fill="none" stroke="#D38E22" stroke-width="2.2"/><ellipse cx="78" cy="86" rx="12.6" ry="8.9" fill="#F0533A" stroke-width="3.5"/><ellipse cx="78" cy="85.5" rx="8.4" ry="5.5" fill="#FF8A6B" stroke="none"/><ellipse cx="78" cy="85.5" rx="2.7" ry="1.8" fill="#FFD9B8" stroke="none"/><g fill="#FFE3B0" stroke="none"><ellipse cx="72.8" cy="84.4" rx="1.6" ry="1.2"/><ellipse cx="83.2" cy="84.4" rx="1.6" ry="1.2"/><ellipse cx="73.8" cy="88.6" rx="1.6" ry="1.2"/><ellipse cx="82.2" cy="88.6" rx="1.6" ry="1.2"/></g><ellipse cx="164" cy="88" rx="12" ry="8.5" fill="#F0533A" stroke-width="3.5"/><ellipse cx="164" cy="87.5" rx="8" ry="5.2" fill="#FF8A6B" stroke="none"/><ellipse cx="164" cy="87.5" rx="2.6" ry="1.7" fill="#FFD9B8" stroke="none"/><g fill="#FFE3B0" stroke="none"><ellipse cx="159" cy="86.5" rx="1.5" ry="1.1"/><ellipse cx="169" cy="86.5" rx="1.5" ry="1.1"/><ellipse cx="160" cy="90.5" rx="1.5" ry="1.1"/><ellipse cx="168" cy="90.5" rx="1.5" ry="1.1"/></g><path d="M116 42c-8-12 0-22 14-20 4 12-4 20-14 20z" fill="#4FAE4A" stroke-width="3"/><path d="M118 40l10-14" fill="none" stroke="#2F7A35" stroke-width="2"/><path d="M122 44c8-10 22-10 28-2-8 8-20 8-28 2z" fill="#5CBF55" stroke-width="3"/><path d="M125 44l21-3" fill="none" stroke="#2F7A35" stroke-width="2"/></g></svg>
-        <svg class="kx-spark kx-spark--1" viewBox="0 0 40 40"><path d="M20 2c2 12 6 16 18 18-12 2-16 6-18 18-2-12-6-16-18-18 12-2 16-6 18-18z" fill="#FFC93C" stroke="#0C080D" stroke-width="3" stroke-linejoin="round"/></svg>
-        <svg class="kx-spark kx-spark--2" viewBox="0 0 40 40"><path d="M20 2c2 12 6 16 18 18-12 2-16 6-18 18-2-12-6-16-18-18 12-2 16-6 18-18z" fill="#FFF4E0" stroke="#0C080D" stroke-width="3" stroke-linejoin="round"/></svg>
-        <svg class="kx-spark kx-spark--3" viewBox="0 0 40 40"><path d="M20 2c2 12 6 16 18 18-12 2-16 6-18 18-2-12-6-16-18-18 12-2 16-6 18-18z" fill="#FFC93C" stroke="#0C080D" stroke-width="3" stroke-linejoin="round"/></svg>
+        <div class="kx-steam"><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M16 98q-12-14-2-28t-2-26 4-26 10-16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M14 98q10-14 0-28t2-26-4-26-8-16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><svg viewBox="0 0 30 100" preserveAspectRatio="none"><path d="M16 98q-12-14-2-28t-2-26 4-26 10-16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></div>
+        <svg class="kx-dish" viewBox="0 0 240 150"><g stroke="#1D2B24" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"><path d="M14 100q10 40 106 44 96-4 106-44z" fill="#E9DFCF"/><ellipse cx="120" cy="100" rx="108" ry="26" fill="#FFFDF6"/><ellipse cx="120" cy="99" rx="78" ry="15" fill="#EFE4D1" stroke-width="3"/></g><g class="kx-meal" stroke="#1D2B24" stroke-linejoin="round" stroke-linecap="round"><path d="M58 100c-12 8-24 10-32 4M180 102c12 8 26 8 32 0" fill="none" stroke-width="9"/><path d="M58 100c-12 8-24 10-32 4M180 102c12 8 26 8 32 0" fill="none" stroke="#F7C64B" stroke-width="4"/><path d="M48 102c-5-10-1-20 7-26-1-11 8-20 19-22 5-9 17-13 28-10 9-6 23-6 32 0 11-3 23 1 28 10 11 2 20 11 19 22 8 6 12 16 7 26q-70 14-140 0z" fill="#F7C64B" stroke-width="5"/><g fill="none" stroke="#D38E22" stroke-width="2.6"><path d="M60 98c0-26 28-42 60-42s60 16 60 42M74 100c2-20 22-32 46-32s44 12 46 32M90 102c2-14 14-22 30-22s28 8 30 22M64 88c10-14 24-4 34-14s24-8 32 2 22 4 36-6M62 97c14-10 24 2 38-6s22-6 32 2 24 6 40-4"/></g><path d="M68 92c6-18 28-30 50-30M100 98c4-8 12-12 22-12" fill="none" stroke="#FFE39A" stroke-width="2.2"/><path d="M84 60c-2-14 16-22 36-20 22-2 38 6 34 20-2 8-10 6-16 12-4 6-10-2-16 2-8 4-12-6-20-2-10 0-16-4-18-12z" fill="#E23B26" stroke-width="4"/><path d="M96 52q8-8 22-7" fill="none" stroke="#FFF" stroke-opacity=".75" stroke-width="4"/><circle cx="128" cy="47" r="2.4" fill="#FFF" fill-opacity=".8" stroke="none"/><g fill="#FFF6D8" stroke="none"><rect x="104" y="58" width="5" height="3.5" rx="1" transform="rotate(20 106 60)"/><rect x="124" y="62" width="5" height="3.5" rx="1" transform="rotate(-15 126 64)"/><rect x="140" y="54" width="4.5" height="3" rx="1"/><rect x="114" y="66" width="4" height="3" rx="1" transform="rotate(35 116 67)"/><rect x="96" y="62" width="4" height="3" rx="1"/></g><path d="M156 54 202 10" stroke-width="12"/><path d="M156 54 202 10" stroke="#D9D3CA" stroke-width="5"/><ellipse cx="156" cy="54" rx="12" ry="7" transform="rotate(-40 156 54)" fill="#F7C64B" stroke-width="3.5"/><path d="M147 56c5-6 13-8 18-4" fill="none" stroke="#D38E22" stroke-width="2.2"/><ellipse cx="78" cy="86" rx="12.6" ry="8.9" fill="#F28B6B" stroke-width="3.5"/><ellipse cx="78" cy="85.5" rx="8.4" ry="5.5" fill="#FF8A6B" stroke="none"/><ellipse cx="78" cy="85.5" rx="2.7" ry="1.8" fill="#FFD9B8" stroke="none"/><g fill="#FFE3B0" stroke="none"><ellipse cx="72.8" cy="84.4" rx="1.6" ry="1.2"/><ellipse cx="83.2" cy="84.4" rx="1.6" ry="1.2"/><ellipse cx="73.8" cy="88.6" rx="1.6" ry="1.2"/><ellipse cx="82.2" cy="88.6" rx="1.6" ry="1.2"/></g><ellipse cx="164" cy="88" rx="12" ry="8.5" fill="#F28B6B" stroke-width="3.5"/><ellipse cx="164" cy="87.5" rx="8" ry="5.2" fill="#FF8A6B" stroke="none"/><ellipse cx="164" cy="87.5" rx="2.6" ry="1.7" fill="#FFD9B8" stroke="none"/><g fill="#FFE3B0" stroke="none"><ellipse cx="159" cy="86.5" rx="1.5" ry="1.1"/><ellipse cx="169" cy="86.5" rx="1.5" ry="1.1"/><ellipse cx="160" cy="90.5" rx="1.5" ry="1.1"/><ellipse cx="168" cy="90.5" rx="1.5" ry="1.1"/></g><path d="M116 42c-8-12 0-22 14-20 4 12-4 20-14 20z" fill="#4FAE4A" stroke-width="3"/><path d="M118 40l10-14" fill="none" stroke="#2F7A35" stroke-width="2"/><path d="M122 44c8-10 22-10 28-2-8 8-20 8-28 2z" fill="#5CBF55" stroke-width="3"/><path d="M125 44l21-3" fill="none" stroke="#2F7A35" stroke-width="2"/></g></svg>
+        <p class="k-price"><strong>£4</strong><span>At home</span></p>
+        <svg class="kx-spark kx-spark--1" viewBox="0 0 40 40"><path d="M20 2c2 12 6 16 18 18-12 2-16 6-18 18-2-12-6-16-18-18 12-2 16-6 18-18z" fill="#F2BE4A" stroke="#1D2B24" stroke-width="3" stroke-linejoin="round"/></svg>
+        <svg class="kx-spark kx-spark--2" viewBox="0 0 40 40"><path d="M20 2c2 12 6 16 18 18-12 2-16 6-18 18-2-12-6-16-18-18 12-2 16-6 18-18z" fill="#FFFFFF" stroke="#1D2B24" stroke-width="3" stroke-linejoin="round"/></svg>
+        <svg class="kx-spark kx-spark--3" viewBox="0 0 40 40"><path d="M20 2c2 12 6 16 18 18-12 2-16 6-18 18-2-12-6-16-18-18 12-2 16-6 18-18z" fill="#F2BE4A" stroke="#1D2B24" stroke-width="3" stroke-linejoin="round"/></svg>
       </div>
 
       <!-- pal chopping: Adam's bun and face with a knife hand and a steadying hand in his line. He stands behind the board,
            hands and knife in front of it; JS places this on the board's carrot and hands over to the chef below at the walk -->
-      <div class="kc" aria-hidden="true"><img class="kc-body" src="assets/pal/kc-body.webp" width="900" height="860" alt=""><img class="kc-steady" src="assets/pal/kc-steady.webp" width="900" height="860" alt=""><img class="kc-arm" src="assets/pal/kc-arm.webp" width="900" height="860" alt=""></div>
-
+      <!-- Persistent utensils and Adam's existing short hand shapes; one chef pose throughout. -->
+      <svg class="k-utensils" aria-hidden="true">
+        <g class="k-serving"><g  fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M43 37c-9-15 24-22 30-8s-22 15-11-1 28-9 30 3 18 10 24-3 32-4 27 8M48 40c6-18 23-17 32-4s18-15 31-5 28-8 43 6M60 39c4-10 11-11 18-2s18-15 30-2 28-13 37 0" stroke="#1D2B24" stroke-width="7"/><path d="M43 37c-9-15 24-22 30-8s-22 15-11-1 28-9 30 3 18 10 24-3 32-4 27 8M48 40c6-18 23-17 32-4s18-15 31-5 28-8 43 6M60 39c4-10 11-11 18-2s18-15 30-2 28-13 37 0" stroke="#F7C64B" stroke-width="3.5"/></g><path  d="M38 38q20-10 40 0t40 0 40 0" fill="none" stroke="#E23B26" stroke-width="9"/></g>
+        <g class="k-spoon"><path class="k-spoon__shaft" fill="none" stroke="#1D2B24" stroke-linecap="round"/><path class="k-spoon__wood" fill="none" stroke="#E3B27A" stroke-linecap="round"/><ellipse class="k-spoon__bowl" fill="#E3B27A" stroke="#1D2B24"/></g>
+        <g class="k-knife"><path d="M-70 -8H-320Q-310 26-200 30H-70Z" fill="#EDE9E4" stroke="#1D2B24" stroke-width="3"/><path d="M-70 15H-265" stroke="#FFFDF6" stroke-width="2"/><rect x="-75" y="-14" width="115" height="42" rx="18" fill="#6B3A2A" stroke="#1D2B24" stroke-width="3"/></g>
+      </svg>
+      <svg class="k-hand-left" viewBox="0 0 626 600" aria-hidden="true"><g class="k-arm">
+                <g stroke="#1D2B24" stroke-width="15"><ellipse cx="96" cy="474" rx="50" ry="44"/><circle cx="62" cy="452" r="20"/><circle cx="60" cy="482" r="19"/></g>
+                <g fill="#FFFCF5"><ellipse cx="96" cy="474" rx="50" ry="44"/><circle cx="62" cy="452" r="20"/><circle cx="60" cy="482" r="19"/></g>
+                <path d="M62 500q34 20 74 2" fill="none" stroke="#F6DABB" stroke-width="12" stroke-linecap="round"/><path d="M44 466l22 4" stroke="#1D2B24" stroke-width="7" stroke-linecap="round"/></g></svg>
+      <svg class="k-hand-right" viewBox="0 0 626 600" aria-hidden="true"><g class="k-rest">
+                <g stroke="#1D2B24" stroke-width="15"><ellipse cx="556" cy="492" rx="46" ry="40"/><circle cx="590" cy="476" r="18"/></g>
+                <g fill="#FFFCF5"><ellipse cx="556" cy="492" rx="46" ry="40"/><circle cx="590" cy="476" r="18"/></g>
+                <path d="M528 514q30 16 62 0" fill="none" stroke="#F6DABB" stroke-width="11" stroke-linecap="round"/><path d="M580 488l18 2" stroke="#1D2B24" stroke-width="7" stroke-linecap="round"/></g></svg>
       <!-- pal, the head chef: built from Adam's poses (his bun, his faces), with hands and a knife in his line weight -->
       <div class="k-pal">
         <span class="pal pal--chef">
           <span class="pal__rig">
-            <img decoding="async" class="pal__body" src="assets/pal/pal-chef-body.webp" width="626" height="600" alt="" loading="lazy">
-            <span class="pal__face"><img decoding="async" src="assets/pal/pal-grumpy-face.webp" width="626" height="600" alt="" loading="lazy"><img decoding="async" class="pal__lids" src="assets/pal/pal-grumpy-lids.webp" width="626" height="600" alt="" loading="lazy"></span>
-            <img decoding="async" class="k-happy" src="assets/pal/pal-chef-happy.webp" width="626" height="600" alt="" loading="lazy">
-            <svg class="k-hands" viewBox="0 0 626 600" overflow="visible">
-              <g class="k-arm">
-                <g class="k-knife"><path d="M30 452l-250 -10q-60 4-52 52 72 24 304 6z" fill="#EDE9E4" stroke="#0C080D" stroke-width="13" stroke-linejoin="round"/><path d="M-200 470h214" stroke="#C9C2BA" stroke-width="6" stroke-linecap="round"/><path d="M-170 452h170" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity=".8"/><rect x="18" y="440" width="96" height="44" rx="22" fill="#6B3A2A" stroke="#0C080D" stroke-width="13"/><circle cx="52" cy="462" r="5" fill="#FFC93C"/><circle cx="84" cy="462" r="5" fill="#FFC93C"/></g>
-                <g class="k-spoon"><path class="k-spoon__shaft" d="M40 474H-400" stroke="#0C080D" stroke-width="34" stroke-linecap="round"/><path class="k-spoon__wood" d="M40 474H-400" stroke="#E3B27A" stroke-width="18" stroke-linecap="round"/><ellipse class="k-spoon__bowl" cx="-440" cy="474" rx="58" ry="34" fill="#E3B27A" stroke="#0C080D" stroke-width="13"/></g>
-                <g stroke="#0C080D" stroke-width="15"><ellipse cx="96" cy="474" rx="50" ry="44"/><circle cx="62" cy="452" r="20"/><circle cx="60" cy="482" r="19"/></g>
-                <g fill="#FCF4E8"><ellipse cx="96" cy="474" rx="50" ry="44"/><circle cx="62" cy="452" r="20"/><circle cx="60" cy="482" r="19"/></g>
-                <path d="M62 500q34 20 74 2" fill="none" stroke="#F6DABB" stroke-width="12" stroke-linecap="round"/><path d="M44 466l22 4" stroke="#0C080D" stroke-width="7" stroke-linecap="round"/>
-              </g>
-              <g class="k-rest">
-                <g stroke="#0C080D" stroke-width="15"><ellipse cx="556" cy="492" rx="46" ry="40"/><circle cx="590" cy="476" r="18"/></g>
-                <g fill="#FCF4E8"><ellipse cx="556" cy="492" rx="46" ry="40"/><circle cx="590" cy="476" r="18"/></g>
-                <path d="M528 514q30 16 62 0" fill="none" stroke="#F6DABB" stroke-width="11" stroke-linecap="round"/><path d="M580 488l18 2" stroke="#0C080D" stroke-width="7" stroke-linecap="round"/>
-              </g>
-            </svg>
-            <svg class="k-hat" viewBox="0 0 120 100"><g stroke="#0C080D" stroke-width="6" stroke-linejoin="round"><path d="M30 82V58C10 56 6 30 26 24c4-16 26-22 36-10 12-12 34-4 34 12 20 4 18 32-4 34v22z" fill="#FFFDF6"/><path d="M30 70h62" fill="none"/></g><path d="M40 40q6-10 16-8" fill="none" stroke="#EADCC4" stroke-width="5" stroke-linecap="round"/></svg>
+            <img decoding="async" class="pal__body" src="assets/pal/pal-chef-body.webp" width="626" height="600" alt="">
+            <span class="pal__face"><svg class="chef-neutral" viewBox="0 0 626 600" aria-hidden="true"><g fill="#160C08"><ellipse cx="218" cy="326" rx="39" ry="45"/><ellipse cx="414" cy="326" rx="39" ry="45"/></g><g fill="#FFFCF5"><ellipse cx="205" cy="309" rx="10" ry="12"/><ellipse cx="401" cy="309" rx="10" ry="12"/></g><path d="M292 374q20 7 40 0" fill="none" stroke="#160C08" stroke-width="11" stroke-linecap="round"/><g fill="#F9CBAE"><ellipse cx="143" cy="373" rx="33" ry="23"/><ellipse cx="485" cy="373" rx="33" ry="23"/></g></svg></span>
+            <img decoding="async" class="k-happy" src="assets/pal/pal-chef-happy.webp" width="626" height="600" alt="">
+
+            <svg class="k-hat" viewBox="0 0 160 130"><g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round"><path d="M20 94V73C0 70 0 39 20 34 19 11 48 2 65 18 80 0 109 5 117 24 143 17 161 40 151 61q-3 10-11 12v21z" fill="#FFFDF6"/><path class="k-hat-band" d="M20 92h120v26H20z" fill="#FFFDF6"/><path d="M22 106h116" fill="none"/></g><path d="M31 45q5-13 20-13" fill="none" stroke="#EADCC4" stroke-width="4" stroke-linecap="round"/></svg>
           </span>
         </span>
         <p class="bubble k-say" data-in=".18" data-out=".3">chop chop.</p>
         <p class="bubble k-say" data-in=".31" data-out=".43">more garlic.</p>
         <p class="bubble k-say k-say--stir" data-in=".49" data-out=".62">stir it.</p>
-        <p class="bubble k-say" data-in=".8" data-out="2">see? easy.</p>
+        <p class="bubble k-say" data-in=".84" data-out="2">see? easy.</p>
       </div>
     </div>
-  </section>
-
-  <!-- 5. The money. Words drift with scroll, coins pour into pal's wallet, the receipt prints. -->
-  <section class="money on-sun" data-money aria-labelledby="money-title">
-    <div class="wrap money__in">
-      <h2 class="money__title" id="money-title"><span data-drift="-1">cook,</span> <span data-drift="1">and pal</span> <span data-drift="-1">counts it.</span></h2>
-      <div class="money__stage">
-        <button class="money__pal" type="button" data-coins aria-label="Give pal some coins">
-          <img decoding="async" src="assets/pal/pal-hug.webp" width="657" height="632" alt="" loading="lazy">
-          <img decoding="async" class="money__heart" src="assets/pal/pal-hug-heart.webp" width="657" height="632" alt="" loading="lazy">
-        </button>
-        <div class="till"><div class="receipt-clip" data-print-clip><div class="receipt-edge" data-print><div class="receipt">
-          <p class="receipt__head">cravepal</p>
-          <p class="receipt__sub">tonight, an example</p>
-          <dl>
-            <div><dt>a usual takeaway</dt><dd>£22</dd></div>
-            <div><dt>a meal at home</dt><dd>£4</dd></div>
-            <div class="total"><dt>kept</dt><dd>£18</dd></div>
-          </dl>
-          <p class="receipt__foot">you set your own costs</p>
-        </div></div></div></div>
-        <div class="coins" aria-hidden="true" data-coin-layer></div>
-      </div>
-      <p class="money__lead">Tell Cravepal what a takeaway usually costs you and what a meal at home costs. Each time you choose to cook, the difference goes on your total.</p>
-    </div>
-    <template id="coin"><svg class="coin" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26"/><circle cx="30" cy="30" r="19" class="coin__in"/><text x="30" y="40" text-anchor="middle">£</text></svg></template>
-  </section>
-
-  <!-- 6. Privacy, loudly. -->
-  <section class="private on-deep" aria-labelledby="private-title">
-    <div class="marquee" aria-hidden="true" data-marquee>
-      <div class="marquee__row"><div class="marquee__track"><span>your Pauses stay on your device</span><b></b><span>your Pauses stay on your device</span><b></b><span>your Pauses stay on your device</span><b></b><span>your Pauses stay on your device</span><b></b></div></div>
-      <div class="marquee__row marquee__row--rev"><div class="marquee__track"><span>the Chrome extension sends nothing</span><b></b><span>no accounts, no ads</span><b></b><span>the Chrome extension sends nothing</span><b></b><span>no accounts, no ads</span><b></b></div></div>
-    </div>
-    <div class="wrap private__in">
-      <h2 class="private__title" id="private-title">what pal sees stays with you.</h2>
-      <div>
-        <ul class="facts">
-          <li>The apps and sites you pick, every Pause and your savings stay on your phone or computer.</li>
-          <li>The Chrome extension sends nothing at all.</li>
-          <li>The iPhone app sends crash reports and statistics about Cravepal’s own screens, never your Pauses.</li>
-          <li>No accounts, no ads, and we never sell data.</li>
-        </ul>
-        <a class="cp-btn cp-btn--ghost" href="privacy/">Read the privacy policy</a>
-      </div>
-    </div>
-  </section>
+</section>
+<section class="chapter money" id="money" aria-labelledby="money-title">
+<div class="chapter-heading"><p class="section-label"><span class="chapter-number">05</span> The good bit</p><span class="scene-note">Your money. Still your money.</span></div>
+<div class="money-layout">
+<div class="money-copy">
+<h2 id="money-title">full belly.<br>fuller wallet.</h2>
+<p class="kept-amount"><span>+£18</span><b>kept. nice one.</b></p>
+<p class="lede">Tell CravePal your usual takeaway and home-cooked meal costs. Every time you choose to cook, pal adds the difference to your total.</p>
+</div>
+<div class="money-art">
+<div class="card example">
+<p class="example-head">Tonight, an example</p>
+<dl>
+<div><dt><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="6" fill="#FF7A45" stroke="#1D2B24" stroke-width="1.8"/></svg>A usual takeaway</dt><dd>£22</dd></div>
+<div><dt><svg viewBox="0 0 32 32" aria-hidden="true"><g stroke="#1D2B24" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M12 8q-1-2 0-4M16 8q-1-2 0-4M20 8q-1-2 0-4" fill="none" stroke="#8DBFA2"/><rect x="5" y="12" width="22" height="13" rx="5" fill="#4FA36F"/><path d="M3 15h4M25 15h4"/><rect x="9" y="10" width="14" height="3" rx="1.5" fill="#1D2B24"/></g></svg>A meal at home</dt><dd>£4</dd></div>
+<div class="example-total"><dt>You kept</dt><dd>+£18</dd></div>
+</dl>
+<p class="example-note">Your costs. Your total. You set the numbers.</p>
+</div>
+<div class="money-pal">
+<button class="pal-button" data-coins aria-label="Celebrate with pal and a shower of coins"><img src="assets/pal/pal-heart.webp" width="520" height="520" alt="pal happily hugging his wallet." loading="lazy"></button>
+<span class="money-annotation">he’s trying to play it cool.</span>
+</div>
+</div>
+</div>
+<div class="floor" aria-hidden="true"></div>
+</section>
+<section class="privacy-section" id="privacy" aria-labelledby="privacy-title">
+<p class="section-label">A pal. Not a nosy parker.</p>
+<div class="privacy-columns">
+<div class="privacy-story"><h2 id="privacy-title">what pal sees<br>stays with you.</h2>
+<div class="privacy-vignette" aria-hidden="true">
+  <div class="ending-floor"></div>
+  <svg class="privacy-drawing" viewBox="0 0 600 370">
+    <defs><clipPath id="privacy-screen-clip"><rect x="82" y="113" width="171" height="187" rx="12"/></clipPath><radialGradient id="privacy-contact"><stop stop-color="#154D31" stop-opacity=".25"/><stop offset="1" stop-color="#154D31" stop-opacity="0"/></radialGradient></defs>
+    <ellipse cx="444" cy="339" rx="76" ry="9" fill="url(#privacy-contact)"/>
+    <g stroke="#1D2B24" stroke-width="4" stroke-linejoin="round">
+      <rect x="66" y="17" width="204" height="321" rx="30" fill="#8EC4A4"/>
+      <rect x="77" y="28" width="182" height="298" rx="22" fill="#FFFCF5"/>
+      <path d="M143 37h50" stroke-width="7" stroke-linecap="round"/>
+      <path d="M145 313h46" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <g class="privacy-lock" stroke="#1D2B24" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <path class="privacy-shackle" d="M155 76V63a13 13 0 0 1 26 0v13" fill="none"/>
+      <rect x="147" y="75" width="42" height="32" rx="8" fill="#F2BE4A"/>
+      <path d="M168 88v7"/>
+    </g>
+    <g clip-path="url(#privacy-screen-clip)">
+    <g class="privacy-token" data-privacy-token="0">
+      <rect x="94" y="123" width="148" height="45" rx="13" fill="#F9DFCF"/>
+      <rect x="105" y="133" width="25" height="25" rx="6" fill="#FF7A45" stroke="#1D2B24" stroke-width="2.5"/>
+      <path d="M111 145h13m-10-5h7" stroke="#1D2B24" stroke-width="2" stroke-linecap="round"/>
+      <text x="140" y="152">apps + sites</text>
+    </g>
+    <g class="privacy-token" data-privacy-token="1">
+      <rect x="94" y="180" width="148" height="45" rx="13" fill="#DCEFE2"/>
+      <path d="M112 192v21m10-21v21" stroke="#1D2B24" stroke-width="5" stroke-linecap="round"/>
+      <text x="140" y="209">Pauses</text>
+    </g>
+    <g class="privacy-token" data-privacy-token="2">
+      <rect x="94" y="237" width="148" height="45" rx="13" fill="#F9E9BD"/>
+      <circle cx="118" cy="260" r="14" fill="#F2BE4A" stroke="#1D2B24" stroke-width="2.5"/>
+      <text x="112" y="266">£</text><text x="140" y="266">money kept</text>
+    </g>
+    </g>
+    <image href="assets/pal/pal-idle.webp" x="353" y="158" width="182" height="182"/>
+  </svg>
+  <p class="privacy-aside">right here.<br>with you.</p>
+</div></div>
+<div class="card privacy-copy">
+<p><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="3" fill="#F2BE4A" stroke="#1D2B24" stroke-width="1.8"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="#1D2B24" stroke-width="1.8"/><circle cx="12" cy="15.5" r="1.6" fill="#6B4A12"/></svg>Your chosen apps and sites, your Pauses and the money you’ve kept stay on your device.</p>
+<p>The Chrome extension sends nothing. The iPhone app sends crash reports and statistics about CravePal’s own screens, never your Pauses.</p>
+<p>No accounts. No ads. We never sell data.</p>
+<a href="privacy/">The whole privacy policy <span aria-hidden="true">↗</span></a>
+</div>
+</div>
+</section>
 </main>
+<footer class="footer" id="footer">
+<div class="footer-top">
+<p class="footer-title">Good things&nbsp;are<br>still cooking.</p>
+<div class="footer-cta"><p class="footer-launch">Coming soon for iPhone and Chrome.</p><p>For now, there’s probably something in the fridge.</p><a class="btn btn--primary" href="mailto:hello@cravepal.app" data-copy-email>Say hello <span aria-hidden="true">↗</span></a></div>
+</div>
 
-<footer class="foot on-tomato">
-  <div class="wrap">
-    <div class="foot__row">
-      <p class="foot__soon">coming soon for iPhone and Chrome.</p>
-      <ul class="foot__links">
-        <li><a href="mailto:hello@cravepal.app">hello@cravepal.app</a></li>
-        <li><a href="privacy/">Privacy policy</a></li>
-      </ul>
-    </div>
-    <div class="foot__mark"><div class="foot__box">
-      <p class="foot__word jelly" data-split data-jelly aria-hidden="true"><span class="w"><span class="ch" style="--i:0">c</span><span class="ch" style="--i:1">r</span><span class="ch" style="--i:2">a</span><span class="ch" style="--i:3">v</span><span class="ch" style="--i:4">e</span><span class="ch" style="--i:5">p</span><span class="ch" style="--i:6">a</span><span class="ch" style="--i:7">l</span></span></p>
-      <button class="pal pal--grumpy foot__pal" type="button" data-rig data-boop aria-label="Boop pal">
-        <span class="pal__rig">
-          <img decoding="async" class="pal__body" src="assets/pal/pal-grumpy-body.webp" width="626" height="600" alt="" loading="lazy">
-          <span class="pal__face"><img decoding="async" src="assets/pal/pal-grumpy-face.webp" width="626" height="600" alt="" loading="lazy"><img decoding="async" class="pal__lids" src="assets/pal/pal-grumpy-lids.webp" width="626" height="600" alt="" loading="lazy"></span>
-        </span>
-      </button>
-      <p class="bubble bubble--foot" role="status" data-bubble hidden></p>
-    </div></div>
-    <div class="foot__base">
-      <button class="psst" type="button" data-storm>psst. type pizza.</button>
-    </div>
+<div class="footer-kitchen" aria-hidden="true">
+  <div class="ending-floor"></div>
+  <div class="footer-scene">
+    <p class="footer-pal-line">worth a little wait.</p>
+    <svg viewBox="0 0 720 340" class="footer-drawing">
+      <defs><radialGradient id="footer-contact"><stop stop-color="#154D31" stop-opacity=".25"/><stop offset="1" stop-color="#154D31" stop-opacity="0"/></radialGradient></defs>
+      <ellipse cx="205" cy="305" rx="84" ry="9" fill="url(#footer-contact)"/>
+      <image href="assets/pal/pal-idle.webp" x="105" y="104" width="200" height="200"/>
+      <g fill="none" stroke="#52615A" stroke-width="4" stroke-linecap="round" class="footer-steam">
+        <path d="M391 117c-24-21 21-30 0-52"/><path d="M431 107c-24-21 21-30 0-52"/><path d="M471 117c-24-21 21-30 0-52"/>
+      </g>
+      <g stroke="#1D2B24" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M365 273v30m130-30v30" stroke-width="8"/>
+        <rect x="344" y="230" width="170" height="48" rx="13" fill="#F4B3A2"/>
+        <path d="M365 231h130" stroke-width="8"/>
+        <circle cx="430" cy="255" r="9" fill="#FFFCF5"/><path class="footer-dial" d="M430 255v-5"/>
+        <path d="M365 168h-15q-9 0-9 10t9 10h15m130-20h15q9 0 9 10t-9 10h-15" fill="none"/>
+        <path d="M364 160h132v36q0 32-32 32h-68q-32 0-32-32z" fill="#73AD88"/>
+        <path d="M375 178v14q0 20 20 23" fill="none" stroke="#BFE0CB"/>
+        <g class="footer-lid"><path d="M419 139v-7q0-8 11-8t11 8v7" fill="#F2BE4A"/><path d="M356 157q74-44 148 0z" fill="#93C6A5"/></g>
+        <g class="footer-timer"><path d="M570 284l-5 18m63-18 5 18"/><rect x="565" y="218" width="68" height="72" rx="22" fill="#F2BE4A"/><path d="M591 219v-9h16v9" fill="#F2BE4A"/><circle cx="599" cy="251" r="24" fill="#FFFCF5"/><path d="M599 232v4m19 15h-4m-15 19v-4m-19-15h4" stroke-width="2.5"/><path class="footer-timer-hand" d="M599 251v-12" stroke-width="3"/></g>
+      </g>
+    </svg>
   </div>
+</div>
+<div class="footer-wordmark">CravePal</div>
+<div class="footer-base"><a href="mailto:hello@cravepal.app" data-copy-email>hello@cravepal.app</a><button class="secret" data-storm>psst. type pizza.</button><a href="privacy/">Privacy</a><a href="#top">Back to top <span aria-hidden="true">↑</span></a></div>
 </footer>
-
-<div class="storm" aria-hidden="true" data-storm-layer></div>
-<p class="sr-only" role="status" data-announce></p>
-</body>
-</html>
+<dialog class="pause-dialog" aria-labelledby="demo-title" aria-describedby="demo-copy"><div class="dialog-top"><span class="dialog-mark">CravePal</span><span class="section-label">A sample Pause</span><button class="close-dialog" aria-label="Close Pause demo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button></div><div class="dialog-content"><div><p class="section-label" id="demo-step">Before you order…</p><h2 id="demo-title" tabindex="-1">we have food at home.</h2><p id="demo-copy">Cooking tonight keeps £18 in your pocket.</p><div class="demo-actions"><button class="btn btn--primary" id="cook-button">I’ll cook <span aria-hidden="true">↗</span></button><button class="btn btn--secondary" id="order-button">Order anyway</button></div></div><div class="dialog-pal"><img id="demo-pal" src="assets/pal/pal-grumpy.webp" width="560" height="512" alt="pal holding his wallet tight."></div></div><p class="demo-note">Example costs. £22 takeaway − £4 at home = £18 kept.<br>You set your own costs in CravePal. This demo doesn’t open or block other apps.</p></dialog>
+<div class="effects" aria-hidden="true"></div><p class="sr-only" role="status" id="announcement"></p>
+</body></html>

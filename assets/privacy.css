@@ -1,0 +1,87 @@
+/* cravepal.app/privacy, in the CravePal Design Standards: the mint wall, ink text, a borderless card for the short
+   version and the contents, Bagel Fat One for headings, Figtree for reading. The policy's words are untouched. */
+@font-face{font-family:"Bagel Fat One";src:url(fonts/bagel-fat-one.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Figtree;src:url(fonts/figtree.woff2) format("woff2");font-weight:400 700;font-display:swap}
+:root{
+  --wall:#DCEFE2;--floor-top:#C8E6D2;--floor:#BFE0CB;--horizon:rgba(31,107,68,.14);
+  --ink:#1D2B24;--muted:#52615A;--link:#1F6B44;--paper:#FFFCF5;--card:rgba(255,255,255,.5);
+  --card-shadow:0 6px 16px -10px rgba(23,87,58,.35);--divider:rgba(29,43,36,.08);--floating:0 4px 10px -6px rgba(23,87,58,.35);
+  --display:"Bagel Fat One",ui-rounded,system-ui,sans-serif;--text:Figtree,-apple-system,system-ui,sans-serif;
+  --gut:max(20px,calc((100vw - 1100px) / 2));color-scheme:light
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--wall);color:var(--ink);font:400 16px/1.55 var(--text);overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:var(--link);text-decoration-thickness:1.5px;text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--link);outline-offset:3px;border-radius:6px}
+.sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{padding:0 var(--gut)}
+
+/* reading progress: a thin green bar along the top */
+.readbar{position:fixed;z-index:20;top:0;left:0;right:0;height:4px;background:#3E9A67;transform:scaleX(0);transform-origin:0 50%}
+
+/* the head: the wordmark, the title, the date chip, and pal standing on the floor */
+.policy-head{position:relative;overflow:hidden;padding:26px 0 0;min-height:360px}
+.policy-head::after{content:"";position:absolute;z-index:0;left:-40%;right:-40%;bottom:0;height:120px;border-top:2px solid var(--horizon);border-radius:50% 50% 0 0 / 60px 60px 0 0;background:linear-gradient(var(--floor-top),var(--floor) 150px)}
+.policy-head .wrap{position:relative;z-index:1;min-height:334px}
+.wordmark.brand{display:flex;align-items:center;width:max-content;min-height:44px;color:var(--ink);font:400 30px/1.2 var(--display);letter-spacing:-.6px;text-decoration:none;white-space:nowrap;border-radius:4px}
+.policy-head h1{margin:56px 0 14px;font:400 56px/1.1 var(--display);letter-spacing:-1.1px}
+.date.sticker{display:inline-flex;align-items:center;min-height:30px;margin:0;padding:0 12px;border-radius:999px;background:var(--paper);box-shadow:var(--floating);font:700 13px/1.35 var(--text);letter-spacing:.26px}
+.policy-pal-wrap{position:absolute;right:var(--gut);bottom:14px;width:220px}
+.policy-pal{display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;border-radius:24px}
+.policy-pal img{width:100%;height:auto}
+.bubble--policy{position:absolute;right:86%;bottom:72%;width:max-content;max-width:180px;margin:0;padding:9px 13px;border-radius:16px;background:var(--paper);font:400 15px/1.25 var(--display);filter:drop-shadow(0 5px 6px rgba(23,87,58,.22))}
+.bubble--policy::after{content:"";position:absolute;right:18px;bottom:-8px;border:8px solid transparent;border-bottom:0;border-top:9px solid var(--paper)}
+.bubble--policy[hidden]{display:none}
+
+/* the body: the contents as a card on the left, the policy on the right */
+.policy-body{display:grid;grid-template-columns:260px minmax(0,680px);gap:56px;align-items:start;padding-top:40px;padding-bottom:64px}
+.toc{position:sticky;top:24px;padding:12px 14px;background:var(--card);border-radius:18px;box-shadow:var(--card-shadow);font:500 13px/1.35 var(--text)}
+.toc ol{margin:0;padding:0;list-style:none}
+.toc>ol>li+li{border-top:1.5px solid var(--divider)}
+.toc a{display:flex;align-items:center;min-height:44px;padding:9px 2px;color:var(--ink);font:400 16px/1.21 var(--display);text-decoration:none}
+.toc ol ol{padding:0 0 8px 12px}
+.toc ol ol a{padding:5px 2px;font:500 13px/1.35 var(--text);color:var(--muted)}
+.toc a:hover{color:var(--link)}
+.prose{min-width:0}
+.prose p,.prose ul,.prose ol{margin:0 0 16px}
+.prose ul,.prose ol{padding-left:22px}
+.prose li{margin:0 0 8px}
+.prose h2{margin:44px 0 14px;font:400 30px/1.21 var(--display);letter-spacing:-.3px;scroll-margin-top:24px}
+.prose h3{margin:28px 0 10px;font:400 19px/1.25 var(--display);scroll-margin-top:24px}
+.prose .intro{font:500 16px/1.55 var(--text)}
+.short.sticker{margin:28px 0 8px;padding:18px 20px 4px;background:var(--card);border-radius:18px;box-shadow:var(--card-shadow)}
+.short.sticker h2{margin-top:0;font-size:30px}
+.prose h2.part{display:flex;align-items:center;gap:14px}
+.prose h2.part img{width:44px;height:44px;border-radius:11px}
+
+.policy-foot{padding:24px 0 34px;border-top:1.5px solid var(--divider);font:500 13px/1.35 var(--text);color:var(--muted)}
+.policy-foot a{display:inline-flex;align-items:center;min-height:44px}
+
+/* the pizza easter egg: a shower of pals, falling */
+.storm{position:fixed;inset:0;z-index:30;pointer-events:none;overflow:hidden}
+.storm img{position:absolute;top:-90px;width:70px;height:auto;animation:fall var(--d,2.4s) cubic-bezier(.45,0,.75,1) var(--delay,0s) forwards}
+@keyframes fall{to{transform:translateY(calc(100vh + 120px)) rotate(var(--turn,120deg))}}
+
+@media (max-width:860px){
+  :root{--gut:20px}
+  .policy-head{min-height:0;padding-bottom:0}
+  .policy-head .wrap{min-height:0;padding-bottom:260px}
+  .policy-head h1{margin-top:40px;font-size:30px;letter-spacing:-.3px;line-height:1.21}
+  .policy-pal-wrap{width:170px;right:50%;margin-right:-85px;bottom:10px}
+  .policy-head::after{height:110px}
+  .bubble--policy{left:50%;right:auto;bottom:calc(100% + 8px);transform:translateX(-50%);max-width:min(264px,80vw)}
+  .bubble--policy::after{right:calc(50% - 8px)}
+  .policy-body{grid-template-columns:1fr;gap:28px;padding-top:28px}
+  .toc{position:static}
+  .prose h2{font-size:30px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .storm{display:none}
+}
+.toc a,.bubble--policy{font-family:var(--text);font-weight:700}
+.prose h3{font-family:var(--text);font-weight:700}
+.prose h2.part img{flex:none}
+.prose h2{overflow-wrap:break-word}
