@@ -325,7 +325,7 @@ span.pal{cursor:default}
 @keyframes steam{0%{opacity:0;transform:translate(0,25%) scaleY(.6)}35%{opacity:1}100%{opacity:0;transform:translate(35%,-45%) rotate(10deg) scaleY(1.1)}}
 .kx-board{z-index:5;left:64vw;bottom:calc(22% - 4px);width:min(15vw,28vh);aspect-ratio:240/110}
 .kx-board__wood{position:absolute;left:0;bottom:0;width:100%;height:auto}
-.kx-carrot{position:absolute;left:18%;bottom:40%;width:50%;height:auto;transform-origin:100% 50%;transform:scaleX(.22)}
+.kx-carrot{position:absolute;left:18%;bottom:40%;width:50%;height:auto;transform-origin:0 50%;transform:scaleX(.22)}
 .kx-knife-down{position:absolute;left:20%;bottom:38%;width:66%;height:auto;transform:rotate(-4deg)}
 .ings,.slices,.bits{position:absolute;z-index:6;inset:0;pointer-events:none}
 .ing{position:absolute;left:0;top:0;width:clamp(44px,4.6vw,84px);height:auto;opacity:0}
@@ -339,7 +339,7 @@ span.pal{cursor:default}
 .kx-spark--2{right:-6%;top:-4%}
 .kx-spark--3{left:60%;top:-34%}
 .kx-meal{transform-box:fill-box;transform-origin:50% 90%}
-.k-pal{transform-origin:50% 100%;position:absolute;z-index:7;left:79vw;bottom:calc(22% - 10px);width:min(15vw,28vh)}
+.k-pal{transform-origin:50% 100%;position:absolute;z-index:4;left:79vw;bottom:calc(22% - 10px);width:min(15vw,28vh)}
 .pal--chef{aspect-ratio:626/600;--lid-t:44.6%;--lid-b:62.7%;cursor:default}
 .k-pal .pal{width:100%}
 .k-pal .pal__face{opacity:0}
@@ -353,6 +353,11 @@ span.pal{cursor:default}
 .k-say::after{left:auto;right:12%;transform:skewX(-28deg) rotate(45deg) scale(.7,1)}
 .k-say:last-child{opacity:1}
 .k-say--stir{right:2%;bottom:134%}   /* above the hat, clear of the spoon */
+.kc{position:absolute;left:0;top:0;width:0;height:0;pointer-events:none}   /* pal chopping: JS sizes and places it on the carrot */
+.kc img{position:absolute;inset:0;width:100%;height:100%;opacity:0}
+.kc-body{z-index:4;transform-origin:50% 89.8%}
+.kc-steady,.kc-arm{z-index:6}
+.kc-arm{transform-origin:78% 76.3%}
 
 /* reduced motion: each scene becomes a strip of still panels (JS clones the stage and freezes each copy) */
 .night.is-strip{display:grid;gap:6px;padding-bottom:6px}

@@ -494,29 +494,40 @@
       steam: q('.kx-pan .kx-steam'), sauce: q('.kx-sauce'), board: q('.kx-board'), carrot: q('.kx-carrot'), knifeDown: q('.kx-knife-down'),
       ings: qa('.ing'), slices: qa('.slices i'), bits: qa('.bit'), plate: q('.kx-plate'), meal: q('.kx-meal'), dSteam: q('.kx-plate .kx-steam'), sparks: qa('.kx-spark'),
       palWrap: q('.k-pal'), hat: q('.k-hat'), rest: q('.k-rest'), face: q('.k-pal .pal__face'), happy: q('.k-happy'), arm: q('.k-arm'), knife: q('.k-knife'), spoon: q('.k-spoon'),
-      shafts: qa('.k-spoon__shaft, .k-spoon__wood'), sBowl: q('.k-spoon__bowl'), says: qa('.k-say').map(cue)
+      shafts: qa('.k-spoon__shaft, .k-spoon__wood'), sBowl: q('.k-spoon__bowl'), says: qa('.k-say').map(cue),
+      kc: q('.kc'), kcBody: q('.kc-body'), kcArm: q('.kc-arm'), kcSteady: q('.kc-steady'), rig: q('.k-pal .pal--chef')
     };
+    R.cutF = .08;                                         // each cut takes 8% off the carrot, from its tip end
     // ingredient flights from the fridge: [which, start, end, to] (to: pan or board)
     R.flights = [[0, .08, .16, 'pan'], [2, .11, .18, 'board'], [1, .14, .22, 'pan'], [3, .32, .38, 'pan'], [4, .36, .42, 'pan']];
     R.chops = [.2, .237, .274, .311, .348];                // each cut throws one slice into the pan
     R.flips = [.5, .56];
     R.landings = [...R.flights.filter(f => f[3] === 'pan').map(f => f[2]), ...R.chops.map(c => c + .06)];
     R.all = [...R.caps.map(c => c.el), R.warm, R.win, R.clock, R.hh, R.mm, R.cone, R.fridge, R.door, R.light, R.spill, R.fCarrot, R.flames, R.pan, R.pop, R.steam,
-      R.carrot, R.knifeDown, ...R.ings, ...R.slices, ...R.bits, R.plate, R.meal, R.dSteam, ...R.sparks, R.palWrap, R.hat, R.rest, R.arm, R.knife, R.spoon, R.face, R.happy, ...R.says.map(c => c.el)];
+      R.carrot, R.knifeDown, ...R.ings, ...R.slices, ...R.bits, R.plate, R.meal, R.dSteam, ...R.sparks, R.palWrap, R.hat, R.rest, R.arm, R.knife, R.spoon, R.face, R.happy, ...R.says.map(c => c.el), R.kcBody, R.kcArm, R.kcSteady, R.rig];
     R.measure = () => {
       R.W = st.offsetWidth; R.H = st.offsetHeight;
+      {
+        const b0 = boxIn(R.board, st), cw = b0.w * .5, ch = cw * 50 / 160, cl = b0.l + b0.w * .18, ct = b0.t + b0.h * .6 - ch, s = cw / 313;
+        R.kcS = s; R.carrotBox = { l: cl, t: ct, w: cw, h: ch };
+        Object.assign(R.kc.style, { left: (cl - 250 * s) + 'px', top: (ct - 636 * s) + 'px', width: (900 * s) + 'px', height: (860 * s) + 'px' });
+        Object.assign(R.palWrap.style, { left: '', top: '', bottom: '', width: '' });
+        const nat = boxIn(R.palWrap, st), chopTop = ct - 636 * s + 200 * s;
+        Object.assign(R.palWrap.style, { left: (cl - 250 * s + 140 * s) + 'px', top: chopTop + 'px', bottom: 'auto', width: (626 * s) + 'px' });
+        R.drop = nat.t + nat.h - (chopTop + 600 * s);       // how far he steps down to the counter as he walks to the hob
+      }
       const f = boxIn(R.fridge, st), pan = boxIn(R.pan, st), b = boxIn(R.board, st), pl = boxIn(R.plate, st), k = boxIn(R.palWrap, st), hob = boxIn(R.hob, st);
       R.panH = pan.h; R.panW = pan.w;
       R.from = { x: f.l + f.w * .5, y: f.t + f.h * .5 };
       R.bowl = { x: pan.l + pan.w * .4, y: pan.t + pan.h * .3 };
       R.lip = { x: pan.l + pan.w * .06, y: pan.t + pan.h * .32 };
       R.boardAt = { x: b.l + b.w * .4, y: b.t + b.h * .45 };
-      R.cutAt = x => ({ x: b.l + b.w * (.08 + .62 * x), y: b.t + b.h * .5 });   // the carrot's cut end, x = how much is left
+      R.cutAt = x => ({ x: R.carrotBox.l + R.carrotBox.w * (.9625 * x - .06), y: R.carrotBox.t + R.carrotBox.h * .5 });   // the knife's cut, near the tip end, x = how much is left
       R.plateAt = { x: pl.l + pl.w * .5, y: pl.t + pl.h * .52 };
       R.plateOff = R.W - pl.l + 30;                 // the plate slides in along the counter from off the right edge
       // pal walks left until he stands just past the hob; his raised hand holds a spoon long enough to reach the pan
       R.walk = (hob.l + hob.w + 6) - (k.l + k.w * .02);
-      const u = k.w / 626, hand = { x: k.l + R.walk + 70 * u, y: k.t + 400 * u };
+      const u = k.w / 626, hand = { x: k.l + R.walk + 70 * u, y: k.t + R.drop + 400 * u };
       const aim = (to) => Math.atan2(to.y - hand.y, to.x - hand.x) * 180 / Math.PI - 180;
       const len = Math.hypot(R.bowl.x - hand.x, R.bowl.y - hand.y) / u - 40;
       R.applyGeometry = () => {
@@ -562,13 +573,23 @@
       angle = lerp(angle, -6, eInOut(seg(p, .375, .413)));
       if (p < .43) R.arm.style.transform = `rotate(${angle.toFixed(2)}deg)`;
       const cuts = R.chops.reduce((n, c) => n + (p >= c + .002 ? 1 : 0), 0);
-      set(R.carrot, `scaleX(${(1 - .156 * cuts).toFixed(3)})`, seg(p, .175, .18));
+      set(R.carrot, `scaleX(${(1 - R.cutF * cuts).toFixed(3)})`, seg(p, .175, .18));
       R.slices.forEach((el, k) => {
         const c = R.chops[k], t = seg(p, c + .004, c + .06);
-        fly(el, R.cutAt(1 - .156 * k), R.bowl, t, R.sliceW, 16 * vh, 540, .7);
+        fly(el, R.cutAt(1 - R.cutF * k), R.bowl, t, R.sliceW, 16 * vh, 540, .7);
       });
-      set(R.knife, 'none', seg(p, .15, .17) * (1 - seg(p, .43, .44)));
-      set(R.knifeDown, 'rotate(-4deg)', seg(p, .43, .44));
+      set(R.knife, 'none', 0);
+      set(R.knifeDown, 'rotate(-4deg)', seg(p, .424, .432));
+      // contest: pal chops with the knife in his own hand. The arm pivots on the fist: up 34 degrees, down onto the carrot,
+      // and slides along to the next cut while the other hand holds the carrot and creeps back with it
+      const kcAngle = 34 - (angle + 22) * 36 / 30, swap = seg(p, .424, .432), sv = R.kcS || 1, swapped = p >= .428 ? 1 : 0;
+      let slide = 0;
+      for (const c of R.chops) slide += eInOut(seg(p, c + .006, c + .022));
+      const step = 301 * R.cutF * sv, press = chopBody * 120;
+      set(R.kcArm, `translate(${(-slide * step).toFixed(1)}px,${(press * .3).toFixed(1)}px) rotate(${kcAngle.toFixed(2)}deg)`, 1 - swap);
+      set(R.kcSteady, `translate(${(-slide * step * .5).toFixed(1)}px,${(press * .4).toFixed(1)}px)`, 1 - swap);
+      set(R.kcBody, `scale(${(1 + chopBody * .5).toFixed(4)},${(1 - chopBody * .5).toFixed(4)})`, 1 - swapped);   // the bodies are the same drawing: switch, don't fade
+      R.rig.style.opacity = swapped;
       // pans jump and the hot oil goes "tss" each time something lands in it
       let pop = 0;
       R.landings.forEach(L => { pop = Math.max(pop, Math.sin(seg(p, L, L + .026) * Math.PI)); });
@@ -617,7 +638,7 @@
       set(R.dSteam, 'none', seg(p, .8, .86));
       // pal: looks at what he is doing, walks, leans into the tosses, and cheers up at the end
       const happy = eOut(seg(p, .8, .85));
-      const lookX = p < .43 ? -4.6 : p < .66 ? -5 : -3.5, lookY = p < .43 ? 4.2 : p < .66 ? 2.6 : 5;
+      const toHob = eInOut(seg(p, .43, .46)), lookX = p < .66 ? lerp(1.6, -5, toHob) : -3.5, lookY = p < .66 ? lerp(3, 2.6, toHob) : 5;
       set(R.face, `translate(${lookX}%,${lookY}%)`, 1 - happy);
       set(R.happy, 'none', happy);
       const stride = seg(p, .43, .48), cheer = seg(p, .798, .852);
@@ -626,7 +647,7 @@
       const walkSquash = Math.sin(stride * Math.PI * 6) * .035;
       const landing = recoil(seg(p, .852, .875)) * .065;
       const squash = anticipate + chopBody + walkSquash + landing;
-      set(R.palWrap, `translate(${(R.walk * walked).toFixed(1)}px,${(-hop).toFixed(1)}px) rotate(${(-flick * 3 - chopBody * 45).toFixed(2)}deg) scale(${(1 + squash).toFixed(4)},${(1 - squash).toFixed(4)})`);
+      set(R.palWrap, `translate(${(R.walk * walked).toFixed(1)}px,${(R.drop * eInOut(seg(p, .43, .47)) - hop).toFixed(1)}px) rotate(${(-flick * 3 - chopBody * 45).toFixed(2)}deg) scale(${(1 + squash).toFixed(4)},${(1 - squash).toFixed(4)})`);
       const hatLag = recoil(seg(p, .48, .525)) * 9 + recoil(seg(p, .856, .88)) * 12;
       set(R.hat, `translateY(${(-chopBody * 80).toFixed(2)}%) rotate(${(-6 + hatLag - flick * 5).toFixed(2)}deg)`);
       set(R.rest, `rotate(${(flick * 7 - Math.sin(stride * Math.PI * 6) * 5).toFixed(2)}deg)`);
