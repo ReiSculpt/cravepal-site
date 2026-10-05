@@ -13,7 +13,7 @@
 @keyframes cp-blink{0%,40%,43%,100%{opacity:0}41%,42%{opacity:1}}
 
 /* pal's voice in the scenes: the SpeechBubble, paper with one soft shadow and a small tail pointing at pal */
-.night .bubble{position:absolute;z-index:6;width:max-content;max-width:180px;padding:9px 13px;border-radius:16px;background:var(--paper);color:var(--ink);font:700 15px/1.25 var(--text);text-align:left;filter:var(--bubble-shadow)}
+.night .bubble{position:absolute;z-index:6;width:max-content;max-width:180px;padding:9px 13px;border-radius:16px;background:var(--paper);color:var(--ink);font:500 15px/1.25 var(--display);text-align:left;filter:var(--bubble-shadow)}
 .night .bubble::after{content:"";position:absolute;left:22px;bottom:-8px;width:0;height:0;border:8px solid transparent;border-bottom:0;border-top:9px solid var(--paper)}
 
 /* the page's numbered chapter headers, carried into the pinned stage; JS swaps them as the story moves on */
@@ -54,7 +54,8 @@
 .nx-clock__h{width:7%;height:26%;margin-left:-3.5%;transform:rotate(270deg)}
 .nx-clock__m{width:5%;height:36%;margin-left:-2.5%;background:#E27D52!important;transform:rotate(0deg)}
 .nx-clock b{width:12%;height:12%;margin:0 0 -6% -6%}
-.nx-lamp{z-index:2;left:59vw;top:0;width:min(7vw,12vh);height:30%}
+.nx-lamp{z-index:2;left:45vw;top:-12%;width:min(7vw,12vh);height:30%}   /* in the clear wall between the headline and the shelf, well away from the window; hung high so it clears the shelf and the text */
+@media (max-height:500px){.night:not(.cook) .nx-lamp{display:none}}
 .nx-lamp svg{position:absolute;inset:0;width:100%;height:100%}
 .nx-lamp__cone{position:absolute;left:50%;top:70%;width:320%;aspect-ratio:1;margin-left:-160%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,233,168,.75),rgba(255,233,168,0))}   /* the lamp's soft glow */
 .nx-fridge{z-index:5;left:5vw;bottom:0;height:58%;aspect-ratio:200/360}
@@ -69,18 +70,18 @@
 
 /* words */
 .n-head{z-index:9;left:var(--gut);top:clamp(70px,9vh,110px);right:var(--gut);pointer-events:none;opacity:0}
-.n-1{position:relative;display:block;font:400 56px/1.1 var(--display);letter-spacing:-1.1px;transform-origin:0 100%;width:max-content;color:var(--ink)}
+.n-1{position:relative;display:block;font:600 56px/1.1 var(--display);letter-spacing:-1.1px;transform-origin:0 100%;width:max-content;color:var(--ink)}
 .n-1 em{font-style:normal}
 .n-2{position:relative;display:block;margin-top:16px;max-width:30em;font:400 16px/1.5 var(--text);color:var(--ink)}
 /* between the fridge and the phone, above the counter */
-.n-grr{z-index:9;left:calc(5vw + 100svh * .3222 + 40px);top:58%;font:400 56px/1 var(--display);letter-spacing:-1.1px;color:var(--ink);opacity:0;transform-origin:50% 50%}
+.n-grr{z-index:9;left:calc(5vw + 100svh * .3222 + 40px);top:58%;font:600 56px/1 var(--display);letter-spacing:-1.1px;color:var(--ink);opacity:0;transform-origin:50% 50%}
 /* narration boxes, left of the phone */
 .n-caps{z-index:9;left:var(--gut);top:20%;width:calc(50% - 100svh * .2038 - var(--gut) - 24px)}
-.cap{position:absolute;left:0;top:0;max-width:100%;width:max-content;font:400 56px/1.1 var(--display);letter-spacing:-1.1px;color:var(--ink);text-wrap:balance;opacity:0}
+.cap{position:absolute;left:0;top:0;max-width:100%;width:max-content;font:600 56px/1.1 var(--display);letter-spacing:-1.1px;color:var(--ink);text-wrap:balance;opacity:0}
 /* the £22 as a Card: borderless, see-through, the soft green shadow; the money in ink */
 .cap--ticket{top:calc(92px - 20svh);width:min(280px,100%);padding:14px 18px 16px;background:var(--card);border-radius:18px;box-shadow:var(--card-shadow);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font:500 15px/1.35 var(--text);letter-spacing:0}
 .cap--ticket .ticket-top{display:block;padding-bottom:8px;border-bottom:1.5px solid var(--divider);font:700 13px/1.35 var(--text);letter-spacing:.26px}
-.cap--ticket strong{display:block;margin-top:8px;font:400 56px/1.21 var(--display);letter-spacing:-1.1px;font-variant-numeric:tabular-nums}
+.cap--ticket strong{display:block;margin-top:8px;font:600 56px/1.21 var(--display);letter-spacing:-1.1px;font-variant-numeric:tabular-nums}
 .cap--ticket .ticket-sub{display:block;margin-top:2px;font:500 15px/1.35 var(--text)}
 .k-caps .cap--end{opacity:1}
 
@@ -131,7 +132,7 @@
 .n-pal img{width:100%;height:auto}
 .n-bubble{position:absolute;right:88%;bottom:80%;font-size:19px;white-space:nowrap;transform-origin:90% 100%}
 .n-bubble::after{left:auto;right:18px}
-.n-sticker{position:absolute;z-index:3;right:100%;bottom:30%;margin-right:6cqi;padding:0 14px;min-height:34px;display:flex;align-items:center;background:var(--paper);color:var(--ink);border-radius:999px;box-shadow:var(--floating);font:400 16px/1.21 var(--display);white-space:nowrap}
+.n-sticker{position:absolute;z-index:3;right:100%;bottom:30%;margin-right:6cqi;padding:0 14px;min-height:34px;display:flex;align-items:center;background:var(--paper);color:var(--ink);border-radius:999px;box-shadow:var(--floating);font:600 16px/1.21 var(--display);white-space:nowrap}
 
 .n-wipe{z-index:12;inset:0;background:var(--wall);transform:translateY(100%);pointer-events:none}
 
@@ -147,7 +148,7 @@
 /* chapter 3's explanation, right of the phone */
 /* on the wall beside the phone, just under the window, so the thrown food has the counter to itself */
 .n-cap{z-index:9;left:calc(50% + 100svh * .2038 + 28px);right:var(--gut);top:calc(max(9%,92px) + min(30vw,60vh) * .75 + 24px);max-width:36em}
-.n-cap__title{font:400 30px/1.21 var(--display);letter-spacing:-.3px;color:var(--ink);text-wrap:balance}
+.n-cap__title{font:600 30px/1.21 var(--display);letter-spacing:-.3px;color:var(--ink);text-wrap:balance}
 .n-cap p{margin-top:10px;font:400 16px/1.5 var(--text);color:var(--ink)}   /* clear of the narration above it */
 .nx-shelf{z-index:1;left:calc(5vw + 100svh * .3222 + 36px);bottom:calc(58% + 40px);width:min(13vw,22vh,190px)}   /* on the wall beside the fridge, above the hob's steam */
 .nx-shelf svg{width:100%;height:auto}
@@ -159,7 +160,7 @@
 .k-caps .cap--end small{display:block;margin-top:12px;font:400 16px/1.5 var(--text);letter-spacing:0;color:var(--ink)}
 /* the £4 as a paper chip, like the streak chip: a soft floating shadow, no border */
 .k-price{position:absolute;z-index:9;right:-2%;top:-58%;display:grid;place-items:center;align-content:center;width:42%;aspect-ratio:1;border-radius:50%;background:var(--paper);color:var(--ink);box-shadow:var(--floating);transform:rotate(8deg)}
-.k-price strong{font:400 28px/1 var(--display);font-variant-numeric:tabular-nums}
+.k-price strong{font:600 28px/1 var(--display);font-variant-numeric:tabular-nums}
 .k-price span{margin-top:3px;font:600 11px/1.2 var(--text)}
 .kx-hob{z-index:5;left:36vw;bottom:calc(22% - 4px);width:min(24vw,44vh);aspect-ratio:300/170}
 .kx-hob__base{position:absolute;left:0;right:0;bottom:0;width:100%;height:24%}
@@ -225,7 +226,7 @@
   .n-2{display:none}   /* the phone has no room beside the fridge; the heading carries the beat */
   .nx-win{top:auto;bottom:54%;right:4vw;width:44vw}
   .nx-clock{top:auto;bottom:57%;left:7vw;width:15vw}
-  .nx-lamp{left:68vw;width:16vw;height:22%}
+  .night:not(.cook) .nx-lamp{display:none}   /* no clear wall beside the window here, so no lamp (as in the hero) */
   .nx-fridge{left:-5vw;height:33%;bottom:23%}
   .nx-counter{height:23%}
   .nx-glow{left:-10vw;width:120vw;bottom:-20%}
@@ -304,9 +305,7 @@
   .k-caps{top:18%}
 }
 
-/* Bagel leads the story; small labels and speech retain Figtree's open counters. */
-.n-sticker{font-family:var(--text);font-weight:700}
-.app__total{font-family:var(--display);font-weight:400}
+.app__total{font-family:var(--display);font-weight:600}
 
 /* Review: keep action on the worktop, with a clear silhouette around the chef. */
 .nx-lamp,.nx-glow{z-index:0}
@@ -335,9 +334,6 @@
   .kx-plate{left:3vw;width:32vw;bottom:9%}
   .k-say--stir{left:auto;right:70%;bottom:88%}
   .k-say--stir::after{left:auto;right:16px}
-}
-@media (max-width:760px) and (max-height:640px){
-  .night:not(.cook) .nx-lamp{left:85vw;width:12vw;height:12%}
 }
 
 

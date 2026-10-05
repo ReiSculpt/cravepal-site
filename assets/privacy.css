@@ -1,12 +1,15 @@
 /* cravepal.app/privacy, in the CravePal Design Standards: the mint wall, ink text, a borderless card for the short
-   version and the contents, Bagel Fat One for headings, Figtree for reading. The policy's words are untouched. */
+   version and the contents, the app's fonts: Fredoka for headings and pal's speech, Figtree for reading.
+   The CravePal wordmark keeps Bagel Fat One, as the logo does. The policy's words are untouched. */
 @font-face{font-family:"Bagel Fat One";src:url(fonts/bagel-fat-one.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Fredoka;src:url(fonts/fredoka.woff2) format("woff2");font-weight:300 700;font-display:swap}
 @font-face{font-family:Figtree;src:url(fonts/figtree.woff2) format("woff2");font-weight:400 700;font-display:swap}
 :root{
   --wall:#DCEFE2;--floor-top:#C8E6D2;--floor:#BFE0CB;--horizon:rgba(31,107,68,.14);
   --ink:#1D2B24;--muted:#52615A;--link:#1F6B44;--paper:#FFFCF5;--card:rgba(255,255,255,.5);
   --card-shadow:0 6px 16px -10px rgba(23,87,58,.35);--divider:rgba(29,43,36,.08);--floating:0 4px 10px -6px rgba(23,87,58,.35);
-  --display:"Bagel Fat One",ui-rounded,system-ui,sans-serif;--text:Figtree,-apple-system,system-ui,sans-serif;
+  --display:Fredoka,ui-rounded,system-ui,sans-serif;--text:Figtree,-apple-system,system-ui,sans-serif;
+  --brand:"Bagel Fat One",ui-rounded,system-ui,sans-serif;
   --gut:max(20px,calc((100vw - 1100px) / 2));color-scheme:light
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -25,13 +28,13 @@ a{color:var(--link);text-decoration-thickness:1.5px;text-underline-offset:3px}
 .policy-head{position:relative;overflow:hidden;padding:26px 0 0;min-height:360px}
 .policy-head::after{content:"";position:absolute;z-index:0;left:-40%;right:-40%;bottom:0;height:120px;border-top:2px solid var(--horizon);border-radius:50% 50% 0 0 / 60px 60px 0 0;background:linear-gradient(var(--floor-top),var(--floor) 150px)}
 .policy-head .wrap{position:relative;z-index:1;min-height:334px}
-.wordmark.brand{display:flex;align-items:center;width:max-content;min-height:44px;color:var(--ink);font:400 30px/1.2 var(--display);letter-spacing:-.6px;text-decoration:none;white-space:nowrap;border-radius:4px}
-.policy-head h1{margin:56px 0 14px;font:400 56px/1.1 var(--display);letter-spacing:-1.1px}
+.wordmark.brand{display:flex;align-items:center;width:max-content;min-height:44px;color:var(--ink);font:400 30px/1.2 var(--brand);letter-spacing:-.6px;text-decoration:none;white-space:nowrap;border-radius:4px}
+.policy-head h1{margin:56px 0 14px;font:600 56px/1.1 var(--display);letter-spacing:-1.1px}
 .date.sticker{display:inline-flex;align-items:center;min-height:30px;margin:0;padding:0 12px;border-radius:999px;background:var(--paper);box-shadow:var(--floating);font:700 13px/1.35 var(--text);letter-spacing:.26px}
 .policy-pal-wrap{position:absolute;right:var(--gut);bottom:14px;width:220px}
 .policy-pal{display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;border-radius:24px}
 .policy-pal img{width:100%;height:auto}
-.bubble--policy{position:absolute;right:86%;bottom:72%;width:max-content;max-width:180px;margin:0;padding:9px 13px;border-radius:16px;background:var(--paper);font:400 15px/1.25 var(--display);filter:drop-shadow(0 5px 6px rgba(23,87,58,.22))}
+.bubble--policy{position:absolute;right:86%;bottom:72%;width:max-content;max-width:180px;margin:0;padding:9px 13px;border-radius:16px;background:var(--paper);font:500 15px/1.25 var(--display);filter:drop-shadow(0 5px 6px rgba(23,87,58,.22))}
 .bubble--policy::after{content:"";position:absolute;right:18px;bottom:-8px;border:8px solid transparent;border-bottom:0;border-top:9px solid var(--paper)}
 .bubble--policy[hidden]{display:none}
 
@@ -40,7 +43,7 @@ a{color:var(--link);text-decoration-thickness:1.5px;text-underline-offset:3px}
 .toc{position:sticky;top:24px;padding:12px 14px;background:var(--card);border-radius:18px;box-shadow:var(--card-shadow);font:500 13px/1.35 var(--text)}
 .toc ol{margin:0;padding:0;list-style:none}
 .toc>ol>li+li{border-top:1.5px solid var(--divider)}
-.toc a{display:flex;align-items:center;min-height:44px;padding:9px 2px;color:var(--ink);font:400 16px/1.21 var(--display);text-decoration:none}
+.toc a{display:flex;align-items:center;min-height:44px;padding:9px 2px;color:var(--ink);font:600 16px/1.21 var(--display);text-decoration:none}
 .toc ol ol{padding:0 0 8px 12px}
 .toc ol ol a{padding:5px 2px;font:500 13px/1.35 var(--text);color:var(--muted)}
 .toc a:hover{color:var(--link)}
@@ -48,8 +51,8 @@ a{color:var(--link);text-decoration-thickness:1.5px;text-underline-offset:3px}
 .prose p,.prose ul,.prose ol{margin:0 0 16px}
 .prose ul,.prose ol{padding-left:22px}
 .prose li{margin:0 0 8px}
-.prose h2{margin:44px 0 14px;font:400 30px/1.21 var(--display);letter-spacing:-.3px;scroll-margin-top:24px}
-.prose h3{margin:28px 0 10px;font:400 19px/1.25 var(--display);scroll-margin-top:24px}
+.prose h2{margin:44px 0 14px;font:600 30px/1.21 var(--display);letter-spacing:-.3px;scroll-margin-top:24px}
+.prose h3{margin:28px 0 10px;font:600 19px/1.25 var(--display);scroll-margin-top:24px}
 .prose .intro{font:500 16px/1.55 var(--text)}
 .short.sticker{margin:28px 0 8px;padding:18px 20px 4px;background:var(--card);border-radius:18px;box-shadow:var(--card-shadow)}
 .short.sticker h2{margin-top:0;font-size:30px}
@@ -81,7 +84,5 @@ a{color:var(--link);text-decoration-thickness:1.5px;text-underline-offset:3px}
   html{scroll-behavior:auto}
   .storm{display:none}
 }
-.toc a,.bubble--policy{font-family:var(--text);font-weight:700}
-.prose h3{font-family:var(--text);font-weight:700}
 .prose h2.part img{flex:none}
 .prose h2{overflow-wrap:break-word}

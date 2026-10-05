@@ -76,6 +76,12 @@
       }).catch(() => {});
     });
   });
+  // The three steps rise in, one after another, when the section arrives.
+  const how = document.querySelector('.how');
+  if (how && 'IntersectionObserver' in window) {
+    const seen = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { how.classList.add('is-in'); seen.disconnect(); } }), { threshold: .35 });
+    seen.observe(how);
+  } else how?.classList.add('is-in');
   const dialog = document.querySelector('.pause-dialog');
   const title = document.querySelector('#demo-title');
   const copy = document.querySelector('#demo-copy');

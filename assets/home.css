@@ -1,9 +1,11 @@
 /* cravepal.app, the page around the story scenes. CravePal Design Standards (design/adam-design-standards):
    a mint wall, the curved sage floor where pal appears big, colour only on objects, ink text, borderless see-through
-   cards, pill buttons with a solid lip, paper speech bubbles. Bagel Fat One for display type and branding;
-   Figtree for reading, controls and small speech. The hero extends the app scale for the web. */
+   cards, pill buttons with a solid lip, paper speech bubbles. The app's fonts: Fredoka for headings, numbers and buttons
+   (600) and pal's speech (500), Figtree for reading and labels. Only the CravePal wordmark keeps Bagel Fat One, as the logo does.
+   The hero extends the app scale for the web. */
 
 @font-face{font-family:"Bagel Fat One";src:url(fonts/bagel-fat-one.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Fredoka;src:url(fonts/fredoka.woff2) format("woff2");font-weight:300 700;font-display:swap}
 @font-face{font-family:Figtree;src:url(fonts/figtree.woff2) format("woff2");font-weight:400 700;font-display:swap}
 
 :root{
@@ -13,7 +15,8 @@
   --primary:#1F6B44;--primary-lip:#154D31;--secondary:rgba(255,255,255,.6);--secondary-lip:rgba(23,87,58,.18);
   --floating:0 4px 10px -6px rgba(23,87,58,.35);--bubble-shadow:drop-shadow(0 5px 6px rgba(23,87,58,.22));
   --gold:#F2BE4A;--coin-ring:#D3962C;--coin-mark:#6B4A12;--stand-in:#FF7A45;
-  --display:"Bagel Fat One",ui-rounded,"SF Pro Rounded",system-ui,sans-serif;--text:Figtree,-apple-system,system-ui,sans-serif;
+  --display:Fredoka,ui-rounded,"SF Pro Rounded",system-ui,sans-serif;--text:Figtree,-apple-system,system-ui,sans-serif;
+  --brand:"Bagel Fat One",ui-rounded,"SF Pro Rounded",system-ui,sans-serif;
   --gut:max(20px,4vw,calc((100vw - 1680px) / 2));
   color-scheme:light
 }
@@ -29,7 +32,7 @@ button{font:inherit;color:inherit}
 ::selection{background:#CDE8D6}
 :focus-visible{outline:3px solid var(--primary);outline-offset:3px;border-radius:6px}
 .sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.skip{position:absolute;left:12px;top:-60px;z-index:50;padding:12px 18px;border-radius:999px;background:var(--paper);box-shadow:var(--floating);font:400 16px/1.21 var(--display);text-decoration:none}
+.skip{position:absolute;left:12px;top:-60px;z-index:50;padding:12px 18px;border-radius:999px;background:var(--paper);box-shadow:var(--floating);font:600 16px/1.21 var(--display);text-decoration:none}
 .skip:focus{top:12px}
 
 /* type, the README's roles */
@@ -38,7 +41,7 @@ button{font:inherit;color:inherit}
 .scene-note{font:500 13px/1.35 var(--text);color:var(--muted)}
 
 /* Button: pills with a solid lip that press down 3px */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border:0;border-radius:999px;font:400 16px/1.21 var(--display);text-decoration:none;cursor:pointer;transition:transform 80ms ease-out,box-shadow 80ms ease-out}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border:0;border-radius:999px;font:600 16px/1.21 var(--display);text-decoration:none;cursor:pointer;transition:transform 80ms ease-out,box-shadow 80ms ease-out}
 .btn span{font-family:var(--text)}
 .btn--primary{background:var(--primary);color:var(--paper);box-shadow:0 4px 0 var(--primary-lip)}
 .btn--primary:active{transform:translateY(3px);box-shadow:0 1px 0 var(--primary-lip)}
@@ -46,7 +49,7 @@ button{font:inherit;color:inherit}
 .btn--secondary:active{transform:translateY(3px);box-shadow:0 1px 0 var(--secondary-lip)}
 
 /* SpeechBubble: paper, radius 16, one soft shadow over bubble and tail, a small tail pointing at pal */
-.bubble{position:relative;width:max-content;max-width:150px;padding:9px 13px;border-radius:16px;background:var(--paper);color:var(--ink);font:400 15px/1.25 var(--display);filter:var(--bubble-shadow)}
+.bubble{position:relative;width:max-content;max-width:150px;padding:9px 13px;border-radius:16px;background:var(--paper);color:var(--ink);font:500 15px/1.25 var(--display);filter:var(--bubble-shadow)}
 .bubble::after{content:"";position:absolute;left:22px;bottom:-8px;border:8px solid transparent;border-bottom:0;border-top:9px solid var(--paper)}
 
 /* Card: the one surface */
@@ -60,7 +63,7 @@ button{font:inherit;color:inherit}
 /* masthead: the wordmark on the left, the coming soon chip on the right, the lamp hangs between them */
 .masthead{position:absolute;z-index:6;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:22px var(--gut) 0}
 .brand{display:block;width:150px;border-radius:8px}
-.soon-chip{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px 0 9px;border-radius:999px;background:var(--paper);box-shadow:var(--floating);font:400 16px/1.21 var(--display);white-space:nowrap}
+.soon-chip{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 13px 0 9px;border-radius:999px;background:var(--paper);box-shadow:var(--floating);font:600 16px/1.21 var(--display);white-space:nowrap}
 .soon-chip svg{width:22px;height:22px}
 
 /* hero: pal's kitchen, wider. Words on the left, pal on the floor on the right */
@@ -72,7 +75,7 @@ button{font:inherit;color:inherit}
 .k-shelf{position:absolute;z-index:1;left:calc(66% + 205px);top:47%;width:184px}
 .hero-copy{position:relative;z-index:3;max-width:480px;padding-top:6vh}
 .hero-copy .section-label{color:var(--muted);margin-bottom:14px}
-.hero h1{font:400 56px/1.1 var(--display);letter-spacing:-1.1px;margin-bottom:20px}
+.hero h1{font:600 56px/1.1 var(--display);letter-spacing:-1.1px;margin-bottom:20px}
 .hero h1 span{white-space:nowrap}
 .hero .lede{margin-bottom:30px;text-wrap:pretty}
 .hero-pal{position:absolute;z-index:2;left:66%;bottom:max(6%,26px);width:380px;margin-left:-190px}
@@ -86,37 +89,37 @@ button{font:inherit;color:inherit}
 .chapter{position:relative;overflow:hidden;padding:40px var(--gut) 0}
 .chapter-heading{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:16px}
 .chapter-heading .section-label{display:flex;align-items:center;gap:10px}
-.chapter-number{display:inline-grid;place-items:center;min-width:34px;height:26px;padding:0 10px;border-radius:999px;background:var(--secondary);box-shadow:var(--floating);font:400 13px/1 var(--display);letter-spacing:0}
+.chapter-number{display:inline-grid;place-items:center;min-width:34px;height:26px;padding:0 10px;border-radius:999px;background:var(--secondary);box-shadow:var(--floating);font:600 13px/1 var(--display);letter-spacing:0}
 
 /* 03: the Pause, with pal big on the floor */
 .pause-chapter{--floor-h:150px}
 .pause-layout{position:relative;z-index:2;display:grid;grid-template-columns:1fr minmax(320px,440px);align-items:end;gap:40px;padding:56px 0 46px}
-.pause-word{font:400 56px/1.1 var(--display);letter-spacing:-1.1px;margin-bottom:18px}
+.pause-word{font:600 56px/1.1 var(--display);letter-spacing:-1.1px;margin-bottom:18px}
 .pause-copy .lede{margin-bottom:28px}
 .pause-copy{align-self:center;padding-bottom:110px}
 .pause-stage{position:relative;display:flex;flex-direction:column;align-items:center}
 .pause-stage img{width:min(100%,380px);height:auto;margin-top:22px}
 .bubble--story{max-width:264px;padding:12px 18px;text-align:center}
 .bubble--story::after{left:50%;margin-left:-8px}
-.bubble--story h2{font:400 19px/1.25 var(--display)}
+.bubble--story h2{font:500 19px/1.3 var(--display)}
 .bubble--story span{display:block;margin-top:4px;font:500 13px/1.35 var(--text);color:var(--muted)}
 
 /* 05: the money */
 .money{--floor-h:140px;min-height:700px;display:flex;flex-direction:column}
 .money .money-layout{flex:1}
 .money-layout{position:relative;z-index:2;display:grid;grid-template-columns:1fr minmax(340px,560px);gap:48px;align-items:end;padding:56px 0 34px}
-.money h2{font:400 56px/1.1 var(--display);letter-spacing:-1.1px;margin-bottom:26px}
+.money h2{font:600 56px/1.1 var(--display);letter-spacing:-1.1px;margin-bottom:26px}
 .kept-amount{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
-.kept-amount span{font:400 56px/1.21 var(--display);letter-spacing:-1.1px;font-variant-numeric:tabular-nums}
-.kept-amount b{font:400 19px/1.25 var(--display)}
+.kept-amount span{font:600 56px/1.21 var(--display);letter-spacing:-1.1px;font-variant-numeric:tabular-nums}
+.kept-amount b{font:500 19px/1.25 var(--display)}
 .money-copy{align-self:start;padding-bottom:0}
 .money-art{display:grid;grid-template-columns:1fr 250px;align-items:end;gap:20px}
 .example{padding:12px 14px 14px}
 .example-head{font:700 13px/1.35 var(--text);letter-spacing:.26px;padding:2px 0 8px}
 .example div{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;border-top:1.5px solid var(--divider)}
-.example dt{display:flex;align-items:center;gap:12px;font:400 16px/1.21 var(--display)}
+.example dt{display:flex;align-items:center;gap:12px;font:600 16px/1.21 var(--display)}
 .example dt svg{width:28px;height:28px;flex:none}
-.example dd{font:400 16px/1.21 var(--display);font-variant-numeric:tabular-nums}
+.example dd{font:600 16px/1.21 var(--display);font-variant-numeric:tabular-nums}
 .example .example-total dt{padding-left:40px}
 .example-note{padding-top:8px;border-top:1.5px solid var(--divider);font:500 13px/1.35 var(--text);color:var(--muted)}
 .money-pal{position:relative;text-align:center}
@@ -126,7 +129,7 @@ button{font:inherit;color:inherit}
 .privacy-section{position:relative;padding:72px var(--gut)}
 .privacy-section>.section-label{color:var(--muted);margin-bottom:16px}
 .privacy-columns{display:grid;grid-template-columns:1fr minmax(320px,560px);gap:48px;align-items:start}
-.privacy-columns h2{font:400 56px/1.1 var(--display);letter-spacing:-1.1px}
+.privacy-columns h2{font:600 56px/1.1 var(--display);letter-spacing:-1.1px}
 .privacy-copy{padding:20px 22px;display:grid;gap:14px}
 .privacy-copy p{font:400 16px/1.5 var(--text)}
 .privacy-copy p:first-child{display:flex;gap:12px;align-items:flex-start}
@@ -136,9 +139,9 @@ button{font:inherit;color:inherit}
 /* footer: pal stands on the floor at the bottom of the page */
 .footer{position:relative;overflow:hidden;padding:64px var(--gut) 0;--floor-h:150px}
 .footer-top{position:relative;z-index:2;display:grid;grid-template-columns:1fr minmax(280px,420px);gap:40px;align-items:end}
-.footer-title{font:400 56px/1.1 var(--display);letter-spacing:-1.1px}
+.footer-title{font:600 56px/1.1 var(--display);letter-spacing:-1.1px}
 .footer-cta{display:grid;gap:8px;justify-items:start}
-.footer-launch{font:400 16px/1.21 var(--display)}
+.footer-launch{font:600 16px/1.21 var(--display)}
 .footer-cta .btn{margin-top:16px}
 .footer-pal{position:relative;z-index:2;width:200px;margin:30px auto 0}
 .footer-pal img{width:100%;height:auto}
@@ -158,7 +161,7 @@ button{font:inherit;color:inherit}
 .close-dialog svg{width:20px;height:20px}
 .dialog-content{display:flex;flex-direction:column-reverse;gap:14px;margin-top:4px;text-align:center}
 .dialog-content .section-label{color:var(--muted)}
-.dialog-content h2{min-height:2.3em;font:400 32px/1.15 var(--display);letter-spacing:-.3px;margin:8px 0 10px}
+.dialog-content h2{min-height:2.3em;font:600 32px/1.15 var(--display);letter-spacing:-.3px;margin:8px 0 10px}
 .dialog-content h2:focus{outline:none}
 .dialog-content p:not(.section-label){min-height:4.5em;margin:0 auto;font:400 15px/1.5 var(--text);max-width:24em}
 .demo-actions{display:grid;gap:10px;margin-top:16px}
@@ -180,7 +183,7 @@ button{font:inherit;color:inherit}
 .effects{position:fixed;inset:0;z-index:40;pointer-events:none;overflow:hidden}
 .effect-pal,.effect-coin{position:absolute;top:-90px;animation:fall var(--duration,2.4s) cubic-bezier(.45,0,.75,1) var(--delay,0s) forwards}
 .effect-pal{width:76px;height:auto}
-.effect-coin{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--gold);border:2px solid var(--ink);box-shadow:inset 0 0 0 3px var(--coin-ring);font:400 16px/1 var(--display);color:var(--coin-mark)}
+.effect-coin{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--gold);border:2px solid var(--ink);box-shadow:inset 0 0 0 3px var(--coin-ring);font:600 16px/1 var(--display);color:var(--coin-mark)}
 @keyframes fall{to{transform:translateY(calc(100vh + 120px)) rotate(var(--turn,120deg))}}
 
 /* phones and narrow tablets */
@@ -246,19 +249,17 @@ button{font:inherit;color:inherit}
 }
 
 /* Round 2: a single kitchen composition, with a grounded pal and a clear next step. */
-.brand,.dialog-mark,.footer-wordmark{width:auto;font:400 30px/1.2 var(--display);letter-spacing:-.6px;text-decoration:none;white-space:nowrap}
+.brand,.dialog-mark,.footer-wordmark{width:auto;font:400 30px/1.2 var(--brand);letter-spacing:-.6px;text-decoration:none;white-space:nowrap}
 .brand{display:flex;align-items:center;min-height:44px}
 .dialog-mark{font-size:22px}
 .footer-wordmark{font-size:56px;line-height:1.2}
-.skip,.btn,.soon-chip,.chapter-number,.example dt,.footer-launch,.bubble,.kept-amount b{font-family:var(--text);font-weight:700}
-.bubble--story h2{font:700 19px/1.3 var(--text)}
 .example dd{font-size:19px;white-space:nowrap}
 .hero{min-height:740px;height:min(838px,calc(100svh - 62px));padding:0 var(--gut);--floor-h:24%}
 .hero-copy{position:absolute;left:var(--gut);top:24%;width:48%;max-width:590px;padding:0;background:none;box-shadow:none}
 .hero-copy .section-label{margin-bottom:20px}
-.hero h1{font-size:clamp(56px,6.3vw,90px);font-weight:400;line-height:1.03;letter-spacing:-1.5px;margin-bottom:24px;text-wrap:initial}
+.hero h1{font-size:clamp(56px,6.3vw,90px);font-weight:600;line-height:1.03;letter-spacing:-1.5px;margin-bottom:24px;text-wrap:initial}
 .hero h1 span{display:block}
-.hero .lede{max-width:330px;margin:0}
+.hero .lede{max-width:400px;margin:0}
 .hero-actions{position:absolute;z-index:3;left:var(--gut);bottom:18%;display:grid;gap:16px;justify-items:start}
 .hero-launch{font:700 13px/1.35 var(--text)}
 .hero-pal{left:auto;right:var(--gut);bottom:52px;width:min(40vw,640px,64svh);margin:0;top:auto}
@@ -329,8 +330,8 @@ button{font:inherit;color:inherit}
 .floor{background:linear-gradient(var(--floor-top),var(--floor) 45%,var(--wall))}
 .story-intro{background:var(--wall)}
 .kitchen svg :is(path,rect,circle,ellipse,line){stroke-width:3px}
-.k-lamp{left:calc(55% + 209px)}   /* hangs just right of the window, never over it */
-@media (min-width:761px) and (max-width:1100px){.k-lamp{left:calc(54% + 190px)}}
+.k-lamp{left:calc(55% + 245px)}   /* hangs just right of the window, never over it */
+@media (min-width:761px) and (max-width:1100px){.k-lamp{left:calc(54% + 213px)}}
 @media (min-width:761px) and (max-width:1100px){.hero-pal .bubble{left:52%;max-width:160px}.hero-pal .bubble::after{left:38px}}   /* pal sits near the right edge here: keep the bubble on screen, tail still on his head */
 @media (min-width:761px) and (max-width:900px){.k-lamp{display:none}}   /* no room between the window and the shelf, as on phones */
 @media (max-width:760px){
@@ -352,7 +353,7 @@ button{font:inherit;color:inherit}
 .hero h1 .home-word{position:relative;display:inline-block;color:var(--paper);-webkit-text-stroke:2.5px var(--ink);paint-order:stroke fill}
 .home-word svg{position:absolute;left:0;bottom:-.14em;width:100%;height:.25em;overflow:visible;fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linecap:round}
 .hero h1{margin-bottom:34px}
-.hero-pal .bubble--hero{font:400 16px/1.35 var(--display);transform:rotate(-4deg);border-radius:48% 44% 46% 42% / 42% 48% 44% 46%;padding:12px 17px}
+.hero-pal .bubble--hero{font:500 16px/1.35 var(--display);transform:rotate(-4deg);border-radius:48% 44% 46% 42% / 42% 48% 44% 46%;padding:12px 17px}
 .pal-aside{position:absolute;right:94%;top:48%;width:176px;font:600 15px/1.5 "Segoe Print","Bradley Hand",cursive;transform:rotate(-7deg);color:var(--ink)}
 .pal-aside svg{width:80px;height:51px;margin:2px 0 0 68px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .chapter-number{font-variant-numeric:tabular-nums;letter-spacing:.04em}
@@ -382,7 +383,7 @@ button{font:inherit;color:inherit}
 #privacy .privacy-drawing{width:100%;height:100%;overflow:visible}
 #privacy .privacy-shackle{transform-origin:181px 76px}
 #privacy .privacy-token text{font:600 15px var(--text);fill:var(--ink)}
-#privacy .privacy-aside{position:absolute;right:0;top:17%;padding:12px 20px;background:var(--paper);border-radius:48% 44% 46% 42%;box-shadow:var(--floating);font:600 16px/1.4 var(--text);transform:rotate(5deg)}
+#privacy .privacy-aside{position:absolute;right:0;top:17%;padding:12px 20px;background:var(--paper);border-radius:48% 44% 46% 42%;box-shadow:var(--floating);font:500 16px/1.4 var(--display);transform:rotate(5deg)}
 #privacy .privacy-aside::after{content:"";position:absolute;left:12%;top:95%;transform:rotate(28deg);border:8px solid transparent;border-top:12px solid var(--paper);border-bottom:0}
 #footer{padding-top:64px;isolation:isolate}
 #footer .footer-top{align-items:center;gap:40px}
@@ -391,7 +392,7 @@ button{font:inherit;color:inherit}
 #footer .footer-scene{position:relative;width:min(100%,760px);aspect-ratio:720 / 340;margin:auto}
 #footer .footer-drawing{width:100%;height:100%;overflow:visible}
 #footer .ending-floor{position:absolute;z-index:-1;left:0;right:0;top:82%;height:1200px;border-top:2px solid var(--horizon);border-radius:50% 50% 0 0 / 12px 12px 0 0;background:linear-gradient(var(--floor-top),var(--floor) 300px)}
-#footer .footer-pal-line{position:absolute;z-index:1;left:34%;top:5%;padding:12px 20px;border-radius:48% 44% 46% 42%;background:var(--paper);box-shadow:var(--floating);font:600 16px/1.4 var(--text);transform:rotate(-5deg)}
+#footer .footer-pal-line{position:absolute;z-index:1;left:34%;top:5%;padding:12px 20px;border-radius:48% 44% 46% 42%;background:var(--paper);box-shadow:var(--floating);font:500 16px/1.4 var(--display);transform:rotate(-5deg)}
 #footer .footer-pal-line::after{content:"";position:absolute;left:8%;top:96%;transform:rotate(32deg);border:8px solid transparent;border-top:12px solid var(--paper);border-bottom:0}
 #footer .footer-lid{transform-origin:430px 158px}
 #footer .footer-timer-hand{transform-origin:599px 251px}
@@ -435,3 +436,25 @@ button{font:inherit;color:inherit}
   #footer .footer-cta .btn{transition:none}
 }
 /* END footer refresh */
+
+/* How CravePal works: three plain steps right after the hero, so a first-time visitor knows what it is */
+.how{position:relative;padding:72px var(--gut) 64px}
+.how>.section-label{color:var(--muted)}
+.how h2{font:600 56px/1.1 var(--display);letter-spacing:-1.1px;margin:12px 0 32px}
+.how-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.how-step{padding:22px 24px 26px}
+.how-art{position:relative;height:124px;margin:0 -8px 6px;display:flex;align-items:flex-end;justify-content:center}
+.how-art::before{content:"";position:absolute;left:0;right:0;bottom:0;height:30px;border-top:2px solid var(--horizon);border-radius:50% 50% 14px 14px / 18px 18px 14px 14px;background:linear-gradient(var(--floor-top),var(--floor))}   /* pal stands on a bit of floor, never in mid-air */
+.how-art img,.how-art svg{position:relative;height:104px;width:auto;margin-bottom:6px}
+.how-art svg{height:88px;margin-bottom:10px}
+.how-num{margin:12px 0 0}
+.how-step h3{font:600 24px/1.2 var(--display);letter-spacing:-.2px;margin:10px 0 8px}
+.how-step p:not(.how-num){font:500 15px/1.5 var(--text);margin:0}
+@media (max-width:900px){.how-steps{grid-template-columns:1fr;max-width:520px}.how h2{font-size:40px}}
+@media (max-width:760px){.how{padding:48px var(--gut) 40px}.how h2{font-size:30px;letter-spacing:-.3px;line-height:1.21;margin-bottom:22px}.how-steps{gap:16px}}
+@media (prefers-reduced-motion:no-preference){
+  .js .how-step{opacity:0;transform:translateY(26px)}
+  .js .how.is-in .how-step{opacity:1;transform:none;transition:opacity .5s ease,transform .7s cubic-bezier(.2,.9,.25,1.1)}
+  .js .how.is-in .how-step:nth-child(2){transition-delay:.18s}
+  .js .how.is-in .how-step:nth-child(3){transition-delay:.36s}
+}

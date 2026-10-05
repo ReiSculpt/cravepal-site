@@ -19,6 +19,7 @@
   const eOut = t => 1 - (1 - t) ** 3;
   const eIn = t => t * t;
   const eInOut = t => (t < .5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+  const eSine = t => (1 - Math.cos(Math.PI * t)) / 2;   // story beats: gentle start and finish, no rush in the middle
   const eBack = t => 1 + 2.70158 * (t - 1) ** 3 + 1.70158 * (t - 1) ** 2;
   // Finite, seekable spring: exact endpoints, with a soft overshoot and settle.
   const springEnd = 1 - Math.exp(-7) * (Math.cos(11) + 7 / 11 * Math.sin(11));
@@ -68,29 +69,72 @@
     }
     return false;
   };
+  /* ---------- page by page: one scroll, swipe or key press moves to the next stop, and the beat between plays by itself ---------- */
+  const stops = [];
+  let pinned = [];
+  const travel = (from, to) => {                 // seconds: story beats get time to play, plain page moves stay quick
+    let scene = 0, plain = Math.abs(to - from);
+    for (const [a, b, span] of pinned) {
+      const lo = Math.max(Math.min(from, to), a), hi = Math.min(Math.max(from, to), b);
+      if (hi > lo) { plain -= hi - lo; scene += (hi - lo) / (b - a) * span; }
+    }
+    return clamp(.6 + scene * 21 + plain / G.vh * .9, .8, 7) * 1000;
+  };
+  const glideTo = (to, quick) => {
+    to = clamp(to, 0, G.max);
+    if (Math.abs(to - scrollY) < 1) return;
+    S.y = S.written = scrollY;
+    S.tween = { from: S.y, to, t0: performance.now(), dur: travel(S.y, to) * (quick ? .6 : 1), ease: eSine };
+    S.target = to; S.moving = true; S.focus = null; poke();
+  };
+  const go = dir => {                            // a press during a beat queues the next one, played a little faster
+    if (geometryDirty || !stops.length) return;
+    const at = S.moving && S.tween ? S.tween.to : scrollY;
+    const to = dir > 0 ? stops.find(s => s > at + 2) : [...stops].reverse().find(s => s < at - 2);
+    if (to !== undefined) glideTo(to, S.moving);
+  };
   {
-    // Pixel deltas cannot reliably identify a trackpad versus a high-resolution mouse.
-    // Preserve their native inertia rather than guessing from delta size or event frequency.
-    // Non-passive only here: line/page wheels actually need preventDefault.
+    // One wheel gesture is one step. A trackpad's inertia tail keeps arriving in a stream, so a new step
+    // needs a short pause in the wheel events or a change of direction.
+    let lastWheel = 0, wheelDir = 0, used = false, acc = 0;
     addEventListener('wheel', e => {
-      if (!S.on || d.querySelector('dialog[open]') || e.deltaMode === 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey ||
-          e.defaultPrevented || !e.cancelable || !e.deltaY || Math.abs(e.deltaX) > Math.abs(e.deltaY) ||
-          geometryDirty || nativeWheelTarget(e.target)) { cancelScroll(); return; }
-      const dy = e.deltaY * (e.deltaMode === 1 ? 16 : G.vh);
-      const sy = scrollY;
-      if ((dy < 0 && sy <= 0) || (dy > 0 && sy >= G.max - 1)) { cancelScroll(); return; }
+      if (!S.on || d.querySelector('dialog[open]') || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey ||
+          e.defaultPrevented || !e.cancelable || !e.deltaY || Math.abs(e.deltaX) > Math.abs(e.deltaY) || nativeWheelTarget(e.target)) return;
       e.preventDefault();
-      if (!S.moving || S.tween || Math.abs(sy - S.written) > 1.5 ||
-          Math.sign(dy) !== Math.sign(S.target - S.y)) S.y = S.target = sy;
-      S.written = sy; S.tween = null; S.focus = null;
-      S.target = clamp(S.target + dy, 0, G.max);
-      S.moving = true; poke();
+      const now = performance.now(), dir = Math.sign(e.deltaY);
+      if (now - lastWheel > 180 || dir !== wheelDir) { used = false; acc = 0; }
+      lastWheel = now; wheelDir = dir;
+      if (used) return;
+      acc += Math.abs(e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? G.vh : 1));
+      if (acc < 6) return;
+      used = true; go(dir);
     }, { passive: false });
     addEventListener('keydown', e => {
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Tab', 'Escape'].includes(e.key)) cancelScroll();
+      if (!S.on || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || d.querySelector('dialog[open]')) return;
+      const t = e.target;
+      if (t.closest?.('input, textarea, select, [contenteditable]:not([contenteditable="false"])')) return;
+      const control = t.closest?.('a[href], button, summary, [role="button"]');
+      let dir = 0;
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey && !control)) dir = 1;
+      else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey && !control)) dir = -1;
+      else if (e.key === 'Home' || e.key === 'End') { e.preventDefault(); glideTo(e.key === 'Home' ? 0 : G.max); return; }
+      else { if (['ArrowLeft', 'ArrowRight', 'Tab', 'Escape'].includes(e.key)) cancelScroll(); return; }
+      e.preventDefault();
+      if (!e.repeat || !S.moving) go(dir);
+    });
+    // Touch: one swipe is one step. Two-finger pinch zoom and the pop-up's own scrolling stay native.
+    let touch = null;
+    addEventListener('touchstart', e => {
+      touch = S.on && e.touches.length === 1 && !d.querySelector('dialog[open]') && !nativeWheelTarget(e.target)
+        ? { x: e.touches[0].clientX, y: e.touches[0].clientY, used: false } : null;
     }, { passive: true });
-    addEventListener('pointerdown', cancelScroll, { passive: true, capture: true });
-    addEventListener('touchstart', cancelScroll, { passive: true, capture: true });
+    addEventListener('touchmove', e => {
+      if (!touch || e.touches.length !== 1) { touch = null; return; }
+      const dy = touch.y - e.touches[0].clientY, dx = touch.x - e.touches[0].clientX;
+      if (e.cancelable) e.preventDefault();
+      if (!touch.used && Math.abs(dy) > 28 && Math.abs(dy) > Math.abs(dx)) { touch.used = true; go(Math.sign(dy)); }
+    }, { passive: false });
+    addEventListener('touchend', () => { touch = null; }, { passive: true });
     addEventListener('focusin', cancelScroll, { passive: true });
     addEventListener('resize', cancelScroll, { passive: true });
     addEventListener('hashchange', cancelScroll, { passive: true });
@@ -124,7 +168,7 @@
     if (!S.moving) return sy;
     if (S.tween) {
       const t = clamp((now - S.tween.t0) / S.tween.dur, 0, 1);
-      S.y = lerp(S.tween.from, S.tween.to, eInOut(t));
+      S.y = lerp(S.tween.from, S.tween.to, (S.tween.ease || eInOut)(t));
       if (t >= 1) { S.tween = null; S.moving = false; }
     } else {
       S.y = damp(S.y, S.target, 16, dt);
@@ -179,7 +223,8 @@
     }
     section.classList.add('is-pinned');
     watch(stage);
-    scenes.push({ section, R: build(stage), p: 0, last: -1, top: 0, h: 0, span: +section.dataset.span || 1 });
+    scenes.push({ section, R: build(stage), p: 0, last: -1, top: 0, h: 0, span: +section.dataset.span || 1,
+      beats: (section.dataset.beats || '1').split(',').map(Number) });
   }
   function scenesWrite(y) {
     let changed = false;
@@ -556,6 +601,31 @@
     for (const sc of scenes) { sc.top = pageTop(sc.section); sc.h = sc.section.offsetHeight; sc.stageH = sc.R.st.offsetHeight; sc.R.measure(); sc.last = -1; }
     for (const k of strips) k.R.measure();
     S.target = clamp(S.target, 0, G.max);
+    // Stops: the top of the page, each story beat, each later section, and the bottom. Long plain stretches
+    // get extra stops a little under a screen apart, so one step never skips past anything.
+    const list = [0, G.max];
+    for (const id of ['how', 'try', 'money', 'privacy', 'footer']) { const el = d.getElementById(id); if (el) list.push(pageTop(el)); }
+    pinned = [];
+    for (const sc of scenes) {
+      const total = sc.h - sc.stageH;
+      if (total <= 0) continue;
+      pinned.push([sc.top, sc.top + total, sc.span]);
+      for (const b of sc.beats) list.push(sc.top + total * clamp(b / sc.span, 0, 1));
+    }
+    stops.length = 0;
+    for (const y of list.map(y => Math.round(clamp(y, 0, G.max))).sort((a, b) => a - b)) {
+      const prev = stops[stops.length - 1];
+      if (prev !== undefined) {
+        if (y - prev < 24) continue;
+        if (y - prev < G.vh * .2 && prev > 0) stops.pop();      // a step this small would feel like nothing happened
+        else {
+          // extra stops only on plain page, up to where the next story scene starts
+          const sceneAt = Math.min(y, ...pinned.filter(([a, b]) => b > prev && a < y).map(([a]) => Math.max(a, prev)));
+          if (sceneAt - prev > G.vh * 1.05) for (let s = prev + G.vh * .85; s < sceneAt - G.vh * .12; s += G.vh * .85) stops.push(Math.round(s));
+        }
+      }
+      stops.push(y);
+    }
   }
 
   /* ---------- one loop: read, then compute and write. It sleeps when nothing is moving. ---------- */

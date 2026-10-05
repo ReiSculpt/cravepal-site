@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#DCEFE2">
 <link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/pal/pal-grumpy.webp" as="image">
@@ -45,7 +46,7 @@
 <div class="hero-copy">
 <p class="section-label">A little Pause. A different evening.</p>
 <h1 id="hero-title">we have food <span>at <span class="home-word">home.<svg viewBox="0 0 450 36" aria-hidden="true"><path d="M5 18Q215-9 445 12M35 29Q260 12 410 26"/></svg></span></span></h1>
-<p class="lede">A little Pause before takeaway. A grumpy pal. More money left for you.</p>
+<p class="lede">CravePal is an iPhone app and Chrome extension that steps in when you open a takeaway app. A little Pause, a grumpy pal, more money left for you.</p>
 
 </div>
 <div class="hero-pal">
@@ -53,12 +54,25 @@
 <p class="bubble bubble--hero" data-boop-speech role="status">not on my watch.</p>
 <button class="pal-button" data-boop aria-label="Boop pal, the grumpy dumpling"><img src="assets/pal/pal-grumpy.webp" width="560" height="512" alt="pal standing with his arms around his wallet." fetchpriority="high"></button>
 </div>
-<div class="hero-actions"><p class="hero-launch">Coming soon for iPhone and Chrome.</p><a class="btn btn--primary" href="#story">Here’s how it goes <span aria-hidden="true">↓</span></a></div>
+<div class="hero-actions"><p class="hero-launch">Coming soon for iPhone and Chrome.</p><a class="btn btn--primary" href="#how">Here’s how it works <span aria-hidden="true">↓</span></a></div>
+</section>
+<!-- What CravePal is, in three steps, before the story shows it -->
+<section class="how" id="how" aria-labelledby="how-title">
+<p class="section-label">How CravePal works</p>
+<h2 id="how-title">three steps. one grumpy pal.</h2>
+<ol class="how-steps">
+<li class="card how-step"><div class="how-art" aria-hidden="true"><svg viewBox="0 0 152 92"><g stroke="#1D2B24" stroke-width="2.2" stroke-linejoin="round"><rect x="6" y="40" width="40" height="40" rx="10" fill="#F2BE4A"/><rect x="52" y="30" width="50" height="50" rx="13" fill="#FF7A45"/><rect x="108" y="40" width="40" height="40" rx="10" fill="#F28B6B"/><circle cx="99" cy="32" r="11" fill="#2F8F5B"/></g><path d="M93.5 32.5l4 4 7-8" fill="none" stroke="#FFFCF5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<p class="how-num"><span class="chapter-number">1</span></p><h3>Pick the apps that get you</h3><p>Choose the takeaway apps and sites you tend to overspend in. Your choices stay on your device.</p></li>
+<li class="card how-step"><div class="how-art" aria-hidden="true"><img src="assets/pal/pal-grumpy.webp" width="560" height="512" alt="" loading="lazy"></div>
+<p class="how-num"><span class="chapter-number">2</span></p><h3>Pal steps in</h3><p>Open one and CravePal shows a full-screen Pause before you order: a moment to think it over.</p></li>
+<li class="card how-step"><div class="how-art" aria-hidden="true"><img src="assets/pal/pal-heart-tight.webp" width="371" height="357" alt="" loading="lazy"></div>
+<p class="how-num"><span class="chapter-number">3</span></p><h3>Cook, and keep the difference</h3><p>Choose to cook and CravePal adds what you kept to your total. Or order anyway. It’s always your call.</p></li>
+</ol>
 </section>
 <div class="story-intro" id="story"><p>One evening. A different ending.</p><span>Scroll to change the plan <span aria-hidden="true">↓</span></span></div>
 <!-- Chapters 01 to 03 as a pinned kitchen at night, scrubbed by scroll: hungry, ordering, blocked.
      With reduced motion it is three still panels. -->
-<section class="night" id="hungry" data-night data-stills=".15,.48,.78" aria-labelledby="hungry-title">
+<section class="night" id="hungry" data-night data-stills=".15,.48,.78" data-beats=".19,.31,.5,.72,.8,1" aria-labelledby="hungry-title">
     <div class="night__stage" data-stage>
       <!-- The page's numbered chapters, carried into the scene: they change as the story moves on -->
       <div class="sc-chaps" aria-hidden="true">
@@ -176,7 +190,7 @@
 <div class="floor" aria-hidden="true"></div>
 </section>
 <!-- Chapter 04 as the same kitchen with dinner on: pal chops, stirs and plates up. -->
-<section class="night cook" id="cooking" data-cook data-span=".88" data-stills=".53,.95" aria-labelledby="cooking-title">
+<section class="night cook" id="cooking" data-cook data-span=".88" data-stills=".53,.95" data-beats=".18,.49,.684,.88" aria-labelledby="cooking-title">
 <h2 class="sr-only" id="cooking-title">a little chop. a little stir. dinner.</h2>
     <div class="night__stage cook__stage" data-stage>
       <!-- Back layer: the night window and its plant; the room keeps the mint palette -->
