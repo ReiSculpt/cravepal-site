@@ -32,7 +32,7 @@
 <div class="wrap">
 <a class="wordmark brand" href="../">CravePal</a>
 <h1>Privacy policy</h1>
-<p class="date sticker">Effective 2 October 2026</p>
+<p class="date sticker">Effective 10 October 2026</p>
 <div class="policy-pal-wrap">
 <button class="policy-pal" type="button" data-boop aria-label="Boop pal">
 <img decoding="async" src="../assets/pal/pal-grumpy.webp" width="560" height="512" alt="">
@@ -52,11 +52,12 @@
       <li><a href="#crash-reports">Crash reports (Sentry)</a></li>
       <li><a href="#usage-statistics">Usage statistics (PostHog)</a></li>
       <li><a href="#ip-address">Your IP address</a></li>
-      <li><a href="#purchases">Purchases</a></li>
+      <li><a href="#purchases">Subscriptions</a></li>
       <li><a href="#notifications">Notifications</a></li>
     </ol>
   </li>
   <li><a href="#chrome">The Chrome extension</a></li>
+  <li><a href="#account">Your CravePal account (optional)</a></li>
   <li><a href="#why">Why we use data, and who receives it</a></li>
   <li><a href="#how-long">How long we keep it</a></li>
   <li><a href="#rights">Your rights</a></li>
@@ -71,7 +72,7 @@
 
 <div class="short sticker" id="short-version">
 <h2>The short version</h2>
-<p>What you do on the Pause screen, which apps or websites you picked, and how much you've saved stay on your device. They're never in CravePal's automatic reports or statistics. The iPhone app sends two small things to keep it working and improve it: crash reports, and statistics about which of CravePal's own screens get used. The Chrome extension sends nothing at all. CravePal has no accounts. We don't sell data, show ads, or track you across other apps or websites.</p>
+<p>What you do on the Pause screen, which apps or websites you picked, and how much you've saved stay on your device. They're never in CravePal's automatic reports or statistics. Nothing from your iPhone's Screen Time ever leaves your iPhone. The iPhone app sends a few things to keep it working and improve it: crash reports, statistics about which of CravePal's own screens get used, and what's needed to sell and check your subscription. An account is optional: without one, the Chrome extension sends nothing at all. With one, the settings you typed in are kept with it. We don't sell data, show ads, or track you across other apps or websites.</p>
 </div>
 
 <h2 class="part" id="iphone"><img decoding="async" src="../assets/app-icon.webp" width="52" height="52" alt="">The iPhone app</h2>
@@ -110,10 +111,15 @@
 <p>Every event carries a random install ID created on your phone, plus the app version, iOS version and phone model. The install ID links one installation's statistics over time, so this data is pseudonymous rather than anonymous. The only Screen Time detail included is whether you allowed it, never your Screen Time usage, picked apps or Pause activity. We use these statistics to see where people get stuck and whether they keep using CravePal.</p>
 
 <h3 id="ip-address">Your IP address</h3>
-<p>Sentry and PostHog see your phone's IP address when it connects, as any online service does. Nothing we send includes your name, email or location, location lookup is switched off, and both providers are set not to store your IP address.</p>
+<p>Every service the app connects to sees your phone's IP address, as any online service does. Nothing we send to Sentry or PostHog includes your name, email or location, location lookup is switched off, and both are set not to store your IP address. RevenueCat, Superwall and our account service (below) also see it when the app connects to them, and use it only to provide their service.</p>
 
-<h3 id="purchases">Purchases</h3>
-<p>CravePal has nothing to buy yet. When subscriptions arrive, Apple will handle them through the App Store and we won't see your payment details.</p>
+<h3 id="purchases">Subscriptions (Apple, RevenueCat and Superwall)</h3>
+<p>CravePal is a subscription. Apple takes the payment through the App Store, and we never see your card or payment details. Two providers help us sell and check it:</p>
+<ul>
+  <li><strong>RevenueCat</strong> checks your purchase with Apple and tells the app whether your subscription is active. It receives a random ID that the app makes up (or your account ID, if you're signed in), Apple's record of what you bought (the plan, price, currency, dates and Apple's transaction IDs), and technical details such as the app and iOS versions, phone model, language and App Store country.</li>
+  <li><strong>Superwall</strong> shows the screen where you choose a plan. It receives its own random ID, when the app is opened and closed, when the plan screen is shown, closed or used to buy or restore, and technical details such as the app and iOS versions, phone model, language, region and time zone.</li>
+</ul>
+<p>Neither ever receives anything from Screen Time or the Pause: not your picked apps, your Pauses, your choices or your savings. The plan screen only appears from CravePal's own screens, never because of a Pause. To cancel a subscription, use your Apple Account's subscription settings; deleting CravePal or your account doesn't cancel it.</p>
 
 <h3 id="notifications">Notifications</h3>
 <p>CravePal's notifications are created on your phone. No notification ID is sent to us.</p>
@@ -122,19 +128,35 @@
 <ul>
   <li>CravePal for Chrome only acts on the websites you add to your list, and Chrome asks you to allow each one. When you open one of them, CravePal shows the Pause first.</li>
   <li>Your list, your Pauses and the money you kept are stored in Chrome on your computer.</li>
-  <li>It doesn't see your other browsing, doesn't read what's on any page, and sends nothing anywhere: no account, no analytics, no crash reports.</li>
+  <li>It doesn't see your other browsing and doesn't read what's on any page.</li>
+  <li><strong>Without an account</strong>, it sends nothing anywhere: no analytics, no crash reports. <strong>With an account</strong>, it also stores your site list, your settings and its own savings record with your account (see below), so they match your iPhone.</li>
   <li>Removing the extension deletes its data.</li>
 </ul>
-<p>CravePal's use of information received from Chrome APIs adheres to the <a href="https://developer.chrome.com/docs/webstore/program-policies/user-data-faq">Chrome Web Store User Data Policy</a>, including the Limited Use requirements.</p>
+<p>CravePal's use of information received from Chrome APIs adheres to the <a href="https://developer.chrome.com/docs/webstore/program-policies/user-data-faq">Chrome Web Store User Data Policy</a>, including the Limited Use requirements. We don't use or transfer this data for anything other than running CravePal.</p>
+
+<h2 id="account">Your CravePal account (optional)</h2>
+<p>You can use CravePal without an account, and nothing in this section applies to you if you don't make one.</p>
+<p>If you make one, you sign in with Apple or with your email address (we email you a six-digit code). We then keep:</p>
+<ul>
+  <li>your email address, or the private relay address Apple gives us if you choose "Hide My Email";</li>
+  <li>a random account ID, which also identifies your subscription with RevenueCat, so one subscription works on your iPhone and in Chrome;</li>
+  <li>the settings you typed in: what a takeaway and a home-cooked meal cost you, how many people your usual takeaway feeds, how many takeaways you usually have a week, your savings goal (its amount, and its name if you named it), how many takeaways you plan to swap each week, and your roast level;</li>
+  <li>if you use the Chrome extension while signed in: your list of takeaway sites, and the extension's own savings record.</li>
+</ul>
+<p>We use this only to run your account: to sign you in, keep your settings the same on each device, unlock your subscription on each device, and show your Chrome savings on your iPhone.</p>
+<p><strong>What never leaves your iPhone, with or without an account:</strong> anything that comes from Screen Time. That is when the Pause appeared, what you chose, when you unlocked an app, your savings from those choices, how often you opened an app, and which apps you picked. Our account service has nowhere to store any of it. Your account ID is never sent to our usage statistics.</p>
+<p>Your account is stored with Supabase in London. Apple handles Sign in with Apple, and Resend sends the sign-in code email.</p>
+<p><strong>Deleting it:</strong> in the app, open Settings and tap Delete account (or use the extension's settings page). We delete your email address, settings, Chrome sites and savings, and your RevenueCat record straight away. Deleting your account in the iPhone app also clears everything CravePal keeps on that iPhone, and CravePal starts again from the beginning. It doesn't cancel an Apple subscription. If you can't get into the app, email <a href="mailto:hello@cravepal.app">hello@cravepal.app</a> and we'll delete it for you.</p>
 
 <h2 id="why">Why we use data, and who receives it</h2>
-<p>We rely on our legitimate interests: crash reports let us find and fix bugs, and usage statistics show us how to improve CravePal. Only Sentry and PostHog receive data, acting on our behalf, and only from the iPhone app. Transfers to PostHog in the United States are covered by the safeguards in PostHog's data processing agreement (the EU Standard Contractual Clauses with the UK Addendum). We don't sell or share data with advertisers or data brokers.</p>
+<p>For your subscription and your account, we use your data to provide the service you asked for. For crash reports and usage statistics, we rely on our legitimate interests: crash reports let us find and fix bugs, and statistics show us how to improve CravePal.</p>
+<p>These providers receive data, each acting on our behalf and only to provide their service: Sentry (crash reports, stored in the EU), PostHog (usage statistics, United States), RevenueCat and Superwall (subscriptions, United States), Supabase (accounts, London), Resend (sign-in code emails) and Apple (payments and Sign in with Apple). Transfers to providers in the United States are covered by the safeguards in their data processing terms, such as the EU Standard Contractual Clauses with the UK Addendum. We don't sell or share data with advertisers or data brokers.</p>
 
 <h2 id="how-long">How long we keep it</h2>
-<p>Crash reports: up to 90 days. Usage statistics: up to 12 months. Data on your devices stays until you delete CravePal or remove the extension.</p>
+<p>Crash reports: up to 90 days. Usage statistics: up to 12 months. Your account: until you delete it. Subscription records: as long as Apple and RevenueCat need them for billing, tax and refunds. Data on your devices stays until you delete CravePal or remove the extension.</p>
 
 <h2 id="rights">Your rights</h2>
-<p>Depending on where you live (for example the UK, the EU or California), you can ask to see, correct or delete data about you, ask us to limit or stop using it, or ask for a copy. Email <a href="mailto:hello@cravepal.app">hello@cravepal.app</a>. Our statistics only know a random install ID that CravePal doesn't show you yet, so we may need to ask you for more details to find your records, and we'll tell you if we can't. Deleting CravePal doesn't delete what was already sent; a new install gets a new install ID. You can also complain to the <a href="https://ico.org.uk/make-a-complaint/">Information Commissioner's Office</a> in the UK, or your local data protection authority in the EU.</p>
+<p>Depending on where you live (for example the UK, the EU or California), you can ask to see, correct or delete data about you, ask us to limit or stop using it, or ask for a copy. If you have an account, you can delete it yourself in Settings. Otherwise, email <a href="mailto:hello@cravepal.app">hello@cravepal.app</a>. Our statistics only know a random install ID that CravePal doesn't show you yet, so we may need to ask you for more details to find your records, and we'll tell you if we can't. Deleting CravePal doesn't delete what was already sent; a new install gets a new install ID. You can also complain to the <a href="https://ico.org.uk/make-a-complaint/">Information Commissioner's Office</a> in the UK, or your local data protection authority in the EU.</p>
 
 <h2 id="children">Children</h2>
 <p>CravePal isn't meant for children under 13. We don't knowingly collect data from them.</p>
