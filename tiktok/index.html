@@ -8,33 +8,39 @@
 <link rel="icon" href="../assets/icon-32.png" sizes="32x32" type="image/png">
 <style>
   body{margin:0;min-height:100vh;display:grid;place-items:center;background:#DCEFE2;color:#1E1420;font:16px/1.5 system-ui,-apple-system,sans-serif;padding:24px;box-sizing:border-box;text-align:center}
-  img{width:140px;height:auto}
-  h1{font-size:22px;margin:12px 0 4px}
-  p{margin:0;max-width:34ch}
+  main{max-width:420px;width:100%}
+  img{width:120px;height:auto}
+  h1{font-size:22px;margin:10px 0 6px}
+  p{margin:0 0 14px}
+  code{display:block;background:#fff;border:2px solid #1E1420;border-radius:12px;padding:12px;font:13px ui-monospace,Menlo,monospace;word-break:break-all;text-align:left;margin-bottom:12px}
+  button{font:600 16px system-ui;background:#F0533A;color:#fff;border:0;border-radius:999px;padding:12px 26px;cursor:pointer}
 </style>
 </head>
 <body>
 <main>
   <img src="../assets/pal/pal-grumpy.webp" alt="">
-  <h1 id="t">Linking TikTok…</h1>
-  <p id="m">Hang on, handing you back to CravePal.</p>
+  <h1 id="t">Almost done</h1>
+  <p id="m">Copy this and paste it as a message in the CravePal Discord. The bot will finish linking the account.</p>
+  <code id="c" hidden></code>
+  <button id="b" hidden>Copy</button>
 </main>
 <script>
-// TikTok sends the sign-in back here (it only accepts an https address we own).
-// The CravePal drafts helper runs on the founders' own computer, so pass the
-// result straight on to it. Nothing is stored or sent anywhere else.
+// TikTok sends the sign-in back here. The code below is single-use, expires in a
+// few minutes and is useless without CravePal's own app secret, which only the
+// bot has. Nothing is stored or sent anywhere by this page.
 (function () {
-  var q = location.search;
-  if (!/[?&](code|error)=/.test(q)) {
-    document.getElementById('t').textContent = 'Nothing to link here';
-    document.getElementById('m').textContent = 'This page is only used while connecting a TikTok account.';
-    return;
-  }
-  setTimeout(function () {
-    document.getElementById('t').textContent = 'Not linked yet';
-    document.getElementById('m').textContent = 'Open this link on the computer that runs CravePal drafts, with the helper running.';
-  }, 4000);
-  location.replace('http://localhost:5390/tiktok/callback' + q);
+  var q = new URLSearchParams(location.search);
+  var t = document.getElementById('t'), m = document.getElementById('m');
+  if (q.get('error')) { t.textContent = 'Not linked'; m.textContent = q.get('error_description') || q.get('error'); return; }
+  if (!q.get('code') || !q.get('state')) { t.textContent = 'Nothing to link here'; m.textContent = 'This page is only used while connecting a TikTok account.'; return; }
+  var text = 'tiktok-link ' + q.get('state') + ' ' + q.get('code');
+  var c = document.getElementById('c'), b = document.getElementById('b');
+  c.textContent = text; c.hidden = false; b.hidden = false;
+  b.onclick = function () {
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () { b.textContent = 'Copied ✓'; }, function () {
+      var r = document.createRange(); r.selectNodeContents(c); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selected, now copy';
+    });
+  };
 })();
 </script>
 </body>
